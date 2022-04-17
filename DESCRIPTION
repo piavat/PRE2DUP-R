@@ -1,0 +1,23 @@
+Package: PRE2DUPR
+Type: Package
+Title: From Prescription Drug Purchases to Drug Use Periods
+Version: 0.0.0.9000
+Depends: R (>= 4.1)
+Imports: data.table 
+Authors@R: 
+    person(given = "Pia",
+           family = "Vattulainen",
+           role = c("aut", "cre"),
+           email = "vattpia@gmail.com")
+Description: Package contains functions for evaluating drug use 
+    periods from drug dispensings data.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
