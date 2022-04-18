@@ -12,7 +12,7 @@
 #' @param  max_refill Maximum time allowed between purchases.
 #'
 #' @return This function returns a number vector
-#' with sliding averages
+#' with sliding averages.
 #'
 #' @examples \dontrun{
 #' ddds <- c(15, 15, 15, 15, 15)
