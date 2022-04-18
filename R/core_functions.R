@@ -43,7 +43,7 @@ count_sliding_average <- function(ddd, time, w_past = 1, w_present = 4, w_future
 #' Make block
 #'
 #' This function makes blocks of drug purchases based on
-#' maximum allowed time between purchases
+#' maximum allowed time between purchases.
 #'
 #' @param  btw Time between purchases.
 #' @param  max_length Maximum allowed time between purchases.
