@@ -1,5 +1,6 @@
 # PRE2DUP-R
 From prescription drug purchases to drug use periods
+
 Challenge in pharmacoepidemiologic studies: how to determine drug use periods from drug dispensing records
 
 Register-based drug dispensing data stored in various databases such as Medicaid and Nordic nationwide registers are widely used in pharmacoepidemiological studies. Valid methods for evaluating the drug use periods from dispensing data are needed for e.g. studies to investigate the association between drug exposure and health-related outcomes such as hospitalizations or death. 
