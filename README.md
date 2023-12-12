@@ -15,6 +15,8 @@ Figure 1. The overall phases of PRE2DUP.
 PRE2DUP-R
 There is a growing demand for open-source version of PRE2DUP in the programming language and software familiar in the research field. R-package PRE2DUP-R will provide an advanced tool for generating reliable drug use estimates from large dispensing databases and practical tools for data pre-processing and cleaning. It will form the basis for development of sub-programs for specific tasks which may be required in particular research fields.   
 
+Program will be released 2024.
+
 For more information, see introduction to method:
 
 Tanskanen, A., Taipale, H., Koponen, M., Tolppanen, A. M., Hartikainen, S., Ahonen, R., & Tiihonen, J. (2015). From prescription drug purchases to drug use periods – a second generation method (PRE2DUP). BMC medical informatics and decision making, 15, 21. https://doi.org/10.1186/s12911-015-0140-z
