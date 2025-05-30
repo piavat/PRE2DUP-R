@@ -1,0 +1,44 @@
+---
+title: "ATC parameters"
+output: rmarkdown::html_vignette
+---
+
+ATC parameters are used to define the characteristics of ATCs. The file specifies the ATC code, the minimum and maximum duration of a treatment using the ATC, as well as the usual and minimum dose in defined daily doses (DDDs). ATC codes may be partial or complete, the program uses the closest match in the drug purchases ATC code. All ATC codes in drug purchases has to be included in ATC parameters at least at partial level. The ATC parameters are used when package-specific information is not available.
+
+### Example: Specifying ATC Parameters
+
+The following is an example of a row in an ATC parameters file, defining typical values for a given ATC code. 
+
+| ATC      | min_duration | max_duration | usual_DDD | min_DDD |
+|----------|--------------|--------------|-----------|---------|
+| C        | 15           | 300          | 0.8       | 0.2     |
+| C01      | 30           | 300          | 0.8       | 0.2     |
+| C01CA24  | 15           | 300          | 0.8       | 0.2     |
+
+**Explanation:**
+
+- `ATC`: Anatomical Therapeutic Chemical (ATC) code (e.g., *C* refers to substances used for the treatment of cardiovascular conditions,  *C01* refers to cardiac therapy, and  *C01CA24* refers to epinephrine).
+- `min_duration`: Minimum expected treatment duration (in days).
+- `max_duration`: Maximum expected treatment duration (in days).
+- `usual_DDD`: Usual daily dose in defined daily doses (DDDs).
+- `min_DDD`: Minimum commonly used daily dose in DDDs.
+
+#### R Code Example (in `data.table` format)
+
+```r
+library(data.table)
+
+atc_parameters <- data.table(
+  ATC = c("C", "C01", "C01CA24"),
+  min_duration = c(15, 30, 15),
+  max_duration = c(300, 300, 300),
+  usual_DDD = c(0.8, 0.8, 0.8),
+  min_DDD = c(0.2, 0.2, 0.2)
+)
+```
+
+Note: The package includes an ATC parameters file, `atc_parameters.rda`. The file can be used as such or as a template if user prefers to make their own ATC parameters. The file is located in the `data` directory of the package.
+
+```r
+?ATC_parameters
+```

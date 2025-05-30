@@ -1,0 +1,27 @@
+Package: PRE2DUPR
+Type: Package
+Title: Package for PRE2DUP-R method
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Pia", "Vattulainen",
+      email = "vattpia@gmail.com",
+      role = c("aut", "cre")
+    )
+  )
+Description: PRE2DUP-R for creating drug treatment periods from drug purchases.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports: 
+    data.table (>= 1.14)
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat,
+    mockery
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Depends: 
+    R (>= 3.5)

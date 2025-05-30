@@ -1,0 +1,44 @@
+---
+title: "Package parameters"
+output: rmarkdown::html_vignette
+---
+
+Package parameters are used to define the characteristics of drug packages. The parameter file specifies the identifying number, ATC code, and the minimum, usual, and maximum duration of a package, as well as the usual and minimum dose in defined daily doses (DDDs).
+
+### Brief introduction to specifying Package Parameters
+
+The following is an example of a row in a package parameters file, defining the characteristics of a drug package.
+
+| id       | ATC      | min_duration | usual_duration | max_duration | usual_DDD | min_DDD |
+|----------|----------|--------------|----------------|--------------|-----------|---------|
+| 12345678 | N02BE01  | 5            | 30             | 90           | 1.0       | 0.5     |
+
+**Explanation:**
+
+- `id`: Unique identifier of the package (e.g., product code or VNR number).
+- `ATC`: Anatomical Therapeutic Chemical (ATC) code (e.g., *N02BE01* refers to paracetamol).
+- `min_duration`: Minimum expected treatment duration (in days).
+- `usual_duration`: Typical treatment duration (in days).
+- `max_duration`: Maximum expected treatment duration (in days).
+- `usual_DDD`: Usual daily dose in defined daily doses (DDDs).
+- `min_DDD`: Minimum commonly used daily dose in DDDs.
+
+#### R Code Example (in `data.table` format)
+
+```r
+library(data.table)
+
+package_parameters <- data.table(
+  id = "12345678",
+  ATC = "N02BE01",
+  min_duration = 5,
+  usual_duration = 30,
+  max_duration = 90,
+  usual_DDD = 1.0,
+  min_DDD = 0.5
+)
+```
+Detailed instructions how to create package parameters [here](../tutorials/Package_parameter_instruction.pdf).
+
+
+
