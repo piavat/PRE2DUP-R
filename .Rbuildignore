@@ -4,3 +4,5 @@
 ^docs$
 ^data-raw$
 ^_pkgdown\.yml$
+^doc$
+^Meta$

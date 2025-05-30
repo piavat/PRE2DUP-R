@@ -15,7 +15,8 @@ This vignette provides a brief introduction to the `PRE2DUPR` package, which is 
 
 To install the `PRE2DUPR` package, you can use the following command in R:
 ``` r
-install.packages("PRE2DUPR")
+install.packages("devtools")
+devtools::install_github("piavat/PRE2DUP-R")
 ```
 
 
