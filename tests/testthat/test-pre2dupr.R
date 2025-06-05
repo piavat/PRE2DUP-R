@@ -116,7 +116,7 @@ test_that("predup returns two exposure periods if package parameters maximum dur
   dup <- outdata$periods
   expect_equal(nrow(dup), 2)
   expect_equal(dup$dup_start, as.Date(c("2004-06-05", "2005-04-09")))
-  expect_equal(dup$dup_days, c(253, 122))
+  expect_equal(dup$dup_days, c(253, 131)) # Later duration is based on erfl (<3 period)
   expect_equal(dup$dup_hospital_days, c(0, 27))
   expect_equal(dup$dup_n_purchases, c(5, 2))
   expect_equal(dup$dup_last_purchase, as.Date(c("2004-12-01", "2005-06-04")))
@@ -2814,3 +2814,725 @@ test_that("pre2dup reports common durations of packs missing in parameters", {
                       calculate_pack_dur_usual = T
                     ))
 })
+test_that("predup calculates hospitalizations correctly (tutorial 'Hospitaliszations connecting and extending period duration')", {
+  hospitalizations <- data.table(
+    id = 100001,
+    hosp_start = c("2000-01-30", "2000-03-05", "2000-03-18"),
+    hosp_end = c("2000-02-14", "2000-03-16", "2000-04-29")
+  )
+  # Make purchases data
+  purchases <- data.table(
+    ID = rep(100001, 1),
+    purc_date = c("2000-01-04", "2000-02-11"),
+    ATC = rep("N06D", 2),
+    VNR = rep(111, 2),
+    ratio = rep(1, 2),
+    ddd = rep(28, 2)
+  )
+  atcpar <- data.table(
+    partial_atc = "N06D",
+    lower_ddd_atc = 0.2,
+    usual_ddd_atc = 0.8,
+    minimum_dur_atc = 30,
+    maximum_dur_atc = 300
+  )
+  packpar <- data.table(
+    vnr = 111,
+    ATC = "N06D",
+    lower_ddd = 0.5,
+    usual_ddd = 1,
+    minimum_dur = 14,
+    usual_dur = 28,
+    maximum_dur = 56
+  )
+  outdata <- suppressWarnings(suppressMessages(pre2dup(
+    pre_data = purchases,
+    pre_person_id = "ID",
+    pre_atc = "ATC",
+    pre_package_id = "VNR",
+    pre_date = "purc_date",
+    pre_ratio = "ratio",
+    pre_ddd = "ddd",
+    package_parameters = packpar,
+    pack_atc = "ATC",
+    pack_id = "vnr",
+    pack_ddd_low = "lower_ddd",
+    pack_ddd_usual ="usual_ddd",
+    pack_dur_min = "minimum_dur",
+    pack_dur_usual = "usual_dur",
+    pack_dur_max = "maximum_dur",
+    atc_parameters = atcpar,
+    atc_class = "partial_atc",
+    atc_ddd_low = "lower_ddd_atc",
+    atc_ddd_usual = "usual_ddd_atc",
+    atc_dur_min = "minimum_dur_atc",
+    atc_dur_max = "maximum_dur_atc",
+    hosp_data = hospitalizations,
+    hosp_person_id = "id",
+    hosp_admission = "hosp_start",
+    hosp_discharge = "hosp_end")))
+  
+  dup <- outdata$periods
+  
+  expect_equal(nrow(dup), 1)
+  expect_equal(dup$dup_start, as.Date("2000-01-04"))
+  expect_equal(dup$dup_end, as.Date("2000-03-22"))
+  expect_equal(dup$dup_days, 78)
+  expect_equal(dup$dup_hospital_days, 24)
+  expect_equal(dup$dup_n_purchases, 2)
+})
+
+test_that("predup calculates hospitalizations correctly (tutorial 'Multiple short hospitalizations')", {
+  hospitalizations <- data.table(
+    id = 100001,
+    hosp_start = c(
+      "2000-01-01",
+      "2000-01-21",
+      "2000-02-02",
+      "2000-02-21",
+      "2000-03-10"
+    ),
+    hosp_end = c(
+      "2000-01-08",
+      "2000-01-24",
+      "2000-02-10",
+      "2000-03-03",
+      "2000-03-30"
+    )
+  )
+  purchases <- data.table(
+    ID = rep(100001, 1),
+    purc_date = c("2000-01-04", "2000-02-11"),
+    ATC = rep("N06D", 2),
+    VNR = rep(111, 2),
+    ratio = rep(1, 2),
+    ddd = rep(28, 2)
+  )
+  atcpar <- data.table(
+    partial_atc = "N06D",
+    lower_ddd_atc = 0.2,
+    usual_ddd_atc = 0.8,
+    minimum_dur_atc = 30,
+    maximum_dur_atc = 300
+  )
+  packpar <- data.table(
+    vnr = 111,
+    ATC = "N06D",
+    lower_ddd = 0.5,
+    usual_ddd = 1,
+    minimum_dur = 14,
+    usual_dur = 28,
+    maximum_dur = 56
+  )
+  
+  periods <- suppressWarnings(suppressMessages(pre2dup(
+    pre_data = purchases,
+    pre_person_id = "ID",
+    pre_atc = "ATC",
+    pre_package_id = "VNR",
+    pre_date = "purc_date",
+    pre_ratio = "ratio",
+    pre_ddd = "ddd",
+    package_parameters = packpar,
+    pack_atc = "ATC",
+    pack_id = "vnr",
+    pack_ddd_low = "lower_ddd",
+    pack_ddd_usual ="usual_ddd",
+    pack_dur_min = "minimum_dur",
+    pack_dur_usual = "usual_dur",
+    pack_dur_max = "maximum_dur",
+    atc_parameters = atcpar,
+    atc_class = "partial_atc",
+    atc_ddd_low = "lower_ddd_atc",
+    atc_ddd_usual = "usual_ddd_atc",
+    atc_dur_min = "minimum_dur_atc",
+    atc_dur_max = "maximum_dur_atc",
+    hosp_data = hospitalizations,
+    hosp_person_id = "id",
+    hosp_admission = "hosp_start",
+    hosp_discharge = "hosp_end")))
+  
+  dup <- periods$periods
+  
+  expect_equal(nrow(dup), 1)
+  expect_equal(dup$dup_start, as.Date("2000-01-04"))
+  expect_equal(dup$dup_end, as.Date("2000-03-20"))
+  expect_equal(dup$dup_days, 76)
+  expect_equal(dup$dup_hospital_days, 22)
+  expect_equal(dup$dup_n_purchases, 2)
+})
+test_that("predup calculates hospitalizations correctly (tutorial 'Separate hospitalizations')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c("2000-01-04", "2000-02-04"),
+              hosp_end = c("2000-01-24", "2000-02-18")
+            )
+            purchases <- data.table(
+              ID = 100001,
+              purc_date = c("2000-01-04"),
+              ATC = "N06D",
+              VNR = 111,
+              ratio = 2,
+              ddd = 56
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            periods <- suppressWarnings(suppressMessages(pre2dup(
+              pre_data = purchases,
+              pre_person_id = "ID",
+              pre_atc = "ATC",
+              pre_package_id = "VNR",
+              pre_date = "purc_date",
+              pre_ratio = "ratio",
+              pre_ddd = "ddd",
+              package_parameters = packpar,
+              pack_atc = "ATC",
+              pack_id = "vnr",
+              pack_ddd_low = "lower_ddd",
+              pack_ddd_usual = "usual_ddd",
+              pack_dur_min = "minimum_dur",
+              pack_dur_usual = "usual_dur",
+              pack_dur_max = "maximum_dur",
+              atc_parameters = atcpar,
+              atc_class = "partial_atc",
+              atc_ddd_low = "lower_ddd_atc",
+              atc_ddd_usual = "usual_ddd_atc",
+              atc_dur_min = "minimum_dur_atc",
+              atc_dur_max = "maximum_dur_atc",
+              hosp_data = hospitalizations,
+              hosp_person_id = "id",
+              hosp_admission = "hosp_start",
+              hosp_discharge = "hosp_end"
+            )))
+            
+            dup <- periods$periods
+            
+            expect_equal(nrow(dup), 1)
+            expect_equal(dup$dup_start, as.Date("2000-01-04"))
+            expect_equal(dup$dup_end, as.Date("2000-03-30"))
+            expect_equal(dup$dup_days, 86)
+            expect_equal(dup$dup_hospital_days, 30)
+            expect_equal(dup$dup_n_purchases, 1)
+          })
+test_that("predup calculates hospitalizations correctly (tutorial 'Overlapping hospitalizations')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c("2000-01-04", "2000-01-20"),
+              hosp_end = c("2000-01-24", "2000-01-30")
+            )
+            purchases <- data.table(
+              ID = 100001,
+              purc_date = c("2000-01-04"),
+              ATC = "N06D",
+              VNR = 111,
+              ratio = 2,
+              ddd = 56
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            periods <- suppressWarnings(suppressMessages(pre2dup(
+              pre_data = purchases,
+              pre_person_id = "ID",
+              pre_atc = "ATC",
+              pre_package_id = "VNR",
+              pre_date = "purc_date",
+              pre_ratio = "ratio",
+              pre_ddd = "ddd",
+              package_parameters = packpar,
+              pack_atc = "ATC",
+              pack_id = "vnr",
+              pack_ddd_low = "lower_ddd",
+              pack_ddd_usual ="usual_ddd",
+              pack_dur_min = "minimum_dur",
+              pack_dur_usual = "usual_dur",
+              pack_dur_max = "maximum_dur",
+              atc_parameters = atcpar,
+              atc_class = "partial_atc",
+              atc_ddd_low = "lower_ddd_atc",
+              atc_ddd_usual = "usual_ddd_atc",
+              atc_dur_min = "minimum_dur_atc",
+              atc_dur_max = "maximum_dur_atc",
+              hosp_data = hospitalizations,
+              hosp_person_id = "id",
+              hosp_admission = "hosp_start",
+              hosp_discharge = "hosp_end"
+            )))
+            
+            dup <- periods$periods
+            
+            expect_equal(nrow(dup), 1)
+            expect_equal(dup$dup_start, as.Date("2000-01-04"))
+            expect_equal(dup$dup_end, as.Date("2000-03-25"))
+            expect_equal(dup$dup_days, 81)
+            expect_equal(dup$dup_hospital_days, 25)
+            expect_equal(dup$dup_n_purchases, 1)
+          })
+test_that("predup calculates hospitalizations correctly (tutorial 'Consecutive hospitalizations')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c("2000-01-04", "2000-01-24", "2000-01-30"),
+              hosp_end = c("2000-01-24", "2000-01-30", "2000-02-02")
+            )
+            purchases <- data.table(
+              ID = 100001,
+              purc_date = c("2000-01-04"),
+              ATC = "N06D",
+              VNR = 111,
+              ratio = 2,
+              ddd = 56
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            periods <- suppressWarnings(suppressMessages(pre2dup(
+              pre_data = purchases,
+              pre_person_id = "ID",
+              pre_atc = "ATC",
+              pre_package_id = "VNR",
+              pre_date = "purc_date",
+              pre_ratio = "ratio",
+              pre_ddd = "ddd",
+              package_parameters = packpar,
+              pack_atc = "ATC",
+              pack_id = "vnr",
+              pack_ddd_low = "lower_ddd",
+              pack_ddd_usual ="usual_ddd",
+              pack_dur_min = "minimum_dur",
+              pack_dur_usual = "usual_dur",
+              pack_dur_max = "maximum_dur",
+              atc_parameters = atcpar,
+              atc_class = "partial_atc",
+              atc_ddd_low = "lower_ddd_atc",
+              atc_ddd_usual = "usual_ddd_atc",
+              atc_dur_min = "minimum_dur_atc",
+              atc_dur_max = "maximum_dur_atc",
+              hosp_data = hospitalizations,
+              hosp_person_id = "id",
+              hosp_admission = "hosp_start",
+              hosp_discharge = "hosp_end"
+            )))
+            
+            dup <- periods$periods
+            
+            expect_equal(nrow(dup), 1)
+            expect_equal(dup$dup_start, as.Date("2000-01-04"))
+            expect_equal(dup$dup_end, as.Date("2000-03-28"))
+            expect_equal(dup$dup_days, 84)
+            expect_equal(dup$dup_hospital_days, 28)
+            expect_equal(dup$dup_n_purchases, 1)
+            
+          })
+test_that("predup calculates hospitalizations correctly (tutorial example 6)",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c(
+                "2000-01-01",
+                "2000-01-21",
+                "2000-02-02",
+                "2000-02-21",
+                "2000-04-10"
+              ),
+              hosp_end = c(
+                "2000-01-08",
+                "2000-01-24",
+                "2000-02-10",
+                "2000-03-03",
+                "2000-04-15"
+              )
+            )
+            purchases <- data.table(
+              ID = rep(100001, 3),
+              purc_date = c("2000-01-04", "2000-02-11", "2000-05-25"),
+              ATC = rep("N06D", 3),
+              VNR = rep(111, 3),
+              ratio = rep(1, 3),
+              ddd = rep(28, 3)
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            
+            periods <- suppressWarnings(suppressMessages(
+              pre2dup(
+                pre_data = purchases,
+                pre_person_id = "ID",
+                pre_atc = "ATC",
+                pre_package_id = "VNR",
+                pre_date = "purc_date",
+                pre_ratio = "ratio",
+                pre_ddd = "ddd",
+                package_parameters = packpar,
+                pack_atc = "ATC",
+                pack_id = "vnr",
+                pack_ddd_low = "lower_ddd",
+                pack_ddd_usual = "usual_ddd",
+                pack_dur_min = "minimum_dur",
+                pack_dur_usual = "usual_dur",
+                pack_dur_max = "maximum_dur",
+                atc_parameters = atcpar,
+                atc_class = "partial_atc",
+                atc_ddd_low = "lower_ddd_atc",
+                atc_ddd_usual = "usual_ddd_atc",
+                atc_dur_min = "minimum_dur_atc",
+                atc_dur_max = "maximum_dur_atc",
+                hosp_data = hospitalizations,
+                hosp_person_id = "id",
+                hosp_admission = "hosp_start",
+                hosp_discharge = "hosp_end"
+              )
+            ))
+            
+            dup <- periods$periods
+            dup
+            expect_equal(nrow(dup), 2)
+            expect_equal(dup$dup_start, as.Date(c("2000-01-04", "2000-05-25")), tolerance = 0.1)
+            expect_equal(dup$dup_end, as.Date(c("2000-04-17", "2000-07-20")), tolerance = 0.1)
+            expect_equal(dup$dup_days, c(104, 56))
+            expect_equal(dup$dup_hospital_days, c(22, 0))
+            expect_equal(dup$dup_n_purchases, c(2, 1))
+          })
+test_that("predup calculates hospitalizations correctly (tutorial example 'Hospitalization extending exposure, but not connecting')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c(
+                "2000-01-26",
+                "2000-02-09"
+              ),
+              hosp_end = c(
+                "2000-02-08",
+                "2000-02-14"
+              )
+            )
+            purchases <- data.table(
+              ID = rep(100001, 2),
+              purc_date = c("2000-01-04", "2000-02-20"),
+              ATC = rep("N06D", 2),
+              VNR = rep(111, 2),
+              ratio = rep(1, 2),
+              ddd = rep(28, 2)
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            
+            periods <- suppressWarnings(suppressMessages(
+              pre2dup(
+                pre_data = purchases,
+                pre_person_id = "ID",
+                pre_atc = "ATC",
+                pre_package_id = "VNR",
+                pre_date = "purc_date",
+                pre_ratio = "ratio",
+                pre_ddd = "ddd",
+                package_parameters = packpar,
+                pack_atc = "ATC",
+                pack_id = "vnr",
+                pack_ddd_low = "lower_ddd",
+                pack_ddd_usual = "usual_ddd",
+                pack_dur_min = "minimum_dur",
+                pack_dur_usual = "usual_dur",
+                pack_dur_max = "maximum_dur",
+                atc_parameters = atcpar,
+                atc_class = "partial_atc",
+                atc_ddd_low = "lower_ddd_atc",
+                atc_ddd_usual = "usual_ddd_atc",
+                atc_dur_min = "minimum_dur_atc",
+                atc_dur_max = "maximum_dur_atc",
+                hosp_data = hospitalizations,
+                hosp_person_id = "id",
+                hosp_admission = "hosp_start",
+                hosp_discharge = "hosp_end"
+              )
+            ))
+            
+            dup <- periods$periods
+            expect_equal(nrow(dup), 2)
+            expect_equal(dup$dup_days, c(40, 28))
+            expect_equal(dup$dup_hospital_days, c(12, 0))
+          })
+
+test_that("predup calculates hospitalizations correctly (tutorial example 'Hospitalization extending exposure, connecting')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c(
+                "2000-01-26"
+              ),
+              hosp_end = c(
+                "2000-02-08"
+              )
+            )
+            purchases <- data.table(
+              ID = rep(100001, 2),
+              purc_date = c("2000-01-04", "2000-02-10"),
+              ATC = rep("N06D", 2),
+              VNR = rep(111, 2),
+              ratio = rep(1, 2),
+              ddd = rep(28, 2)
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            
+            periods <- suppressWarnings(suppressMessages(
+              pre2dup(
+                pre_data = purchases,
+                pre_person_id = "ID",
+                pre_atc = "ATC",
+                pre_package_id = "VNR",
+                pre_date = "purc_date",
+                pre_ratio = "ratio",
+                pre_ddd = "ddd",
+                package_parameters = packpar,
+                pack_atc = "ATC",
+                pack_id = "vnr",
+                pack_ddd_low = "lower_ddd",
+                pack_ddd_usual = "usual_ddd",
+                pack_dur_min = "minimum_dur",
+                pack_dur_usual = "usual_dur",
+                pack_dur_max = "maximum_dur",
+                atc_parameters = atcpar,
+                atc_class = "partial_atc",
+                atc_ddd_low = "lower_ddd_atc",
+                atc_ddd_usual = "usual_ddd_atc",
+                atc_dur_min = "minimum_dur_atc",
+                atc_dur_max = "maximum_dur_atc",
+                hosp_data = hospitalizations,
+                hosp_person_id = "id",
+                hosp_admission = "hosp_start",
+                hosp_discharge = "hosp_end"
+              )
+            ))
+            
+            dup <- periods$periods
+            expect_equal(nrow(dup), 1)
+            expect_equal(dup$dup_days, c(65))
+            expect_equal(dup$dup_hospital_days, c(12))
+          })
+test_that("predup calculates hospitalizations correctly (tutorial example 'Hospitalization after exposure ignored')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c(
+                "2000-02-12"
+              ),
+              hosp_end = c(
+                "2000-02-24"
+              )
+            )
+            purchases <- data.table(
+              ID = rep(100001, 1),
+              purc_date = c("2000-01-04"),
+              ATC = rep("N06D", 1),
+              VNR = rep(111, 1),
+              ratio = rep(1, 1),
+              ddd = rep(28, 1)
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            
+            periods <- suppressWarnings(suppressMessages(
+              pre2dup(
+                pre_data = purchases,
+                pre_person_id = "ID",
+                pre_atc = "ATC",
+                pre_package_id = "VNR",
+                pre_date = "purc_date",
+                pre_ratio = "ratio",
+                pre_ddd = "ddd",
+                package_parameters = packpar,
+                pack_atc = "ATC",
+                pack_id = "vnr",
+                pack_ddd_low = "lower_ddd",
+                pack_ddd_usual = "usual_ddd",
+                pack_dur_min = "minimum_dur",
+                pack_dur_usual = "usual_dur",
+                pack_dur_max = "maximum_dur",
+                atc_parameters = atcpar,
+                atc_class = "partial_atc",
+                atc_ddd_low = "lower_ddd_atc",
+                atc_ddd_usual = "usual_ddd_atc",
+                atc_dur_min = "minimum_dur_atc",
+                atc_dur_max = "maximum_dur_atc",
+                hosp_data = hospitalizations,
+                hosp_person_id = "id",
+                hosp_admission = "hosp_start",
+                hosp_discharge = "hosp_end"
+              )
+            ))
+            
+            dup <- periods$periods
+            expect_equal(nrow(dup), 1)
+            expect_equal(dup$dup_days, c(28))
+            expect_equal(dup$dup_hospital_days, c(0))
+          })
+test_that("predup calculates hospitalizations correctly (tutorial example 'Hospitalization between exposures ignored')",
+          {
+            hospitalizations <- data.table(
+              id = 100001,
+              hosp_start = c(
+                "2000-02-12"
+              ),
+              hosp_end = c(
+                "2000-02-24"
+              )
+            )
+            purchases <- data.table(
+              ID = rep(100001, 2),
+              purc_date = c("2000-01-04", "2000-03-01"),
+              ATC = rep("N06D", 2),
+              VNR = rep(111, 2),
+              ratio = rep(1, 2),
+              ddd = rep(28, 2)
+            )
+            atcpar <- data.table(
+              partial_atc = "N06D",
+              lower_ddd_atc = 0.2,
+              usual_ddd_atc = 0.8,
+              minimum_dur_atc = 30,
+              maximum_dur_atc = 300
+            )
+            packpar <- data.table(
+              vnr = 111,
+              ATC = "N06D",
+              lower_ddd = 0.5,
+              usual_ddd = 1,
+              minimum_dur = 14,
+              usual_dur = 28,
+              maximum_dur = 56
+            )
+            
+            periods <- suppressWarnings(suppressMessages(
+              pre2dup(
+                pre_data = purchases,
+                pre_person_id = "ID",
+                pre_atc = "ATC",
+                pre_package_id = "VNR",
+                pre_date = "purc_date",
+                pre_ratio = "ratio",
+                pre_ddd = "ddd",
+                package_parameters = packpar,
+                pack_atc = "ATC",
+                pack_id = "vnr",
+                pack_ddd_low = "lower_ddd",
+                pack_ddd_usual = "usual_ddd",
+                pack_dur_min = "minimum_dur",
+                pack_dur_usual = "usual_dur",
+                pack_dur_max = "maximum_dur",
+                atc_parameters = atcpar,
+                atc_class = "partial_atc",
+                atc_ddd_low = "lower_ddd_atc",
+                atc_ddd_usual = "usual_ddd_atc",
+                atc_dur_min = "minimum_dur_atc",
+                atc_dur_max = "maximum_dur_atc",
+                hosp_data = hospitalizations,
+                hosp_person_id = "id",
+                hosp_admission = "hosp_start",
+                hosp_discharge = "hosp_end"
+              )
+            ))
+            
+            dup <- periods$periods
+            expect_equal(nrow(dup), 2)
+            expect_equal(dup$dup_days, c(28, 28))
+            expect_equal(dup$dup_hospital_days, c(0, 0))
+          })

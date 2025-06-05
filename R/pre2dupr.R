@@ -789,7 +789,7 @@ pre2dup <- function(pre_data,
     dup_n_purchases = .N
   ), by = period]
   # Calculate end dates of drug use periods ----
-  pre_data[lidx, duration := ifelse(!is.na(rsd) &
+  pre_data[lidx, duration := ifelse(dup_n_purchases > 2 & !is.na(rsd) &
                                       ddd_pre > 0, (ddd_pre *
                                                       (1 + rsd) / (sliding_average * (
                                                         1 + exp(-dup_n_purchases)
@@ -857,7 +857,7 @@ pre2dup <- function(pre_data,
   # Collect all hospital days between purchases from other than last purchase
   pre_data[!lidx, dup_hosps := hosp_days_any]
   # From last purchase, use the hospital days that started during exposure
-  pre_data[lidx, dup_hosps := pmin(hosp_days, global_hosp_max)]
+  pre_data[lidx, dup_hosps := pmin(hosp_days_end, global_hosp_max)]
   pre_data[, dup_hospital_days := sum(dup_hosps), by = period]
   pre_data[, let(
     dup_n_purchases = .N,
