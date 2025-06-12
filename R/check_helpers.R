@@ -1,4 +1,3 @@
-library(data.table)
 #' Checks Missing or Unvalid Arguments in Function Calls
 #'
 #' @description
@@ -222,43 +221,6 @@ find_multiple_atcs <- function(atc_col, package_col) {
   }
 }
 
-#' Combine Overlapping Hospitalizations
-#'
-#' @param personid a vector of person identifiers in hospitalization data.
-#' @param admission a vector of admission dates.
-#' @param discharge a vector of discharge dates.
-#'
-#' @returns a data.table with combined hospitalizations, where overlapping hospitalizations are merged into single records.
-#' @keywords internal
-#' @import data.table
-combine_overlaps <- function(personid, admission, discharge){
-
-  dt <- data.table::data.table(pid_hosp = personid, admission = admission, discharge = discharge)
-  n_before <- nrow(dt)
-
-  # Sort the data by pid_hosp and admission date
-  setorderv(dt, c("pid_hosp", "admission"))
-
-  # Create a copy of the data to use in foverlaps
-  dt_copy <- copy(dt)
-
-  # Set keys for foverlaps
-  keycols = c("pid_hosp","admission","discharge")
-  setkeyv(dt, keycols)
-  setkeyv(dt_copy, keycols)
-
-  hospitalizations <- foverlaps(dt, dt_copy, by.x= keycols, type="any")
-  hospitalizations[, admission_date := min(admission, i.admission), by = .(pid_hosp, discharge)]
-  hospitalizations[, discharge_date := max(discharge, i.discharge), by = .(pid_hosp, admission_date)]
-  hospitalizations[, admission_date := min(admission_date), by = .(pid_hosp, discharge_date)]
-  hospitalizations[, c("admission", "discharge", "i.admission", "i.discharge") := NULL]
-  hospitalizations <- unique(hospitalizations, by = c("pid_hosp", "admission_date", "discharge_date"))
-  n_after <- nrow(hospitalizations)
-  emessage <- paste("Number of overlapping hospitalizations detected and and will be merged: ", n_before - n_after)
-  if(n_before != n_after) message(emessage)
-  return(hospitalizations)
-}
-
 #' Check Coverage of Values by ATC Codes
 #'
 #' @param ATC a character vector of ATC codes.
@@ -275,7 +237,7 @@ check_coverage <- function(ATC,
                            opti = c("missing", "zero")) {
   opti <- match.arg(opti)
   # Combine inputs into a data.table for efficient processing
-  dt_info <- data.table::data.table(ATC, val)
+  dt_info <- data.table(ATC, val)
 
   if (opti == "missing") {
     summary_dt <- dt_info[, .(coverage = sum(!is.na(val)) / .N * 100), by = ATC]

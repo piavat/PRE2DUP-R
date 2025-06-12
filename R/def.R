@@ -108,13 +108,10 @@ utils::globalVariables(
     "dup_hospital_days",
     "dup_total_DDD",
     "dup_days",
-    "dup_temporal_average_DDDs"
-
-
-
-
-
-
+    "dup_temporal_average_DDDs",
+    "pid",
+    "start_date",
+    "end_date"
   )
 )
 # Messages for invalid or missing values in data checks

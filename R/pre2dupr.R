@@ -853,12 +853,6 @@ pre2dup <- function(pre_data,
     }
   }
 
-  # Calculate hospital days for the period
-  # Collect all hospital days between purchases from other than last purchase
-  pre_data[!lidx, dup_hosps := hosp_days_any]
-  # From last purchase, use the hospital days that started during exposure
-  pre_data[lidx, dup_hosps := pmin(hosp_days_end, global_hosp_max)]
-  pre_data[, dup_hospital_days := sum(dup_hosps), by = period]
   pre_data[, let(
     dup_n_purchases = .N,
     dup_last_purchase = max(date_pre),
@@ -872,16 +866,32 @@ pre2dup <- function(pre_data,
     atc_pre,
     dup_start,
     dup_end,
-    dup_hospital_days,
     dup_n_purchases,
     dup_last_purchase,
     dup_total_DDD
   )]
-  pre2dupdata[, dup_days := round(dup_end - dup_start)]
-  pre2dupdata[, dup_temporal_average_DDDs := round(dup_total_DDD / dup_days, 3)]
-
+  
   # Period number is messed, make new.
   pre2dupdata[, period := 1:.N]
+  
+  pre2dupdata[, dup_days := round(dup_end - dup_start)]
+  pre2dupdata[, dup_temporal_average_DDDs := round(dup_total_DDD / dup_days, 3)]
+  
+  # Calculate hospital days for period
+  if (!is.null(hosp_data)) {
+    hospital_times_dup <- calc_dup_hosp_days(
+      pre2dupdata$period,
+      pre2dupdata$pid_pre,
+      pre2dupdata$dup_start,
+      pre2dupdata$dup_end,
+      hosp_data$pid_hosp,
+      hosp_data$admission_date,
+      hosp_data$discharge_date
+    )
+    pre2dupdata <- merge(pre2dupdata, hospital_times_dup, by = "period", all.x = TRUE)
+    pre2dupdata[is.na(dup_hospital_days), dup_hospital_days := 0]
+  } else
+    pre2dupdata[, dup_hospital_days := 0]
 
   cols <- c("dup_start", "dup_last_purchase", "dup_end")
   pre2dupdata[, (cols) := lapply(.SD, as.Date, origin = "1970-01-01"), .SDcols = cols]

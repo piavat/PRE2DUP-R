@@ -28,6 +28,10 @@
 #' }
 #'
 #' If any errors are found, the function stops execution and prints all error messages.
+#' 
+#' @import data.table
+#'
+#' @importFrom intervals Intervals interval_union
 #'
 #' @examples
 #' PID <- c(1, 1, 2, 2)
@@ -154,17 +158,31 @@ check_hospitalizations <- function(dt,
     ), call. = FALSE)
   } else {
     message(paste("Checks passed for", sQuote(data_name)))
-    dt <- dt[, .SD, .SDcols = c(required_columns)]
-    dt[, (hosp_person_id) := lapply(.SD, as.factor), .SDcols = hosp_person_id]
-    dt[[hosp_admission]] <-  sapply(dt[[hosp_admission]], date_to_integer, USE.NAMES = FALSE)
-    dt[[hosp_discharge]] <-  sapply(dt[[hosp_discharge]], date_to_integer, USE.NAMES = FALSE)
-    # Combine overlapping hospitalizations
-    dt <- combine_overlaps(
-      personid =  dt[[hosp_person_id]],
-      admission = dt[[hosp_admission]],
-      discharge = dt[[hosp_discharge]]
-    )
+    
     if(return_data) {
+      message("Preparing hospitalization data and merging overlapping hospitalizations.")
+      dt <- dt[, .SD, .SDcols = c(required_columns)]
+      setnames(dt, c(hosp_person_id, hosp_admission, hosp_discharge), c("pid_hosp", "admission_date", "discharge_date"))
+      dt[, pid_hosp := as.factor(pid_hosp)]
+      # Set to integer with date to integer to uniform dates before overlap check
+      dt$admission_date <- sapply(dt$admission_date, date_to_integer, USE.NAMES = FALSE)
+      dt$discharge_date <- sapply(dt$discharge_date, date_to_integer, USE.NAMES = FALSE)
+      # Combine overlapping hospitalizations
+      n_before <- nrow(dt)
+      .merge_intervals <- function(start_dates, end_dates) {
+        interv <- Intervals(cbind(start_dates, end_dates), closed = c(TRUE, TRUE))
+        merged <- interval_union(interv)
+        merged <- as.data.table(merged)
+        setnames(merged, c("V1", "V2"), c("admission_date", "discharge_date"))
+        return(merged)
+      }
+      dt <- dt[, .merge_intervals(admission_date, discharge_date), by = pid_hosp]
+      # Interval return dates as numeric, re-set to integer
+      dt$admission_date <- sapply(dt$admission_date, date_to_integer, USE.NAMES = FALSE)
+      dt$discharge_date <- sapply(dt$discharge_date, date_to_integer, USE.NAMES = FALSE)
+      n_after <- nrow(dt)
+      emessage <- paste("Number of overlapping hospitalizations detected and and will be merged: ", n_before - n_after)
+      if(n_before != n_after) message(emessage)
       return(dt)
     }
   }

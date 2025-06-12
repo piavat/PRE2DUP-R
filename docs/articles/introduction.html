@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PRE2DUPR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,17 +127,17 @@ and the amount in DDDs (Defined Daily Doses).</p>
 <p>Function <code>check_purchases</code> checks the data before running
 the PRE2DUP algorithm. It ensures that the dataset meets the necessary
 requirements for the algorithm to function correctly.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">check_purchases</span>(<span class="at">dt =</span> purchases_example, </span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                <span class="at">pre_person_id =</span> <span class="st">"id"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                <span class="at">pre_atc =</span> <span class="st">"ATC"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                <span class="at">pre_package_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                <span class="at">pre_date =</span> <span class="st">"purchase_date"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>                <span class="at">pre_ratio =</span> <span class="st">"n_packages"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>                <span class="at">pre_ddd =</span> <span class="st">"amount"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>                <span class="at">print_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>                </span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘purchases_example’</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_purchases.html">check_purchases</a></span><span class="op">(</span>dt <span class="op">=</span> <span class="va">purchases_example</span>, </span>
+<span>                pre_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>                pre_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>                pre_package_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>                pre_date <span class="op">=</span> <span class="st">"purchase_date"</span>,</span>
+<span>                pre_ratio <span class="op">=</span> <span class="st">"n_packages"</span>,</span>
+<span>                pre_ddd <span class="op">=</span> <span class="st">"amount"</span>,</span>
+<span>                print_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                </span>
+<span><span class="co"># Checks passed for ‘purchases_example’</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -151,14 +151,14 @@ assess the impact of hospitalizations on drug exposure periods.</p>
 </h3>
 <p>Function <code>check_hospitalizations</code> checks the data before
 running the PRE2DUP algorithm.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">check_hospitalizations</span>(<span class="at">dt =</span> hospitalizations_example,</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                       <span class="at">hosp_person_id =</span> <span class="st">"id"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                       <span class="at">hosp_admission =</span> <span class="st">"hospital_start"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                       <span class="at">hosp_discharge =</span> <span class="st">"hospital_end"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>                       <span class="at">print_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>                </span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘hospitalizations_example’</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_hospitalizations.html">check_hospitalizations</a></span><span class="op">(</span>dt <span class="op">=</span> <span class="va">hospitalizations_example</span>,</span>
+<span>                       hosp_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>                       hosp_admission <span class="op">=</span> <span class="st">"hospital_start"</span>,</span>
+<span>                       hosp_discharge <span class="op">=</span> <span class="st">"hospital_end"</span>,</span>
+<span>                       print_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                </span>
+<span><span class="co"># Checks passed for ‘hospitalizations_example’</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -175,17 +175,18 @@ Parameters tutorial</a>.</p>
 </h3>
 <p>Function <code>check_package_parameters</code> checks the data before
 running the PRE2DUP algorithm.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">check_package_parameters</span>(<span class="at">dt =</span> package_parameters_example, </span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                         <span class="at">pack_atc =</span> <span class="st">"ATC"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                         <span class="at">pack_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                         <span class="at">pack_ddd_low =</span> <span class="st">"lower_ddd"</span>, </span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                         <span class="at">pack_ddd_usual =</span> <span class="st">"usual_ddd"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                         <span class="at">pack_dur_min =</span> <span class="st">"minimum_dur"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                         <span class="at">pack_dur_usual =</span> <span class="st">"usual_dur"</span>, </span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>                         <span class="at">pack_dur_max =</span> <span class="st">"maximum_dur"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>                         <span class="at">print_all =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>                </span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘package_parameters_example’</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_package_parameters.html">check_package_parameters</a></span><span class="op">(</span>dt <span class="op">=</span> <span class="va">package_parameters_example</span>, </span>
+<span>                         pack_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>                         pack_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>                         pack_ddd_low <span class="op">=</span> <span class="st">"lower_ddd"</span>, </span>
+<span>                         pack_ddd_usual <span class="op">=</span> <span class="st">"usual_ddd"</span>,</span>
+<span>                         pack_dur_min <span class="op">=</span> <span class="st">"minimum_dur"</span>,</span>
+<span>                         pack_dur_usual <span class="op">=</span> <span class="st">"usual_dur"</span>, </span>
+<span>                         pack_dur_max <span class="op">=</span> <span class="st">"maximum_dur"</span>,</span>
+<span>                         print_all <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                </span>
+<span><span class="co"># Checks passed for ‘package_parameters_example’</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -203,16 +204,16 @@ dataset.</p>
 </h3>
 <p>Function <code>check_atc_parameters</code> checks the ATC parameters
 data before running the PRE2DUP algorithm.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">check_atc_parameters</span>(<span class="at">dt =</span> ATC_parameters,</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                     <span class="at">atc_class =</span> <span class="st">"partial_atc"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                     <span class="at">atc_ddd_low =</span> <span class="st">"lower_ddd_atc"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                     <span class="at">atc_ddd_usual =</span> <span class="st">"usual_ddd_atc"</span>, </span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>                     <span class="at">atc_dur_min =</span> <span class="st">"minimum_dur_atc"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>                     <span class="at">atc_dur_max =</span> <span class="st">"maximum_dur_atc"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>                     <span class="at">print_all =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>                </span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘ATC_parameters’.</span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_atc_parameters.html">check_atc_parameters</a></span><span class="op">(</span>dt <span class="op">=</span> <span class="va">ATC_parameters</span>,</span>
+<span>                     atc_class <span class="op">=</span> <span class="st">"partial_atc"</span>,</span>
+<span>                     atc_ddd_low <span class="op">=</span> <span class="st">"lower_ddd_atc"</span>,</span>
+<span>                     atc_ddd_usual <span class="op">=</span> <span class="st">"usual_ddd_atc"</span>, </span>
+<span>                     atc_dur_min <span class="op">=</span> <span class="st">"minimum_dur_atc"</span>,</span>
+<span>                     atc_dur_max <span class="op">=</span> <span class="st">"maximum_dur_atc"</span>,</span>
+<span>                     print_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                </span>
+<span><span class="co"># Checks passed for ‘ATC_parameters’.</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -222,73 +223,79 @@ data before running the PRE2DUP algorithm.</p>
 the <code>pre2dup</code> function. This function will process your drug
 purchase data, hospitalizations, package parameters, and ATC parameters
 to estimate drug exposure.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">pre2dup</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">pre_data =</span> purchases_example,</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">pre_person_id =</span> <span class="st">"id"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">pre_atc =</span> <span class="st">"ATC"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">pre_package_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">pre_date =</span> <span class="st">"purchase_date"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">pre_ratio =</span> <span class="st">"n_packages"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">pre_ddd =</span> <span class="st">"amount"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">package_parameters =</span> package_parameters_example,</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="at">pack_atc =</span> <span class="st">"ATC"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="at">pack_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  <span class="at">pack_ddd_low =</span> <span class="st">"lower_ddd"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  <span class="at">pack_ddd_usual =</span><span class="st">"usual_ddd"</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  <span class="at">pack_dur_min =</span> <span class="st">"minimum_dur"</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  <span class="at">pack_dur_usual =</span> <span class="st">"usual_dur"</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  <span class="at">pack_dur_max =</span> <span class="st">"maximum_dur"</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  <span class="at">atc_parameters =</span> ATC_parameters,</span>
-<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>  <span class="at">atc_class =</span> <span class="st">"partial_atc"</span>,</span>
-<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>  <span class="at">atc_ddd_low =</span> <span class="st">"lower_ddd_atc"</span>,</span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>  <span class="at">atc_ddd_usual =</span> <span class="st">"usual_ddd_atc"</span>,</span>
-<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>  <span class="at">atc_dur_min =</span> <span class="st">"minimum_dur_atc"</span>,</span>
-<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  <span class="at">atc_dur_max =</span> <span class="st">"maximum_dur_atc"</span>,</span>
-<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>  <span class="at">hosp_data =</span> hospitalizations_example,</span>
-<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>  <span class="at">hosp_person_id =</span> <span class="st">"id"</span>,</span>
-<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>  <span class="at">hosp_admission =</span> <span class="st">"hospital_start"</span>,</span>
-<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>  <span class="at">hosp_discharge =</span> <span class="st">"hospital_end"</span>,</span>
-<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a>  <span class="at">date_range =</span> <span class="fu">c</span>(<span class="st">"2025-01-01"</span>, <span class="st">"2025-12-31"</span>),</span>
-<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>  <span class="at">global_gap_max =</span> <span class="dv">300</span>,</span>
-<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>  <span class="at">global_min =</span> <span class="dv">5</span>,</span>
-<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a>  <span class="at">global_max =</span> <span class="dv">300</span>,</span>
-<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a>  <span class="at">global_max_single =</span> <span class="dv">150</span>,</span>
-<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a>  <span class="at">global_ddd_high =</span> <span class="dv">10</span>,</span>
-<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>  <span class="at">global_hosp_max =</span> <span class="dv">30</span>,</span>
-<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>  <span class="at">weight_past =</span> <span class="dv">1</span>,</span>
-<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a>  <span class="at">weight_current =</span> <span class="dv">4</span>,</span>
-<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a>  <span class="at">weight_next =</span> <span class="dv">1</span>,</span>
-<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a>  <span class="at">weight_first_last =</span> <span class="dv">5</span>,</span>
-<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a>  <span class="at">calculate_pack_dur_usual =</span> T,</span>
-<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>  <span class="at">days_covered =</span> <span class="dv">5</span>,</span>
-<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a>  <span class="at">post_process_perc =</span> <span class="dv">1</span>)</span>
-<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a>  </span>
-<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a>Step <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Checking parameters and datasets...</span>
-<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘pre_data’</span>
-<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘package_parameters’</span>
-<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘atc_parameters’.</span>
-<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘hosp_data’</span>
-<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>Step <span class="dv">2</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Calculating purchase durations...</span>
-<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a>Step <span class="dv">3</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Stockpiling assessment...</span>
-<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a>Step <span class="dv">4</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Calculating common package durations <span class="cf">in</span> data...</span>
-<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a>Refill lengths couldn’t be re<span class="sc">-</span>estimated, probably due to too small data size.</span>
-<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a>Step <span class="dv">5</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Preparing drug use periods...</span>
-<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a>Step <span class="dv">6</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Post<span class="sc">-</span>processing drug use periods...</span>
-<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a>Current post processing percentage<span class="sc">:</span> <span class="dv">1</span></span>
-<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a>Drug use periods calculated. <span class="dv">7</span> periods created <span class="cf">for</span> <span class="dv">5</span> persons.</span>
-<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="sc">$</span>periods</span>
-<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a>   period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span>
-<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a>    <span class="sc">&lt;</span>int<span class="sc">&gt;</span> <span class="er">&lt;</span>fctr<span class="sc">&gt;</span>  <span class="er">&lt;</span>char<span class="sc">&gt;</span>     <span class="er">&lt;</span>Date<span class="sc">&gt;</span>     <span class="er">&lt;</span>Date<span class="sc">&gt;</span>    <span class="er">&lt;</span>num<span class="sc">&gt;</span>             <span class="er">&lt;</span>num<span class="sc">&gt;</span>           <span class="er">&lt;</span>int<span class="sc">&gt;</span>            <span class="er">&lt;</span>Date<span class="sc">&gt;</span>         <span class="er">&lt;</span>num<span class="sc">&gt;</span>                     <span class="er">&lt;</span>num<span class="sc">&gt;</span></span>
-<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span>      <span class="dv">1</span>      <span class="dv">1</span> N05AH02 <span class="dv">2025-01-01</span> <span class="dv">2025-04-14</span>      <span class="dv">104</span>                 <span class="dv">0</span>               <span class="dv">3</span>        <span class="dv">2025-03-08</span>         <span class="fl">99.99</span>                     <span class="fl">0.961</span></span>
-<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span>      <span class="dv">2</span>      <span class="dv">2</span> N05AH02 <span class="dv">2025-01-15</span> <span class="dv">2025-04-28</span>      <span class="dv">104</span>                 <span class="dv">5</span>               <span class="dv">3</span>        <span class="dv">2025-03-22</span>         <span class="fl">99.99</span>                     <span class="fl">0.961</span></span>
-<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span>      <span class="dv">3</span>      <span class="dv">3</span> N05AH02 <span class="dv">2025-02-01</span> <span class="dv">2025-05-15</span>      <span class="dv">104</span>                 <span class="dv">0</span>               <span class="dv">3</span>        <span class="dv">2025-04-08</span>         <span class="fl">99.99</span>                     <span class="fl">0.961</span></span>
-<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a><span class="dv">4</span><span class="sc">:</span>      <span class="dv">4</span>      <span class="dv">3</span> N05AH04 <span class="dv">2025-01-05</span> <span class="dv">2025-08-26</span>      <span class="dv">233</span>                 <span class="dv">0</span>               <span class="dv">2</span>        <span class="dv">2025-04-15</span>        <span class="fl">200.00</span>                     <span class="fl">0.858</span></span>
-<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a><span class="dv">5</span><span class="sc">:</span>      <span class="dv">5</span>      <span class="dv">4</span> N05AH02 <span class="dv">2025-01-10</span> <span class="dv">2025-04-23</span>      <span class="dv">104</span>                 <span class="dv">0</span>               <span class="dv">3</span>        <span class="dv">2025-03-17</span>         <span class="fl">99.99</span>                     <span class="fl">0.961</span></span>
-<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a><span class="dv">6</span><span class="sc">:</span>      <span class="dv">6</span>      <span class="dv">4</span> N05AH04 <span class="dv">2025-01-20</span> <span class="dv">2025-09-10</span>      <span class="dv">233</span>                 <span class="dv">0</span>               <span class="dv">2</span>        <span class="dv">2025-04-30</span>        <span class="fl">200.00</span>                     <span class="fl">0.858</span></span>
-<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a><span class="dv">7</span><span class="sc">:</span>      <span class="dv">7</span>      <span class="dv">5</span> N05AH04 <span class="dv">2025-01-01</span> <span class="dv">2025-08-22</span>      <span class="dv">233</span>                <span class="dv">38</span>               <span class="dv">2</span>        <span class="dv">2025-04-11</span>        <span class="fl">200.00</span>                     <span class="fl">0.858</span></span>
-<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a></span>
-<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a><span class="sc">$</span>pack_info</span>
-<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a><span class="cn">NULL</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
+<span>  pre_data <span class="op">=</span> <span class="va">purchases_example</span>,</span>
+<span>  pre_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  pre_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>  pre_package_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>  pre_date <span class="op">=</span> <span class="st">"purchase_date"</span>,</span>
+<span>  pre_ratio <span class="op">=</span> <span class="st">"n_packages"</span>,</span>
+<span>  pre_ddd <span class="op">=</span> <span class="st">"amount"</span>,</span>
+<span>  package_parameters <span class="op">=</span> <span class="va">package_parameters_example</span>,</span>
+<span>  pack_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>  pack_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>  pack_ddd_low <span class="op">=</span> <span class="st">"lower_ddd"</span>,</span>
+<span>  pack_ddd_usual <span class="op">=</span><span class="st">"usual_ddd"</span>,</span>
+<span>  pack_dur_min <span class="op">=</span> <span class="st">"minimum_dur"</span>,</span>
+<span>  pack_dur_usual <span class="op">=</span> <span class="st">"usual_dur"</span>,</span>
+<span>  pack_dur_max <span class="op">=</span> <span class="st">"maximum_dur"</span>,</span>
+<span>  atc_parameters <span class="op">=</span> <span class="va">ATC_parameters</span>,</span>
+<span>  atc_class <span class="op">=</span> <span class="st">"partial_atc"</span>,</span>
+<span>  atc_ddd_low <span class="op">=</span> <span class="st">"lower_ddd_atc"</span>,</span>
+<span>  atc_ddd_usual <span class="op">=</span> <span class="st">"usual_ddd_atc"</span>,</span>
+<span>  atc_dur_min <span class="op">=</span> <span class="st">"minimum_dur_atc"</span>,</span>
+<span>  atc_dur_max <span class="op">=</span> <span class="st">"maximum_dur_atc"</span>,</span>
+<span>  hosp_data <span class="op">=</span> <span class="va">hospitalizations_example</span>,</span>
+<span>  hosp_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  hosp_admission <span class="op">=</span> <span class="st">"hospital_start"</span>,</span>
+<span>  hosp_discharge <span class="op">=</span> <span class="st">"hospital_end"</span>,</span>
+<span>  date_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025-01-01"</span>, <span class="st">"2025-12-31"</span><span class="op">)</span>,</span>
+<span>  global_gap_max <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  global_min <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  global_max <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  global_max_single <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  global_ddd_high <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  global_hosp_max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  weight_past <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weight_current <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  weight_next <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weight_first_last <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  calculate_pack_dur_usual <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  post_process_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co"># Step 1/6: Checking parameters and datasets...</span></span>
+<span><span class="co"># Checks passed for ‘pre_data’</span></span>
+<span><span class="co"># Checks passed for ‘package_parameters’</span></span>
+<span><span class="co"># Checks passed for ‘atc_parameters’.</span></span>
+<span><span class="co"># Checks passed for ‘hosp_data’</span></span>
+<span><span class="co"># Preparing hospitalization data and merging overlapping hospitalizations.</span></span>
+<span><span class="co"># Step 2/6: Calculating purchase durations...</span></span>
+<span><span class="co"># Step 3/6: Stockpiling assessment...</span></span>
+<span><span class="co"># Step 4/6: Calculating common package durations in data...</span></span>
+<span><span class="co"># Refill lengths couldn't be re-estimated, probably due to too small data size.</span></span>
+<span><span class="co"># Step 5/6: Preparing drug use periods...</span></span>
+<span><span class="co"># Step 6/6: Post-processing drug use periods...</span></span>
+<span><span class="co"># Current post processing percentage: 1</span></span>
+<span><span class="co"># Drug use periods calculated. 7 periods created for 5 persons.  </span></span>
+<span></span>
+<span><span class="co"># Drug use periods are stored in the `periods` element of the output list.</span></span>
+<span><span class="va">dup</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">periods</span></span>
+<span><span class="va">dup</span></span>
+<span><span class="co">#    period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span></span>
+<span><span class="co">#     &lt;int&gt; &lt;fctr&gt;  &lt;char&gt;     &lt;Date&gt;     &lt;Date&gt;    &lt;num&gt;             &lt;num&gt;           &lt;int&gt;            &lt;Date&gt;         &lt;num&gt;                     &lt;num&gt;</span></span>
+<span><span class="co"># 1:      1      1 N05AH02 2025-01-01 2025-04-14      104                 0               3        2025-03-08         99.99                     0.961</span></span>
+<span><span class="co"># 2:      2      2 N05AH02 2025-01-15 2025-04-28      104                 5               3        2025-03-22         99.99                     0.961</span></span>
+<span><span class="co"># 3:      3      3 N05AH02 2025-02-01 2025-05-15      104                 0               3        2025-04-08         99.99                     0.961</span></span>
+<span><span class="co"># 4:      4      3 N05AH04 2025-01-05 2025-08-26      233                 0               2        2025-04-15        200.00                     0.858</span></span>
+<span><span class="co"># 5:      5      4 N05AH02 2025-01-10 2025-04-23      104                 0               3        2025-03-17         99.99                     0.961</span></span>
+<span><span class="co"># 6:      6      4 N05AH04 2025-01-20 2025-09-10      233                 0               2        2025-04-30        200.00                     0.858</span></span>
+<span><span class="co"># 7:      7      5 N05AH04 2025-01-01 2025-08-22      233                38               2        2025-04-11        200.00                     0.858</span></span>
+<span></span>
+<span><span class="co"># Package parameters with updated common durations is not returned, because the common durations were not calculated in this example.</span></span>
+<span><span class="va">outdata</span><span class="op">$</span><span class="va">pack_info</span></span>
+<span><span class="co"># NULL</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="workflow-when-using-estimated-usual-package-durations-from-data">Workflow when using estimated usual package durations from data<a class="anchor" aria-label="anchor" href="#workflow-when-using-estimated-usual-package-durations-from-data"></a>
@@ -298,122 +305,165 @@ package durations from the data. This is useful when you want to derive
 package durations based on the actual purchase patterns in your dataset.
 Set <code>calculate_pack_dur_usual = T</code>, run the program and
 update package parameters based on common duration in data.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Make data so big, that it can calculate common durations</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">each =</span> <span class="dv">20</span>))</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>vnr <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">30627</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="dv">41738</span>, <span class="dv">10</span>)), <span class="dv">5</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>atc <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"N05AH02"</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="st">"N05AH04"</span>, <span class="dv">10</span>)), <span class="dv">5</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>d40 <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"2020-01-01"</span>)  <span class="sc">+</span> <span class="dv">40</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>d120 <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"2022-01-01"</span>)  <span class="sc">+</span> <span class="dv">120</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(d40, d120), <span class="dv">5</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>ddds <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">33</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="dv">80</span>, <span class="dv">10</span>)), <span class="dv">5</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>ratio <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">100</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>purchases_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(id, vnr, atc, dates, ddds, ratio)</span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co"># This example uses function default values, they can be changed to fit your needs.</span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>outdata <span class="ot">&lt;-</span><span class="fu">pre2dup</span>(</span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="at">pre_data =</span> purchases_data,</span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="at">pre_person_id =</span> <span class="st">"id"</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>  <span class="at">pre_atc =</span> <span class="st">"atc"</span>,</span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>  <span class="at">pre_package_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  <span class="at">pre_date =</span> <span class="st">"dates"</span>,</span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>  <span class="at">pre_ratio =</span> <span class="st">"ratio"</span>,</span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>  <span class="at">pre_ddd =</span> <span class="st">"ddds"</span>,</span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>  <span class="at">package_parameters =</span> package_parameters_example,</span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>  <span class="at">pack_atc =</span> <span class="st">"ATC"</span>,</span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>  <span class="at">pack_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>  <span class="at">pack_ddd_low =</span> <span class="st">"lower_ddd"</span>,</span>
-<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>  <span class="at">pack_ddd_usual =</span><span class="st">"usual_ddd"</span>,</span>
-<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>  <span class="at">pack_dur_min =</span> <span class="st">"minimum_dur"</span>,</span>
-<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>  <span class="at">pack_dur_usual =</span> <span class="st">"usual_dur"</span>,</span>
-<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>  <span class="at">pack_dur_max =</span> <span class="st">"maximum_dur"</span>,</span>
-<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>  <span class="at">atc_parameters =</span> ATC_parameters,</span>
-<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>  <span class="at">atc_class =</span> <span class="st">"partial_atc"</span>,</span>
-<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>  <span class="at">atc_ddd_low =</span> <span class="st">"lower_ddd_atc"</span>,</span>
-<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>  <span class="at">atc_ddd_usual =</span> <span class="st">"usual_ddd_atc"</span>,</span>
-<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>  <span class="at">atc_dur_min =</span> <span class="st">"minimum_dur_atc"</span>,</span>
-<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>  <span class="at">atc_dur_max =</span> <span class="st">"maximum_dur_atc"</span>,</span>
-<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>  <span class="at">calculate_pack_dur_usual =</span> T</span>
-<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>)</span>
-<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>  </span>
-<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>Step <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Checking parameters and datasets...</span>
-<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘pre_data’</span>
-<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘package_parameters’</span>
-<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘atc_parameters’.</span>
-<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>Step <span class="dv">2</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Calculating purchase durations...</span>
-<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a>Step <span class="dv">3</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Stockpiling assessment...</span>
-<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>Step <span class="dv">4</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Calculating common package durations <span class="cf">in</span> data...</span>
-<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>Step <span class="dv">5</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Preparing drug use periods...</span>
-<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a>Step <span class="dv">6</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Post<span class="sc">-</span>processing drug use periods...</span>
-<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a>Current post processing percentage<span class="sc">:</span> <span class="dv">1</span></span>
-<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a>Drug use periods calculated. <span class="dv">10</span> periods created <span class="cf">for</span> <span class="dv">5</span> persons.</span>
-<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a></span>
-<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a><span class="co"># Save updated package parameters</span></span>
-<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a>updated_params <span class="ot">&lt;-</span> outdata<span class="sc">$</span>pack_info</span>
-<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="co"># Check new common durations</span></span>
-<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a>updated_params[<span class="sc">!</span><span class="fu">is.na</span>(updated_params<span class="sc">$</span>common_duration), ]</span>
-<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a>    vnr     ATC product_name strength strength_num packagesize packsize_num drug_form_harmonized ddd_per_pack minimum_dur usual_dur maximum_dur lower_ddd usual_ddd common_duration usual_duration_new</span>
-<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="dv">6</span> <span class="dv">30627</span> N05AH02      LEPONEX    <span class="dv">100</span>MG          <span class="dv">100</span>         <span class="dv">100</span>          <span class="dv">100</span>               TABLET     <span class="fl">33.33333</span>          <span class="dv">25</span>     <span class="fl">33.33</span>         <span class="dv">100</span>    <span class="fl">0.3333</span>      <span class="fl">1.00</span>              <span class="dv">40</span>                 <span class="dv">40</span></span>
-<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a><span class="dv">8</span> <span class="dv">41738</span> N05AH04    KETIPINOR    <span class="dv">300</span>MG          <span class="dv">300</span>      <span class="dv">100</span>FOL          <span class="dv">100</span>               TABLET     <span class="fl">75.00000</span>          <span class="dv">50</span>    <span class="fl">100.00</span>         <span class="dv">200</span>    <span class="fl">0.3750</span>      <span class="fl">0.75</span>             <span class="dv">120</span>                <span class="dv">120</span></span>
-<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a></span>
-<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a><span class="co"># Make a new common duration column selecting the common duration from the updated package parameters by your choice</span></span>
-<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a>updated_params<span class="sc">$</span>usual_duration_new <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
-<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a>  <span class="sc">!</span><span class="fu">is.na</span>(updated_params2<span class="sc">$</span>common_duration),</span>
-<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a>  updated_params2<span class="sc">$</span>common_duration,</span>
-<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a>  updated_params2<span class="sc">$</span>usual_dur</span>
-<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a>)</span>
-<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a></span>
-<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a><span class="co"># Run PRE2DUP with the updated package parameters</span></span>
-<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a>outdata <span class="ot">&lt;-</span><span class="fu">pre2dup</span>(</span>
-<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a>  <span class="at">pre_data =</span> purchases_data,</span>
-<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a>  <span class="at">pre_person_id =</span> <span class="st">"id"</span>,</span>
-<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a>  <span class="at">pre_atc =</span> <span class="st">"atc"</span>,</span>
-<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a>  <span class="at">pre_package_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a>  <span class="at">pre_date =</span> <span class="st">"dates"</span>,</span>
-<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a>  <span class="at">pre_ratio =</span> <span class="st">"ratio"</span>,</span>
-<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a>  <span class="at">pre_ddd =</span> <span class="st">"ddds"</span>,</span>
-<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a>  <span class="at">package_parameters =</span> updated_params,</span>
-<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a>  <span class="at">pack_atc =</span> <span class="st">"ATC"</span>,</span>
-<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a>  <span class="at">pack_id =</span> <span class="st">"vnr"</span>,</span>
-<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a>  <span class="at">pack_ddd_low =</span> <span class="st">"lower_ddd"</span>,</span>
-<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a>  <span class="at">pack_ddd_usual =</span><span class="st">"usual_ddd"</span>,</span>
-<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a>  <span class="at">pack_dur_min =</span> <span class="st">"minimum_dur"</span>,</span>
-<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a>  <span class="at">pack_dur_usual =</span> <span class="st">"usual_duration_new"</span>, <span class="co"># This is the new column</span></span>
-<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a>  <span class="at">pack_dur_max =</span> <span class="st">"maximum_dur"</span>,</span>
-<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a>  <span class="at">atc_parameters =</span> ATC_parameters,</span>
-<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a>  <span class="at">atc_class =</span> <span class="st">"partial_atc"</span>,</span>
-<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a>  <span class="at">atc_ddd_low =</span> <span class="st">"lower_ddd_atc"</span>,</span>
-<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a>  <span class="at">atc_ddd_usual =</span> <span class="st">"usual_ddd_atc"</span>,</span>
-<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a>  <span class="at">atc_dur_min =</span> <span class="st">"minimum_dur_atc"</span>,</span>
-<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a>  <span class="at">atc_dur_max =</span> <span class="st">"maximum_dur_atc"</span>,</span>
-<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a>  <span class="at">calculate_pack_dur_usual =</span> F <span class="co"># Not needed anymore, as we have updated package parameters</span></span>
-<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a>)</span>
-<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a>Step <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Checking parameters and datasets...</span>
-<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘pre_data’</span>
-<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘package_parameters’</span>
-<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a>Checks passed <span class="cf">for</span> ‘atc_parameters’.</span>
-<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a>Step <span class="dv">2</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Calculating purchase durations...</span>
-<span id="cb8-95"><a href="#cb8-95" tabindex="-1"></a>Step <span class="dv">3</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Stockpiling assessment...</span>
-<span id="cb8-96"><a href="#cb8-96" tabindex="-1"></a>Step <span class="dv">4</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Common package duration calculation was not selected <span class="cf">in</span> the parameters; skipping this step.</span>
-<span id="cb8-97"><a href="#cb8-97" tabindex="-1"></a>Step <span class="dv">5</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Preparing drug use periods...</span>
-<span id="cb8-98"><a href="#cb8-98" tabindex="-1"></a>Step <span class="dv">6</span><span class="sc">/</span><span class="dv">6</span><span class="sc">:</span> Post<span class="sc">-</span>processing drug use periods...</span>
-<span id="cb8-99"><a href="#cb8-99" tabindex="-1"></a>Current post processing percentage<span class="sc">:</span> <span class="dv">1</span></span>
-<span id="cb8-100"><a href="#cb8-100" tabindex="-1"></a>Drug use periods calculated. <span class="dv">10</span> periods created <span class="cf">for</span> <span class="dv">5</span> persons.</span>
-<span id="cb8-101"><a href="#cb8-101" tabindex="-1"></a></span>
-<span id="cb8-102"><a href="#cb8-102" tabindex="-1"></a><span class="co"># The final output</span></span>
-<span id="cb8-103"><a href="#cb8-103" tabindex="-1"></a>final_periods <span class="ot">&lt;-</span> outdata<span class="sc">$</span>periods</span>
-<span id="cb8-104"><a href="#cb8-104" tabindex="-1"></a>final_periods</span>
-<span id="cb8-105"><a href="#cb8-105" tabindex="-1"></a>   period     id     atc  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span>
-<span id="cb8-106"><a href="#cb8-106" tabindex="-1"></a>     <span class="sc">&lt;</span>int<span class="sc">&gt;</span> <span class="er">&lt;</span>fctr<span class="sc">&gt;</span>  <span class="er">&lt;</span>char<span class="sc">&gt;</span>     <span class="er">&lt;</span>Date<span class="sc">&gt;</span>     <span class="er">&lt;</span>Date<span class="sc">&gt;</span>    <span class="er">&lt;</span>num<span class="sc">&gt;</span>             <span class="er">&lt;</span>num<span class="sc">&gt;</span>           <span class="er">&lt;</span>int<span class="sc">&gt;</span>            <span class="er">&lt;</span>Date<span class="sc">&gt;</span>         <span class="er">&lt;</span>num<span class="sc">&gt;</span>                     <span class="er">&lt;</span>num<span class="sc">&gt;</span></span>
-<span id="cb8-107"><a href="#cb8-107" tabindex="-1"></a> <span class="dv">1</span><span class="sc">:</span>      <span class="dv">1</span>      <span class="dv">1</span> N05AH02 <span class="dv">2020-02-10</span> <span class="dv">2021-03-23</span>      <span class="dv">408</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2021-02-04</span>           <span class="dv">330</span>                     <span class="fl">0.809</span></span>
-<span id="cb8-108"><a href="#cb8-108" tabindex="-1"></a> <span class="dv">2</span><span class="sc">:</span>      <span class="dv">2</span>      <span class="dv">1</span> N05AH04 <span class="dv">2022-05-01</span> <span class="dv">2025-09-05</span>     <span class="dv">1224</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2025-04-15</span>           <span class="dv">800</span>                     <span class="fl">0.654</span></span>
-<span id="cb8-109"><a href="#cb8-109" tabindex="-1"></a> <span class="dv">3</span><span class="sc">:</span>      <span class="dv">3</span>      <span class="dv">2</span> N05AH02 <span class="dv">2020-02-10</span> <span class="dv">2021-03-23</span>      <span class="dv">408</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2021-02-04</span>           <span class="dv">330</span>                     <span class="fl">0.809</span></span>
-<span id="cb8-110"><a href="#cb8-110" tabindex="-1"></a> <span class="dv">4</span><span class="sc">:</span>      <span class="dv">4</span>      <span class="dv">2</span> N05AH04 <span class="dv">2022-05-01</span> <span class="dv">2025-09-05</span>     <span class="dv">1224</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2025-04-15</span>           <span class="dv">800</span>                     <span class="fl">0.654</span></span>
-<span id="cb8-111"><a href="#cb8-111" tabindex="-1"></a> <span class="dv">5</span><span class="sc">:</span>      <span class="dv">5</span>      <span class="dv">3</span> N05AH02 <span class="dv">2020-02-10</span> <span class="dv">2021-03-23</span>      <span class="dv">408</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2021-02-04</span>           <span class="dv">330</span>                     <span class="fl">0.809</span></span>
-<span id="cb8-112"><a href="#cb8-112" tabindex="-1"></a> <span class="dv">6</span><span class="sc">:</span>      <span class="dv">6</span>      <span class="dv">3</span> N05AH04 <span class="dv">2022-05-01</span> <span class="dv">2025-09-05</span>     <span class="dv">1224</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2025-04-15</span>           <span class="dv">800</span>                     <span class="fl">0.654</span></span>
-<span id="cb8-113"><a href="#cb8-113" tabindex="-1"></a> <span class="dv">7</span><span class="sc">:</span>      <span class="dv">7</span>      <span class="dv">4</span> N05AH02 <span class="dv">2020-02-10</span> <span class="dv">2021-03-23</span>      <span class="dv">408</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2021-02-04</span>           <span class="dv">330</span>                     <span class="fl">0.809</span></span>
-<span id="cb8-114"><a href="#cb8-114" tabindex="-1"></a> <span class="dv">8</span><span class="sc">:</span>      <span class="dv">8</span>      <span class="dv">4</span> N05AH04 <span class="dv">2022-05-01</span> <span class="dv">2025-09-05</span>     <span class="dv">1224</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2025-04-15</span>           <span class="dv">800</span>                     <span class="fl">0.654</span></span>
-<span id="cb8-115"><a href="#cb8-115" tabindex="-1"></a> <span class="dv">9</span><span class="sc">:</span>      <span class="dv">9</span>      <span class="dv">5</span> N05AH02 <span class="dv">2020-02-10</span> <span class="dv">2021-03-23</span>      <span class="dv">408</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2021-02-04</span>           <span class="dv">330</span>                     <span class="fl">0.809</span></span>
-<span id="cb8-116"><a href="#cb8-116" tabindex="-1"></a><span class="dv">10</span><span class="sc">:</span>     <span class="dv">10</span>      <span class="dv">5</span> N05AH04 <span class="dv">2022-05-01</span> <span class="dv">2025-09-05</span>     <span class="dv">1224</span>                 <span class="dv">0</span>              <span class="dv">10</span>        <span class="dv">2025-04-15</span>           <span class="dv">800</span>                     <span class="fl">0.654</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Make data so big, that it can calculate common durations</span></span>
+<span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">vnr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">30627</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">41738</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">ATC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"N05AH02"</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"N05AH04"</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">d40</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>  <span class="op">+</span> <span class="fl">40</span><span class="op">*</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span><span class="va">d120</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2022-01-01"</span><span class="op">)</span>  <span class="op">+</span> <span class="fl">120</span><span class="op">*</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span><span class="va">purchase_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">d40</span>, <span class="va">d120</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">n_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">amount</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">33</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">purchases_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">vnr</span>, <span class="va">ATC</span>, <span class="va">purchase_date</span>, <span class="va">n_packages</span>, <span class="va">amount</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># This example uses function default values, they can be changed to fit your needs.</span></span>
+<span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
+<span>  pre_data <span class="op">=</span> <span class="va">purchases_data</span>,</span>
+<span>  pre_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  pre_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>  pre_package_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>  pre_date <span class="op">=</span> <span class="st">"purchase_date"</span>,</span>
+<span>  pre_ratio <span class="op">=</span> <span class="st">"n_packages"</span>,</span>
+<span>  pre_ddd <span class="op">=</span> <span class="st">"amount"</span>,</span>
+<span>  package_parameters <span class="op">=</span> <span class="va">package_parameters_example</span>,</span>
+<span>  pack_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>  pack_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>  pack_ddd_low <span class="op">=</span> <span class="st">"lower_ddd"</span>,</span>
+<span>  pack_ddd_usual <span class="op">=</span><span class="st">"usual_ddd"</span>,</span>
+<span>  pack_dur_min <span class="op">=</span> <span class="st">"minimum_dur"</span>,</span>
+<span>  pack_dur_usual <span class="op">=</span> <span class="st">"usual_dur"</span>,</span>
+<span>  pack_dur_max <span class="op">=</span> <span class="st">"maximum_dur"</span>,</span>
+<span>  atc_parameters <span class="op">=</span> <span class="va">ATC_parameters</span>,</span>
+<span>  atc_class <span class="op">=</span> <span class="st">"partial_atc"</span>,</span>
+<span>  atc_ddd_low <span class="op">=</span> <span class="st">"lower_ddd_atc"</span>,</span>
+<span>  atc_ddd_usual <span class="op">=</span> <span class="st">"usual_ddd_atc"</span>,</span>
+<span>  atc_dur_min <span class="op">=</span> <span class="st">"minimum_dur_atc"</span>,</span>
+<span>  atc_dur_max <span class="op">=</span> <span class="st">"maximum_dur_atc"</span>,</span>
+<span>  hosp_data <span class="op">=</span> <span class="va">hospitalizations_example</span>,</span>
+<span>  hosp_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  hosp_admission <span class="op">=</span> <span class="st">"hospital_start"</span>,</span>
+<span>  hosp_discharge <span class="op">=</span> <span class="st">"hospital_end"</span>,</span>
+<span>  date_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2025-12-31"</span><span class="op">)</span>,</span>
+<span>  global_gap_max <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  global_min <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  global_max <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  global_max_single <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  global_ddd_high <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  global_hosp_max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  weight_past <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weight_current <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  weight_next <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weight_first_last <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  calculate_pack_dur_usual <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  post_process_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co"># Step 1/6: Checking parameters and datasets...</span></span>
+<span><span class="co"># Checks passed for ‘pre_data’</span></span>
+<span><span class="co"># Checks passed for ‘package_parameters’</span></span>
+<span><span class="co"># Checks passed for ‘atc_parameters’.</span></span>
+<span><span class="co"># Checks passed for ‘hosp_data’</span></span>
+<span><span class="co"># Preparing hospitalization data and merging overlapping hospitalizations.</span></span>
+<span><span class="co"># Step 2/6: Calculating purchase durations...</span></span>
+<span><span class="co"># Step 3/6: Stockpiling assessment...</span></span>
+<span><span class="co"># Step 4/6: Calculating common package durations in data...</span></span>
+<span><span class="co"># Step 5/6: Preparing drug use periods...</span></span>
+<span><span class="co"># Step 6/6: Post-processing drug use periods...</span></span>
+<span><span class="co"># Current post processing percentage: 1</span></span>
+<span><span class="co"># Drug use periods calculated. 10 periods created for 5 persons.</span></span>
+<span></span>
+<span><span class="co"># Program returns periods, but not used for now </span></span>
+<span><span class="va">dup</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">periods</span></span>
+<span></span>
+<span><span class="co"># Program returns updated package parameters</span></span>
+<span><span class="va">updated_params</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">pack_info</span></span>
+<span></span>
+<span><span class="co"># Check new common durations</span></span>
+<span><span class="va">updated_params</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">updated_params</span><span class="op">$</span><span class="va">common_duration</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="co">#     vnr     ATC product_name strength strength_num packagesize packsize_num drug_form_harmonized ddd_per_pack minimum_dur usual_dur maximum_dur lower_ddd usual_ddd common_duration</span></span>
+<span><span class="co"># 6 30627 N05AH02      LEPONEX    100MG          100         100          100               TABLET     33.33333          25     33.33         100    0.3333      1.00              40</span></span>
+<span><span class="co"># 8 41738 N05AH04    KETIPINOR    300MG          300      100FOL          100               TABLET     75.00000          50    100.00         200    0.3750      0.75             120</span></span>
+<span></span>
+<span><span class="co"># Make a new common duration column selecting the common duration from the updated package parameters by your choice</span></span>
+<span><span class="va">updated_params</span><span class="op">$</span><span class="va">usual_duration_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">updated_params</span><span class="op">$</span><span class="va">common_duration</span><span class="op">)</span>,</span>
+<span>  <span class="va">updated_params</span><span class="op">$</span><span class="va">common_duration</span>,</span>
+<span>  <span class="va">updated_params</span><span class="op">$</span><span class="va">usual_dur</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run PRE2DUP with the updated package parameters</span></span>
+<span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
+<span>  pre_data <span class="op">=</span> <span class="va">purchases_data</span>,</span>
+<span>  pre_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  pre_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>  pre_package_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>  pre_date <span class="op">=</span> <span class="st">"purchase_date"</span>,</span>
+<span>  pre_ratio <span class="op">=</span> <span class="st">"n_packages"</span>,</span>
+<span>  pre_ddd <span class="op">=</span> <span class="st">"amount"</span>,</span>
+<span>  package_parameters <span class="op">=</span> <span class="va">updated_params</span>,</span>
+<span>  pack_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
+<span>  pack_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
+<span>  pack_ddd_low <span class="op">=</span> <span class="st">"lower_ddd"</span>,</span>
+<span>  pack_ddd_usual <span class="op">=</span><span class="st">"usual_ddd"</span>,</span>
+<span>  pack_dur_min <span class="op">=</span> <span class="st">"minimum_dur"</span>,</span>
+<span>  pack_dur_usual <span class="op">=</span>  <span class="st">"usual_duration_new"</span>, <span class="co"># This is the new column</span></span>
+<span>  pack_dur_max <span class="op">=</span> <span class="st">"maximum_dur"</span>,</span>
+<span>  atc_parameters <span class="op">=</span> <span class="va">ATC_parameters</span>,</span>
+<span>  atc_class <span class="op">=</span> <span class="st">"partial_atc"</span>,</span>
+<span>  atc_ddd_low <span class="op">=</span> <span class="st">"lower_ddd_atc"</span>,</span>
+<span>  atc_ddd_usual <span class="op">=</span> <span class="st">"usual_ddd_atc"</span>,</span>
+<span>  atc_dur_min <span class="op">=</span> <span class="st">"minimum_dur_atc"</span>,</span>
+<span>  atc_dur_max <span class="op">=</span> <span class="st">"maximum_dur_atc"</span>,</span>
+<span>  hosp_data <span class="op">=</span> <span class="va">hospitalizations_example</span>,</span>
+<span>  hosp_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
+<span>  hosp_admission <span class="op">=</span> <span class="st">"hospital_start"</span>,</span>
+<span>  hosp_discharge <span class="op">=</span> <span class="st">"hospital_end"</span>,</span>
+<span>  date_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2025-12-31"</span><span class="op">)</span>,</span>
+<span>  global_gap_max <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  global_min <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  global_max <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  global_max_single <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  global_ddd_high <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  global_hosp_max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  weight_past <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weight_current <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  weight_next <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  weight_first_last <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  calculate_pack_dur_usual <span class="op">=</span> <span class="cn">F</span>,<span class="co"># Done already</span></span>
+<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  post_process_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Step 1/6: Checking parameters and datasets...</span></span>
+<span><span class="co"># Checks passed for ‘pre_data’</span></span>
+<span><span class="co"># Checks passed for ‘package_parameters’</span></span>
+<span><span class="co"># Checks passed for ‘atc_parameters’.</span></span>
+<span><span class="co"># Checks passed for ‘hosp_data’</span></span>
+<span><span class="co"># Preparing hospitalization data and merging overlapping hospitalizations.</span></span>
+<span><span class="co"># Step 2/6: Calculating purchase durations...</span></span>
+<span><span class="co"># Step 3/6: Stockpiling assessment...</span></span>
+<span><span class="co"># Step 4/6: Common package duration calculation was not selected in the parameters; skipping this step.</span></span>
+<span><span class="co"># Step 5/6: Preparing drug use periods...</span></span>
+<span><span class="co"># Step 6/6: Post-processing drug use periods...</span></span>
+<span><span class="co"># Current post processing percentage: 1</span></span>
+<span><span class="co"># Drug use periods calculated. 10 periods created for 5 persons.</span></span>
+<span></span>
+<span><span class="co"># The final output</span></span>
+<span><span class="va">final_periods</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">periods</span></span>
+<span><span class="va">final_periods</span></span>
+<span><span class="co">#    period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span></span>
+<span><span class="co">#     &lt;int&gt; &lt;fctr&gt;  &lt;char&gt;     &lt;Date&gt;     &lt;Date&gt;    &lt;num&gt;             &lt;num&gt;           &lt;int&gt;            &lt;Date&gt;         &lt;num&gt;                     &lt;num&gt;</span></span>
+<span><span class="co"># 1:      1      1 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
+<span><span class="co"># 2:      2      1 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654</span></span>
+<span><span class="co"># 3:      3      2 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
+<span><span class="co"># 4:      4      2 N05AH04 2022-05-01 2025-09-05     1224                 5              10        2025-04-15           800                     0.654</span></span>
+<span><span class="co"># 5:      5      3 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
+<span><span class="co"># 6:      6      3 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654</span></span>
+<span><span class="co"># 7:      7      4 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
+<span><span class="co"># 8:      8      4 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654</span></span>
+<span><span class="co"># 9:      9      5 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
+<span><span class="co"># 10:    10      5 N05AH04 2022-05-01 2025-09-05     1224                38              10        2025-04-15           800                     0.654</span></span></code></pre></div>
 <p>For any questions or support, feel free to reach out to the package
 maintainers</p>
 <p>…</p>

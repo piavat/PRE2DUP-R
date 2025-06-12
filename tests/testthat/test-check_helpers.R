@@ -158,22 +158,6 @@ test_that("find_multiple_atcs returns NULL if not errors", {
   expect_equal(find_multiple_atcs(atc_col = c("N03AB10", "N03AB20"), package_col = c(12345, 22345)), NULL)
 })
 
-# Test combine_overlaps
-test_that("combine_overlaps returns original hospitalizations, if not overlapping", {
-  hosp_data <- combine_overlaps(personid = c(11111, 11111),
-                                admission = c(172400, 173600),
-                                discharge = c(172500, 173700))
-  expect_equal(hosp_data$admission_date, c(172400, 173600))
-  expect_equal(hosp_data$discharge_date, c(172500, 173700))
-})
-
-test_that("combine_overlaps combines overlapping hospitalizations", {
-  hosp_data <- suppressMessages(combine_overlaps(personid = c(11111, 11111),
-                                                 admission = c(172400, 172450),
-                                                 discharge = c(172500, 172700)))
-  expect_equal(hosp_data$admission_date, 172400)
-  expect_equal(hosp_data$discharge_date, 172700)
-})
 
 # Test check_numeric
 values <- c(10, NA, -3, Inf, 5, 0)

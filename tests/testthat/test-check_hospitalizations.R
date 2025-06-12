@@ -1,3 +1,4 @@
+library(intervals)
 PID <- c(1, 1, 2, 2)
 Entry <- c("2023-01-01", "2023-02-01", "2023-01-01", "2023-02-01")
 Leave <- c("2023-01-15", "2023-02-15", "2023-01-10", "2023-02-10")
@@ -173,9 +174,51 @@ test_that("check_hospitalizations detects overlapping hospitalizations", {
     error = FALSE
   )
 
-  pid = c("pid1", "pid1", "pid2", "pid2", "pid2", "pid2", "pid3","pid3",  "pid4","pid4", "pid5", "pid5", "pid5")
-  admission = c("2011-01-31", "2011-02-05", "2011-01-27", "2011-02-07", "2011-02-13", "2011-02-14", "2011-01-27", "2011-01-29", "2011-01-27", "2011-02-06", "2023-01-25", "2023-01-28", "2023-02-01")
-  discharge = c("2011-02-06", "2011-02-15", "2011-01-30", "2011-02-17", "2011-02-20", "2011-02-25", "2011-02-06", "2011-02-01", "2011-02-06", "2011-02-16", "2023-01-28", "2023-02-01", "2023-02-06")
+  pid = c(
+    "pid1",
+    "pid1",
+    "pid2",
+    "pid2",
+    "pid2",
+    "pid2",
+    "pid3",
+    "pid3",
+    "pid4",
+    "pid4",
+    "pid5",
+    "pid5",
+    "pid5"
+  )
+  admission = c(
+    "2011-01-31",
+    "2011-02-05",
+    "2011-01-27",
+    "2011-02-07",
+    "2011-02-13",
+    "2011-02-14",
+    "2011-01-27",
+    "2011-01-29",
+    "2011-01-27",
+    "2011-02-06",
+    "2023-01-25",
+    "2023-01-28",
+    "2023-02-01"
+  )
+  discharge = c(
+    "2011-02-06",
+    "2011-02-15",
+    "2011-01-30",
+    "2011-02-17",
+    "2011-02-20",
+    "2011-02-25",
+    "2011-02-06",
+    "2011-02-01",
+    "2011-02-06",
+    "2011-02-16",
+    "2023-01-28",
+    "2023-02-01",
+    "2023-02-06"
+  )
   test_data <- data.frame(pid, admission, discharge)
 
   expect_snapshot(
@@ -225,6 +268,54 @@ test_that("check_hospitalizations reports error if the hospitalization data has 
 })
 
 
+test_that("check_hospitalizations connects consecutive hospitalizations", {
+  
+  # All data is correct
+  hospital_data <- data.table(
+    PID = c(1, 1, 1, 1),
+    Entry = as.Date(c("2020-01-01", "2020-01-30", "2020-03-01", "2020-03-30")),
+    Leave = as.Date(c("2020-01-30", "2020-03-01", "2020-03-30", "2020-04-10"))
+  )
+  
+  outdata <- suppressMessages(check_hospitalizations(
+    hospital_data,
+    hosp_person_id = "PID",
+    hosp_admission = "Entry",
+    hosp_discharge = "Leave",
+    return_data = TRUE
+  ))
+  expect_true(is.data.table(outdata))
+  expect_true(is.factor(outdata$pid_hosp))
+  expect_true(is.integer(outdata$admission_date))
+  expect_true(is.integer(outdata$discharge_date))
+  expect_equal(outdata$admission_date, 18262)
+  expect_equal(outdata$discharge_date, 18362)
+})
+
+test_that("check_hospitalizations connects consecutive hospitalizations for two person", {
+  
+  # All data is correct
+  hospital_data <- data.table(
+    PID = c(1, 1, 2, 2),
+    Entry = as.Date(c("2020-01-01", "2020-01-30", "2020-03-01", "2020-03-30")),
+    Leave = as.Date(c("2020-01-30", "2020-03-01", "2020-03-30", "2020-04-10"))
+  )
+  
+  outdata <- suppressMessages(check_hospitalizations(
+    hospital_data,
+    hosp_person_id = "PID",
+    hosp_admission = "Entry",
+    hosp_discharge = "Leave",
+    return_data = TRUE
+  ))
+  
+  expect_true(is.data.table(outdata))
+  expect_true(is.factor(outdata$pid_hosp))
+  expect_true(is.integer(outdata$admission_date))
+  expect_true(is.integer(outdata$discharge_date))
+  expect_equal(outdata$admission_date, c(18262, 18322))
+  expect_equal(outdata$discharge_date,c(18322, 18362))
+})
 
 
 

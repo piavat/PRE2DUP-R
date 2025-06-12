@@ -106,7 +106,6 @@
         hosp_discharge = "Leave")
     Message
       Checks passed for 'hospital_data'
-      Number of overlapping hospitalizations detected and and will be merged:  2
 
 ---
 
@@ -115,7 +114,6 @@
         hosp_discharge = "discharge")
     Message
       Checks passed for 'test_data'
-      Number of overlapping hospitalizations detected and and will be merged:  7
 
 ---
 
@@ -124,6 +122,7 @@
         hosp_admission = "admission", hosp_discharge = "discharge", return_data = TRUE)
     Message
       Checks passed for 'test_data'
+      Preparing hospitalization data and merging overlapping hospitalizations.
       Number of overlapping hospitalizations detected and and will be merged:  7
 
 # check_hospitalizations reports error if the hospitalization data has not records

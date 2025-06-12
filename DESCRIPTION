@@ -1,7 +1,7 @@
 Package: PRE2DUPR
 Type: Package
 Title: Package for PRE2DUP-R method
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person(
       "Pia", "Vattulainen",
@@ -15,7 +15,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
 Imports: 
-    data.table (>= 1.14)
+    data.table (>= 1.14),
+    intervals
 Suggests: 
     knitr,
     rmarkdown,

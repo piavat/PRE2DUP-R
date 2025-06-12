@@ -116,7 +116,7 @@ test_that("predup returns two exposure periods if package parameters maximum dur
   dup <- outdata$periods
   expect_equal(nrow(dup), 2)
   expect_equal(dup$dup_start, as.Date(c("2004-06-05", "2005-04-09")))
-  expect_equal(dup$dup_days, c(253, 131)) # Later duration is based on erfl (<3 period)
+  expect_equal(dup$dup_days, c(253, 131)) 
   expect_equal(dup$dup_hospital_days, c(0, 27))
   expect_equal(dup$dup_n_purchases, c(5, 2))
   expect_equal(dup$dup_last_purchase, as.Date(c("2004-12-01", "2005-06-04")))
@@ -596,7 +596,7 @@ test_that("predup adds 30 days when hospitalization exceeds global_hosp_max 30",
 
   expect_equal(dup$dup_end, as.Date(c("2003-07-19")), tolerance = 0.1)
   expect_equal(dup$dup_days, 44)
-  expect_equal(dup$dup_hospital_days, 30)
+  expect_equal(dup$dup_hospital_days, 34)
 })
 # 12
 test_that("predup adds 10 days when hospitalization exceeds global_hosp_max 10", {
@@ -648,7 +648,7 @@ test_that("predup adds 10 days when hospitalization exceeds global_hosp_max 10",
 
   expect_equal(dup$dup_end, as.Date(c("2003-06-29")), tolerance = 0.1)
   expect_equal(dup$dup_days, 24)
-  expect_equal(dup$dup_hospital_days, 10)
+  expect_equal(dup$dup_hospital_days, 19)
 })
 # 13
 test_that("predup combines hospitalizations and ignores ending date", {
@@ -970,7 +970,7 @@ test_that("predup handles hospitalizations longer than exposure", {
 
   expect_equal(dup$dup_end, as.Date(c("2003-07-19")), tolerance = 0.1)
   expect_equal(dup$dup_days, 44)
-  expect_equal(dup$dup_hospital_days, 30)
+  expect_equal(dup$dup_hospital_days, 32)
 })
 
 # 19
@@ -1367,12 +1367,39 @@ test_that("predup combines and calculates hosptalizations correctly", {
 test_that("predup does not combine and calculates scattered hosptalizations correctly", {
 
   # Make hospitalization data
-  hospitalizations <- data.table(id = 100001, hosp_start = as.IDate(c("2003-06-01",
-                                                           "2003-06-11",
-                                                           "2003-06-25",
-                                                           "2003-07-15")),
-                      hosp_end = as.IDate(c("2003-06-04", "2003-06-18",
-                                            "2003-07-03", "2003-07-17")))
+  hospitalizations <- data.table(
+    id = 100001,
+    hosp_start = as.IDate(c(
+      "2003-06-01", "2003-06-11", "2003-06-25", "2003-07-15"
+    )),
+    hosp_end = as.IDate(
+      c("2003-06-04", "2003-06-18", "2003-07-03", "2003-07-17"
+      )))
+  two_purchases <- data.frame(
+    ID = c(100001, 100001),
+    ATC = c("N06DX01", "N06DX01"),
+    VNR = c(194091, 194091),
+    purc_date = as.Date(c("2003-06-05", "2003-06-30")),
+    ratio = c(0.5, 0.5),
+    ddd = c(14, 14)
+  )
+  packpar <- data.table(
+    vnr = 194091,
+    ATC = "N06DX01",
+    lower_ddd = 0.5,
+    usual_ddd = 1,
+    minimum_dur = 14,
+    usual_dur = 28,
+    maximum_dur = 56
+  )
+  # make atc parameters
+  atcpar <- data.table(
+    partial_atc = "N06D",
+    lower_ddd_atc = 0.2,
+    usual_ddd_atc = 0.8,
+    minimum_dur_atc = 30,
+    maximum_dur_atc = 300
+  )
 
   outdata <- suppressWarnings(suppressMessages(pre2dup(
     pre_data = two_separate_purchases,
@@ -1419,7 +1446,7 @@ test_that("predup does not combine and calculates scattered hosptalizations corr
 
   expect_equal(dup$dup_end, as.Date(c("2003-07-16")), tolerance = 0.1)
   expect_equal(dup$dup_days, c(41))
-  expect_equal(dup$dup_hospital_days, c(13))
+  expect_equal(dup$dup_hospital_days, c(14))
 })
 
 # 27
@@ -1827,7 +1854,7 @@ test_that("predup handles overlapping purchases, hospitalization on both exposur
 
   expect_equal(dup$dup_end, as.Date("2003-07-14"), tolerance = 0.1)
   expect_equal(dup$dup_days, 39)
-  expect_equal(dup$dup_hospital_days, 25) # 10 + 15
+  expect_equal(dup$dup_hospital_days, 27) 
 })
 
 # 33
@@ -1882,7 +1909,7 @@ test_that("predup handles overlapping purchases, hospitalization on both exposur
 
   expect_equal(dup$dup_end, as.Date("2003-07-04"), tolerance = 0.1)
   expect_equal(dup$dup_days, 29)
-  expect_equal(dup$dup_hospital_days, 15) # 10 + 15
+  expect_equal(dup$dup_hospital_days, 27) 
 })
 
 # 34
@@ -1991,7 +2018,7 @@ test_that("predup does not combine separate purchases, global max 2", {
 
   expect_equal(dup$dup_end, as.Date(c("2003-06-21", "2003-07-14")), tolerance = 0.1)
   expect_equal(dup$dup_days, c(16, 14))
-  expect_equal(dup$dup_hospital_days, c(2, 0))
+  expect_equal(dup$dup_hospital_days, c(5, 0))
 })
 
 # 36
@@ -2099,7 +2126,7 @@ test_that("predup ignores hospitalization after last exposure", {
 
   expect_equal(dup$dup_end, as.Date(c("2003-06-21")), tolerance = 0.1)
   expect_equal(dup$dup_days, 16)
-  expect_equal(dup$dup_hospital_days, 2)
+  expect_equal(dup$dup_hospital_days, 3)
 })
 
 test_that("predup stops if global maximum is not greater than global minimum value provided", {
@@ -2878,7 +2905,7 @@ test_that("predup calculates hospitalizations correctly (tutorial 'Hospitaliszat
   expect_equal(dup$dup_start, as.Date("2000-01-04"))
   expect_equal(dup$dup_end, as.Date("2000-03-22"))
   expect_equal(dup$dup_days, 78)
-  expect_equal(dup$dup_hospital_days, 24)
+  expect_equal(dup$dup_hospital_days, 28)
   expect_equal(dup$dup_n_purchases, 2)
 })
 
@@ -2958,7 +2985,7 @@ test_that("predup calculates hospitalizations correctly (tutorial 'Multiple shor
   expect_equal(dup$dup_start, as.Date("2000-01-04"))
   expect_equal(dup$dup_end, as.Date("2000-03-20"))
   expect_equal(dup$dup_days, 76)
-  expect_equal(dup$dup_hospital_days, 22)
+  expect_equal(dup$dup_hospital_days, 32)
   expect_equal(dup$dup_n_purchases, 2)
 })
 test_that("predup calculates hospitalizations correctly (tutorial 'Separate hospitalizations')",
@@ -3026,7 +3053,7 @@ test_that("predup calculates hospitalizations correctly (tutorial 'Separate hosp
             expect_equal(dup$dup_start, as.Date("2000-01-04"))
             expect_equal(dup$dup_end, as.Date("2000-03-30"))
             expect_equal(dup$dup_days, 86)
-            expect_equal(dup$dup_hospital_days, 30)
+            expect_equal(dup$dup_hospital_days, 32)
             expect_equal(dup$dup_n_purchases, 1)
           })
 test_that("predup calculates hospitalizations correctly (tutorial 'Overlapping hospitalizations')",
@@ -3246,7 +3273,7 @@ test_that("predup calculates hospitalizations correctly (tutorial example 6)",
             expect_equal(dup$dup_start, as.Date(c("2000-01-04", "2000-05-25")), tolerance = 0.1)
             expect_equal(dup$dup_end, as.Date(c("2000-04-17", "2000-07-20")), tolerance = 0.1)
             expect_equal(dup$dup_days, c(104, 56))
-            expect_equal(dup$dup_hospital_days, c(22, 0))
+            expect_equal(dup$dup_hospital_days, c(26, 0))
             expect_equal(dup$dup_n_purchases, c(2, 1))
           })
 test_that("predup calculates hospitalizations correctly (tutorial example 'Hospitalization extending exposure, but not connecting')",
@@ -3320,7 +3347,7 @@ test_that("predup calculates hospitalizations correctly (tutorial example 'Hospi
             dup <- periods$periods
             expect_equal(nrow(dup), 2)
             expect_equal(dup$dup_days, c(40, 28))
-            expect_equal(dup$dup_hospital_days, c(12, 0))
+            expect_equal(dup$dup_hospital_days, c(16, 0))
           })
 
 test_that("predup calculates hospitalizations correctly (tutorial example 'Hospitalization extending exposure, connecting')",
