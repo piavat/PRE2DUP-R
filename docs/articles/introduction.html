@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PRE2DUPR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="nav-link" href="https://github.com/piavat/PRE2DUP-R/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -60,7 +61,7 @@
       <h1>Introduction to PRE2DUP-R</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/piavat/PRE2DUP-R/blob/HEAD/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="d-none name"><code>introduction.Rmd</code></div>
     </div>
 
@@ -81,7 +82,7 @@ following command in R:</p>
 <p>To use the <code>PRE2DUPR</code> package, you can start by loading it
 into your R session:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">PRE2DUPR</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://piavat.github.io/PRE2DUP-R/" class="external-link">PRE2DUPR</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
@@ -104,9 +105,9 @@ package characteristics.</li>
 characteristics.</li>
 </ul>
 <p>All data types have associated functions to validate the input before
-running <code>pre2dup</code>. These functions are called internally by
-the program, so you don’t need to run them manually unless you want to
-check your data beforehand.</p>
+running <code>pre2dup</code>. These functions are run internally by the
+program, so you don’t need to run them manually unless you want to check
+your data beforehand.</p>
 <p>It is recommended to run these checks in advance to detect and
 correct errors more easily and efficiently. Note that the internal
 checks in <code>pre2dup</code> will display only the first five rows
@@ -135,6 +136,7 @@ requirements for the algorithm to function correctly.</p>
 <span>                pre_date <span class="op">=</span> <span class="st">"purchase_date"</span>,</span>
 <span>                pre_ratio <span class="op">=</span> <span class="st">"n_packages"</span>,</span>
 <span>                pre_ddd <span class="op">=</span> <span class="st">"amount"</span>,</span>
+<span>                drop_atcs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                print_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>                </span>
 <span><span class="co"># Checks passed for ‘purchases_example’</span></span></code></pre></div>
@@ -257,14 +259,15 @@ to estimate drug exposure.</p>
 <span>  global_max_single <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  global_ddd_high <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  global_hosp_max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  weight_past <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weight_current <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  weight_next <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weight_first_last <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  calculate_pack_dur_usual <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  drop_atcs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  data_to_return <span class="op">=</span> <span class="st">"periods"</span>,</span>
 <span>  post_process_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span><span class="co"># Step 1/6: Checking parameters and datasets...</span></span>
 <span><span class="co"># Checks passed for ‘pre_data’</span></span>
 <span><span class="co"># Checks passed for ‘package_parameters’</span></span>
@@ -273,40 +276,40 @@ to estimate drug exposure.</p>
 <span><span class="co"># Preparing hospitalization data and merging overlapping hospitalizations.</span></span>
 <span><span class="co"># Step 2/6: Calculating purchase durations...</span></span>
 <span><span class="co"># Step 3/6: Stockpiling assessment...</span></span>
-<span><span class="co"># Step 4/6: Calculating common package durations in data...</span></span>
-<span><span class="co"># Refill lengths couldn't be re-estimated, probably due to too small data size.</span></span>
+<span><span class="co"># Step 4/6: Common package duration calculation was not selected in function call; skipping this step.</span></span>
 <span><span class="co"># Step 5/6: Preparing drug use periods...</span></span>
 <span><span class="co"># Step 6/6: Post-processing drug use periods...</span></span>
 <span><span class="co"># Current post processing percentage: 1</span></span>
-<span><span class="co"># Drug use periods calculated. 7 periods created for 5 persons.  </span></span>
+<span><span class="co"># Drug use periods calculated. 7 periods created for 5 persons.</span></span>
+<span><span class="co"># Returning drug use periods.</span></span>
 <span></span>
-<span><span class="co"># Drug use periods are stored in the `periods` element of the output list.</span></span>
-<span><span class="va">dup</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">periods</span></span>
-<span><span class="va">dup</span></span>
-<span><span class="co">#    period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span></span>
-<span><span class="co">#     &lt;int&gt; &lt;fctr&gt;  &lt;char&gt;     &lt;Date&gt;     &lt;Date&gt;    &lt;num&gt;             &lt;num&gt;           &lt;int&gt;            &lt;Date&gt;         &lt;num&gt;                     &lt;num&gt;</span></span>
+<span><span class="co"># Drug use periods</span></span>
+<span><span class="va">outdata</span></span>
+<span><span class="co">#   period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span></span>
+<span><span class="co"># &lt;int&gt; &lt;fctr&gt;  &lt;char&gt;     &lt;Date&gt;     &lt;Date&gt;    &lt;num&gt;             &lt;num&gt;           &lt;int&gt;            &lt;Date&gt;         &lt;num&gt;                     &lt;num&gt;</span></span>
 <span><span class="co"># 1:      1      1 N05AH02 2025-01-01 2025-04-14      104                 0               3        2025-03-08         99.99                     0.961</span></span>
 <span><span class="co"># 2:      2      2 N05AH02 2025-01-15 2025-04-28      104                 5               3        2025-03-22         99.99                     0.961</span></span>
 <span><span class="co"># 3:      3      3 N05AH02 2025-02-01 2025-05-15      104                 0               3        2025-04-08         99.99                     0.961</span></span>
 <span><span class="co"># 4:      4      3 N05AH04 2025-01-05 2025-08-26      233                 0               2        2025-04-15        200.00                     0.858</span></span>
 <span><span class="co"># 5:      5      4 N05AH02 2025-01-10 2025-04-23      104                 0               3        2025-03-17         99.99                     0.961</span></span>
 <span><span class="co"># 6:      6      4 N05AH04 2025-01-20 2025-09-10      233                 0               2        2025-04-30        200.00                     0.858</span></span>
-<span><span class="co"># 7:      7      5 N05AH04 2025-01-01 2025-08-22      233                38               2        2025-04-11        200.00                     0.858</span></span>
-<span></span>
-<span><span class="co"># Package parameters with updated common durations is not returned, because the common durations were not calculated in this example.</span></span>
-<span><span class="va">outdata</span><span class="op">$</span><span class="va">pack_info</span></span>
-<span><span class="co"># NULL</span></span></code></pre></div>
+<span><span class="co"># 7:      7      5 N05AH04 2025-01-01 2025-08-22      233                38               2        2025-04-11        200.00                     0.858</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="workflow-when-using-estimated-usual-package-durations-from-data">Workflow when using estimated usual package durations from data<a class="anchor" aria-label="anchor" href="#workflow-when-using-estimated-usual-package-durations-from-data"></a>
 </h2>
-<p>The <code>pre2dup</code> function has an option to estimate the usual
-package durations from the data. This is useful when you want to derive
-package durations based on the actual purchase patterns in your dataset.
-Set <code>calculate_pack_dur_usual = T</code>, run the program and
-update package parameters based on common duration in data.</p>
+<p>The <code>pre2dup</code> function has an option to calculate typical
+package durations from the drug purchases data. This is useful when user
+wants to derive package parameter’s usual package durations based on the
+actual purchase patterns. User runs first the <code>pre2dup</code> with
+argument <code>data_to_return = "parameters"</code>. The function then
+returns a package parameter file that includes an additional column for
+the typical package durations. The user can use this information to
+update the parameters usual package duration and usual daily DDD and run
+<code>pre2dup</code> with <code>data_to_return = "periods"</code> to
+create the drug exposure periods.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Make data so big, that it can calculate common durations</span></span>
+<code class="sourceCode R"><span><span class="co"># Step 1: Calculate common package durations in drug purchases data</span></span>
 <span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, each <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">vnr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">30627</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">41738</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">ATC</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"N05AH02"</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"N05AH04"</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
@@ -318,8 +321,8 @@ update package parameters based on common duration in data.</p>
 <span></span>
 <span><span class="va">purchases_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">vnr</span>, <span class="va">ATC</span>, <span class="va">purchase_date</span>, <span class="va">n_packages</span>, <span class="va">amount</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># This example uses function default values, they can be changed to fit your needs.</span></span>
-<span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
+<span><span class="co"># Run pre2dup with data_to_return = "parameters". </span></span>
+<span><span class="va">updated_params</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
 <span>  pre_data <span class="op">=</span> <span class="va">purchases_data</span>,</span>
 <span>  pre_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
 <span>  pre_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
@@ -352,14 +355,15 @@ update package parameters based on common duration in data.</p>
 <span>  global_max_single <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  global_ddd_high <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  global_hosp_max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  weight_past <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weight_current <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  weight_next <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weight_first_last <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  calculate_pack_dur_usual <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  post_process_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>  </span>
+<span>  drop_atcs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  data_to_return <span class="op">=</span> <span class="st">"parameters"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
 <span><span class="co"># Step 1/6: Checking parameters and datasets...</span></span>
 <span><span class="co"># Checks passed for ‘pre_data’</span></span>
 <span><span class="co"># Checks passed for ‘package_parameters’</span></span>
@@ -369,18 +373,9 @@ update package parameters based on common duration in data.</p>
 <span><span class="co"># Step 2/6: Calculating purchase durations...</span></span>
 <span><span class="co"># Step 3/6: Stockpiling assessment...</span></span>
 <span><span class="co"># Step 4/6: Calculating common package durations in data...</span></span>
-<span><span class="co"># Step 5/6: Preparing drug use periods...</span></span>
-<span><span class="co"># Step 6/6: Post-processing drug use periods...</span></span>
-<span><span class="co"># Current post processing percentage: 1</span></span>
-<span><span class="co"># Drug use periods calculated. 10 periods created for 5 persons.</span></span>
+<span><span class="co"># Common package durations calculated, returning updated package parameters.</span></span>
 <span></span>
-<span><span class="co"># Program returns periods, but not used for now </span></span>
-<span><span class="va">dup</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">periods</span></span>
-<span></span>
-<span><span class="co"># Program returns updated package parameters</span></span>
-<span><span class="va">updated_params</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">pack_info</span></span>
-<span></span>
-<span><span class="co"># Check new common durations</span></span>
+<span><span class="co"># Step 2: Check new common durations and use as new usual duration</span></span>
 <span><span class="va">updated_params</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">updated_params</span><span class="op">$</span><span class="va">common_duration</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="co">#     vnr     ATC product_name strength strength_num packagesize packsize_num drug_form_harmonized ddd_per_pack minimum_dur usual_dur maximum_dur lower_ddd usual_ddd common_duration</span></span>
 <span><span class="co"># 6 30627 N05AH02      LEPONEX    100MG          100         100          100               TABLET     33.33333          25     33.33         100    0.3333      1.00              40</span></span>
@@ -393,8 +388,11 @@ update package parameters based on common duration in data.</p>
 <span>  <span class="va">updated_params</span><span class="op">$</span><span class="va">usual_dur</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Run PRE2DUP with the updated package parameters</span></span>
-<span><span class="va">outdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
+<span><span class="co"># Update also usual daily DDD</span></span>
+<span><span class="va">updated_params</span><span class="op">$</span><span class="va">usual_ddd_new</span> <span class="op">&lt;-</span> <span class="va">updated_params</span><span class="op">$</span><span class="va">ddd_per_pack</span><span class="op">/</span><span class="va">updated_params</span><span class="op">$</span><span class="va">usual_duration_new</span></span>
+<span></span>
+<span><span class="co"># Step 3: Run pre2dup with the updated package parameters and with data_to_return = "periods"</span></span>
+<span><span class="va">final_periods</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre2dup.html">pre2dup</a></span><span class="op">(</span></span>
 <span>  pre_data <span class="op">=</span> <span class="va">purchases_data</span>,</span>
 <span>  pre_person_id <span class="op">=</span> <span class="st">"id"</span>,</span>
 <span>  pre_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
@@ -406,9 +404,9 @@ update package parameters based on common duration in data.</p>
 <span>  pack_atc <span class="op">=</span> <span class="st">"ATC"</span>,</span>
 <span>  pack_id <span class="op">=</span> <span class="st">"vnr"</span>,</span>
 <span>  pack_ddd_low <span class="op">=</span> <span class="st">"lower_ddd"</span>,</span>
-<span>  pack_ddd_usual <span class="op">=</span><span class="st">"usual_ddd"</span>,</span>
+<span>  pack_ddd_usual <span class="op">=</span><span class="st">"usual_ddd_new"</span>, <span class="co"># New column</span></span>
 <span>  pack_dur_min <span class="op">=</span> <span class="st">"minimum_dur"</span>,</span>
-<span>  pack_dur_usual <span class="op">=</span>  <span class="st">"usual_duration_new"</span>, <span class="co"># This is the new column</span></span>
+<span>  pack_dur_usual <span class="op">=</span>  <span class="st">"usual_duration_new"</span>, <span class="co"># New column</span></span>
 <span>  pack_dur_max <span class="op">=</span> <span class="st">"maximum_dur"</span>,</span>
 <span>  atc_parameters <span class="op">=</span> <span class="va">ATC_parameters</span>,</span>
 <span>  atc_class <span class="op">=</span> <span class="st">"partial_atc"</span>,</span>
@@ -427,12 +425,13 @@ update package parameters based on common duration in data.</p>
 <span>  global_max_single <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  global_ddd_high <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  global_hosp_max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  weight_past <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weight_current <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  weight_next <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  weight_first_last <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  calculate_pack_dur_usual <span class="op">=</span> <span class="cn">F</span>,<span class="co"># Done already</span></span>
-<span>  days_covered <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  drop_atcs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  data_to_return <span class="op">=</span> <span class="st">"periods"</span>,</span>
 <span>  post_process_perc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 1/6: Checking parameters and datasets...</span></span>
@@ -443,17 +442,16 @@ update package parameters based on common duration in data.</p>
 <span><span class="co"># Preparing hospitalization data and merging overlapping hospitalizations.</span></span>
 <span><span class="co"># Step 2/6: Calculating purchase durations...</span></span>
 <span><span class="co"># Step 3/6: Stockpiling assessment...</span></span>
-<span><span class="co"># Step 4/6: Common package duration calculation was not selected in the parameters; skipping this step.</span></span>
+<span><span class="co"># Step 4/6: Common package duration calculation was not selected in function call; skipping this step.</span></span>
 <span><span class="co"># Step 5/6: Preparing drug use periods...</span></span>
 <span><span class="co"># Step 6/6: Post-processing drug use periods...</span></span>
 <span><span class="co"># Current post processing percentage: 1</span></span>
 <span><span class="co"># Drug use periods calculated. 10 periods created for 5 persons.</span></span>
+<span><span class="co"># Returning drug use periods.</span></span>
 <span></span>
 <span><span class="co"># The final output</span></span>
-<span><span class="va">final_periods</span> <span class="op">&lt;-</span> <span class="va">outdata</span><span class="op">$</span><span class="va">periods</span></span>
 <span><span class="va">final_periods</span></span>
 <span><span class="co">#    period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs</span></span>
-<span><span class="co">#     &lt;int&gt; &lt;fctr&gt;  &lt;char&gt;     &lt;Date&gt;     &lt;Date&gt;    &lt;num&gt;             &lt;num&gt;           &lt;int&gt;            &lt;Date&gt;         &lt;num&gt;                     &lt;num&gt;</span></span>
 <span><span class="co"># 1:      1      1 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
 <span><span class="co"># 2:      2      1 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654</span></span>
 <span><span class="co"># 3:      3      2 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
@@ -463,7 +461,7 @@ update package parameters based on common duration in data.</p>
 <span><span class="co"># 7:      7      4 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
 <span><span class="co"># 8:      8      4 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654</span></span>
 <span><span class="co"># 9:      9      5 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809</span></span>
-<span><span class="co"># 10:    10      5 N05AH04 2022-05-01 2025-09-05     1224                38              10        2025-04-15           800                     0.654</span></span></code></pre></div>
+<span><span class="co"># 10:     10     5 N05AH04 2022-05-01 2025-09-05     1224                38              10        2025-04-15           800                     0.654</span></span></code></pre></div>
 <p>For any questions or support, feel free to reach out to the package
 maintainers</p>
 <p>…</p>
