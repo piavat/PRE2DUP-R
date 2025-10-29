@@ -4,12 +4,14 @@
 \alias{find_multiple_atcs}
 \title{Find Multiple ATC Codes}
 \usage{
-find_multiple_atcs(atc_col, package_col)
+find_multiple_atcs(atc_col, package_col, location)
 }
 \arguments{
 \item{atc_col}{a character vector containing ATC codes.}
 
 \item{package_col}{an integer vector containing package identifiers corresponding to the ATC codes.}
+
+\item{location}{character. Short description of finding location.}
 }
 \value{
 invisible NULL if all packages have a single ATC code, otherwise raises an error with a message listing the packages that have multiple ATC codes.

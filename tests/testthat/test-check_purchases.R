@@ -1,4 +1,3 @@
-library(mockery)
 # These tests are for the check_purchases function
 test_data <- data.frame(
   person_id = rep(100001, 7),
@@ -18,25 +17,21 @@ test_data_errors <- data.frame(
   total_ddd = c(100, 100, 0, 100,  50, 10, 3)
 )
 
-
-
-
 # Test indata_check function for package parameters
 test_that("check_purchases works as expected with valid data", {
   # Data without errors, all relevant checks passed. Function returns data.table.
 
   # Passed package parameters
-  outdata <- check_purchases(test_data,
+  outdata <- suppressWarnings(suppressMessages(check_purchases(test_data,
                              pre_person_id = "person_id",
                              pre_atc = "atc",
                              pre_package_id = "package_vnr",
                              pre_date = "purchase_date",
                              pre_ratio = "ratio",
                              pre_ddd = "total_ddd",
-                             return_data = TRUE)
+                             return_data = TRUE)))
 
   expect_true(is.data.table(outdata))
-  # expect_true(all(dim(outdata) == dim(test_data)))
   expect_true(is.factor(outdata$person_id))
   expect_true(typeof(outdata$atc) == "character")
   expect_true(typeof(outdata$package_vnr) == "integer")
@@ -130,40 +125,39 @@ test_that("check_purchases gives warnings about invalid values", {
 
 test_that("check_purchases accepts character person ID and returns it as factor", {
   test_data$person_id_char <- as.character(test_data$person_id)
-  outdata <- check_purchases(test_data,
+  outdata <- suppressWarnings(suppressMessages(check_purchases(test_data,
                              pre_person_id = "person_id_char",
                              pre_atc = "atc",
                              pre_package_id = "package_vnr",
                              pre_date = "purchase_date",
                              pre_ratio = "ratio",
                              pre_ddd = "total_ddd",
-                             return_data = TRUE)
+                             return_data = TRUE)))
   expect_true(is.factor(outdata$person_id))
 })
 
-
 test_that("check_purchases accepts factor person ID and returns it as factor", {
   test_data$person_id_fac <- as.factor(test_data$person_id)
-  outdata <- check_purchases(test_data,
+  outdata <- suppressWarnings(suppressMessages(check_purchases(test_data,
                              pre_person_id = "person_id_fac",
                              pre_atc = "atc",
                              pre_package_id = "package_vnr",
                              pre_date = "purchase_date",
                              pre_ratio = "ratio",
                              pre_ddd = "total_ddd",
-                             return_data = TRUE)
+                             return_data = TRUE)))
   expect_true(is.factor(outdata$person_id))
 })
 
 test_that("check_purchases accepts numeric person ID and returns it as factor", {
-  outdata <- check_purchases(test_data,
+  outdata <- suppressWarnings(suppressMessages(check_purchases(test_data,
                              pre_person_id = "person_id",
                              pre_atc = "atc",
                              pre_package_id = "package_vnr",
                              pre_date = "purchase_date",
                              pre_ratio = "ratio",
                              pre_ddd = "total_ddd",
-                             return_data = TRUE)
+                             return_data = TRUE)))
   expect_true(is.factor(outdata$person_id))
 })
 
@@ -211,6 +205,7 @@ test_that("check_purchases stops if one package has several ATCs", {
     error = TRUE
   )
 })
+
 test_that("check_purchases informs ATCs without sufficient information and continues with the rest", {
   test_data_missing_ddd <- data.frame(
     person_id = rep(100001, 10),
@@ -220,8 +215,6 @@ test_that("check_purchases informs ATCs without sufficient information and conti
     ratio = rep(1, 20),
     total_ddd = c(rep(100, 8), NA, NA, rep(100, 10))
   )
-  mock_readline <- mock("y")
-  stub(check_purchases, "readline", mock_readline)
 
   expect_snapshot(
    outdata <-  check_purchases(test_data_missing_ddd,
@@ -231,6 +224,7 @@ test_that("check_purchases informs ATCs without sufficient information and conti
                     pre_date = "purchase_date",
                     pre_ratio = "ratio",
                     pre_ddd = "total_ddd",
+                    drop_atcs = TRUE,
                     return_data = TRUE)
    )
   expect_true(is.data.table(outdata))
@@ -238,7 +232,7 @@ test_that("check_purchases informs ATCs without sufficient information and conti
 })
 
 test_that(
-  "check_purchases informs ATCs without sufficient information and stops with promt 'no'",
+  "check_purchases informs ATCs without sufficient information and stops with drop_ATC:s = FALSE",
   {
     test_data_missing_ddd <- data.frame(
       person_id = rep(100001, 10),
@@ -248,8 +242,6 @@ test_that(
       ratio = rep(1, 20),
       total_ddd = c(rep(100, 8), NA, NA, rep(100, 10))
     )
-    mock_readline <- mock("n")
-    stub(check_purchases, "readline", mock_readline)
 
     expect_snapshot(
       check_purchases(
@@ -260,11 +252,13 @@ test_that(
         pre_date = "purchase_date",
         pre_ratio = "ratio",
         pre_ddd = "total_ddd",
-        return_data = TRUE
+        return_data = TRUE,
+        drop_atcs = FALSE
       ), error = TRUE
     )
   }
 )
+
 test_that(
   "check_purchases returns an error when vnr is missing after proceeding with missing DDD",
   {
@@ -276,8 +270,6 @@ test_that(
       ratio = rep(1, 20),
       total_ddd = c(rep(100, 8), NA, NA, rep(100, 10))
     )
-    mock_readline <- mock("y")
-    stub(check_purchases, "readline", mock_readline)
 
     expect_snapshot(
       check_purchases(
@@ -288,7 +280,36 @@ test_that(
         pre_date = "purchase_date",
         pre_ratio = "ratio",
         pre_ddd = "total_ddd",
-        return_data = TRUE
+        return_data = TRUE,
+        drop_atcs = TRUE
+      ), error = TRUE
+    )
+  }
+)
+
+test_that(
+  "check_purchases warns that no drug purchase records remained after dropping ATCs",
+  {
+    test_data_missing_ddd <- data.frame(
+      person_id = rep(100001, 10),
+      atc = c(rep("N05AH02", 10), rep("N05AH03", 10)),
+      package_vnr = c(rep(12345, 10), rep(123456, 10)),
+      purchase_date = as.Date("2022-01-01") + 30*0:19,
+      ratio = rep(1, 20),
+      total_ddd = c(NA, 20)
+    )
+
+    expect_snapshot(
+      check_purchases(
+        test_data_missing_ddd,
+        pre_person_id = "person_id",
+        pre_atc = "atc",
+        pre_package_id = "package_vnr",
+        pre_date = "purchase_date",
+        pre_ratio = "ratio",
+        pre_ddd = "total_ddd",
+        return_data = TRUE,
+        drop_atcs = TRUE
       ), error = TRUE
     )
   }

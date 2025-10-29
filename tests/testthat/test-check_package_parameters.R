@@ -18,7 +18,7 @@ test_that("check_package_parameters works as expected with valid data", {
   # Data without errors, all relevant checks passed. Function returns data.table.
 
   # Passed package parameters
-  outdata <- check_package_parameters(
+  outdata <- suppressWarnings(suppressMessages(check_package_parameters(
     dt = df_pack_params,
     pack_atc = "ATC",
     pack_id = "vnr",
@@ -28,7 +28,7 @@ test_that("check_package_parameters works as expected with valid data", {
     pack_dur_usual = "usual_duration",
     pack_dur_max = "maximum_duration",
     return_data = TRUE
-  )
+  )))
   expect_true(is.data.table(outdata))
   expect_true(all(dim(outdata) == dim(df_pack_params)))
   expect_true(typeof(outdata$ATC) == "character")

@@ -1,16 +1,16 @@
 #' Validate Hospitalization Data
-#' 
+#'
 #' This function checks the structure and content of hospitalization data (data.frame or data.table) for use in \code{\link{pre2dup}} workflows.
 #' It validates required columns, data types, date consistency, and chronological logic (admission before discharge).
 #' If all checks pass, it can return a cleaned data.table with the required columns and types.
 #'
 #' @param dt data.frame or data.table containing hospitalization records.
-#' @param hosp_person_id Character. Column name for the person identifier.
-#' @param hosp_admission Character. Column name for hospital admission date.
-#' @param hosp_discharge Character. Column name for hospital discharge date.
-#' @param date_range Character vector of length 2. Date range for hospitalizations (e.g., c("1995-01-01", "2025-12-31")). Default is NULL (no date range check).
-#' @param print_all Logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.
-#' @param return_data Logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.
+#' @param hosp_person_id character. Column name for the person identifier.
+#' @param hosp_admission character. Column name for hospital admission date.
+#' @param hosp_discharge character. Column name for hospital discharge date.
+#' @param date_range character vector of length 2. Date range for hospitalizations (e.g., c("1995-01-01", "2025-12-31")). Default is NULL (no date range check).
+#' @param print_all logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.
+#' @param return_data logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.
 #'
 #' @return
 #' If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with dates converted to integer and overlapping hospitalizations combined.
@@ -28,7 +28,7 @@
 #' }
 #'
 #' If any errors are found, the function stops execution and prints all error messages.
-#' 
+#'
 #' @import data.table
 #'
 #' @importFrom intervals Intervals interval_union
@@ -58,12 +58,14 @@ check_hospitalizations <- function(dt,
                             return_data = FALSE) {
 
   data_name <- deparse(substitute(dt))
-  # Checks that stops the execution of the function-----
-  ##  Stops if the dataset is empty, arguments are missing or
+
+  # Checks that stops the execution of the function -----
+
   if(nrow(dt) == 0){
     stop(paste0("No data in the dataset ", sQuote(data_name)), ".",
          call. = FALSE)
   }
+
   # Stops if arguments are not filled
   check_arguments(
     dt = dt,
@@ -141,7 +143,6 @@ check_hospitalizations <- function(dt,
                                make_warning(errows, colvars = hosp_discharge,
                                             warning_message = "has values outside date range",
                                             print_all = print_all))
-
       }
     }
   }
@@ -158,7 +159,7 @@ check_hospitalizations <- function(dt,
     ), call. = FALSE)
   } else {
     message(paste("Checks passed for", sQuote(data_name)))
-    
+
     if(return_data) {
       message("Preparing hospitalization data and merging overlapping hospitalizations.")
       dt <- dt[, .SD, .SDcols = c(required_columns)]
@@ -187,4 +188,3 @@ check_hospitalizations <- function(dt,
     }
   }
 }
-

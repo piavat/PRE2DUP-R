@@ -6,13 +6,13 @@
 #' The function stops execution if critical errors are found.
 #'
 #' @param dt data.frame or data.table containing the ATC parameters to validate.
-#' @param atc_class Character. Name of the column containing the ATC class or code.
-#' @param atc_ddd_low Character. Name of the column with the minimum daily DDD value.
-#' @param atc_ddd_usual Character. Name of the column with the usual daily DDD value.
-#' @param atc_dur_min Character. Name of the column with the minimum duration (in days).
-#' @param atc_dur_max Character. Name of the column with the maximum duration (in days).
-#' @param print_all Logical. If TRUE, all warnings are printed.
-#' @param return_data Logical. If TRUE, the function returns the validated data. If FALSE, only a message is printed.
+#' @param atc_class character. Name of the column containing the ATC class or code.
+#' @param atc_ddd_low character. Name of the column with the minimum daily DDD value.
+#' @param atc_ddd_usual character. Name of the column with the usual daily DDD value.
+#' @param atc_dur_min character. Name of the column with the minimum duration (in days).
+#' @param atc_dur_max character. Name of the column with the maximum duration (in days).
+#' @param print_all logical. If TRUE, all warnings are printed.
+#' @param return_data logical. If TRUE, the function returns the validated data. If FALSE, only a message is printed.
 #'
 #' @return
 #' If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with converted types.
@@ -39,7 +39,7 @@
 #'   atc_dur_max = c(40, 56, 100)
 #' )
 #' # Validate and return the data if all checks pass
-#' check_atc_parameters(
+#' atc_parameters <- check_atc_parameters(
 #'   dt = atc_data,
 #'   atc_class = "atc_class",
 #'   atc_ddd_low = "atc_ddd_low",
@@ -49,7 +49,7 @@
 #'   print_all = TRUE,
 #'   return_data = TRUE
 #' )
-#'
+#'print(atc_parameters)
 #' @export
 check_atc_parameters <- function(dt,
                                  atc_class = NULL,

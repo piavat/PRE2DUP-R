@@ -1,2 +1,6 @@
+#' Package-level imports
+#'
 #' @import data.table
-NULL
+#' @importFrom intervals Intervals interval_union
+#' @keywords internal
+"_PACKAGE"

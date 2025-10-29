@@ -1,80 +1,84 @@
 #' Estimate Drug Use Periods from Drug Purchase Data
 #'
-#' Estimates drug use periods based on individual drug purchase data. Optionally, hospitalization data can be incorporated. The estimation uses package-specific and Anatomical Therapeutic Chemical (ATC) Classification code -level parameters. This function supports estimation for individuals with varied purchase patterns, including stockpiling behavior.
+#' Estimates drug use periods based on individual drug purchase data, supporting the estimation for individuals with varied purchase patterns and stockpiling. The estimation uses package-specific and Anatomical Therapeutic Chemical (ATC) Classification code -level parameters (latter provided with the package). Optionally, hospitalization data can be incorporated.
 #'
-#' @param pre_data  data.frame or data.table containing drug purchases.
-#' @param pre_person_id character, name of the column containing person id.
-#' @param pre_atc character, name of the column containing ATC code.
-#' @param pre_package_id character, name of the column containing package id.
-#' @param pre_date character, name of the column containing purchase date.
-#' @param pre_ratio character, name of the column containing ratio of packages purchased (e.g., number of packages).
-#' @param pre_ddd character, name of the column containing defined daily doses (DDD) of the purchase.
-#' @param package_parameters data.frame or data.table containing package parameters.
-#' @param pack_atc character, name of the column containing ATC code.
-#' @param pack_id character, name of the column containing package id.
-#' @param pack_ddd_low character, name of the column containing lower limit of daily DDD.
-#' @param pack_ddd_usual character, name of the column containing usual daily DDD.
-#' @param pack_dur_min character, name of the column containing minimum duration of the package.
-#' @param pack_dur_usual character, name of the column containing usual duration of the package.
-#' @param pack_dur_max character, name of the column containing maximum duration of the package.
-#' @param atc_parameters data.frame or data.table containing ATC parameters.
-#' @param atc_class character, name of the column containing ATC class.
-#' @param atc_ddd_low character, name of the column containing lower limit of daily DDD for the ATC class.
-#' @param atc_ddd_usual character, name of the column containing usual daily DDD for the ATC class.
-#' @param atc_dur_min character, name of the column containing minimum duration for the ATC class.
-#' @param atc_dur_max character, name of the column containing maximum duration for the ATC class.
-#' @param hosp_data data.frame or data.table containing hospitalizations.
-#' @param hosp_person_id character, name of the column containing person id.
-#' @param hosp_admission character, name of the column containing admission date.
-#' @param hosp_discharge character, name of the column containing discharge date.
-#' @param date_range character, vector of two dates, start and end of the purchase data.
-#' @param global_gap_max numeric, maximum gap between purchases, default 300..
-#' @param global_min numeric, minimum duration of a purchase, default 5.
-#' @param global_max numeric, maximum duration of a purchase, default 300.
-#' @param global_max_single numeric, maximum duration of a single purchase, default 150.
-#' @param global_ddd_high numeric, maximum daily DDD for a purchase per day for any ATC, default 10.
-#' @param global_hosp_max numeric, maximum number of hospital days to be considered when estimating the exposure duration, default 30.
-#' @param days_covered numeric, maximum number of days to be added to the exposure duration to cover the gap between purchases, default 5.
-#' @param weight_past numeric, weight for the past purchase in sliding average calculation, default 1.
-#' @param weight_current numeric, weight for the current purchase in sliding average calculation, default 4.
-#' @param weight_next numeric, weight for the next purchase in sliding average calculation, default 1.
-#' @param weight_first_last numeric, weight for the first and last purchase in sliding average calculation, default 5.
-#' @param calculate_pack_dur_usual TRUE or FALSE, re-calculate usual duration of the package based on the purchase frequency in data, default FALSE.
-#' @param post_process_perc numeric, percentage of the data to be used in post-processing, default 1.
+#' @param pre_data  a data.frame or data.table containing drug purchases.
+#' @param pre_person_id character. Name of the column containing person id.
+#' @param pre_atc character. Name of the column containing ATC code.
+#' @param pre_package_id character. Name of the column containing package id.
+#' @param pre_date character. Name of the column containing purchase date.
+#' @param pre_ratio character. Name of the column containing ratio of packages purchased (e.g., number of packages).
+#' @param pre_ddd character. Name of the column containing defined daily doses (DDD) of the purchase.
+#' @param package_parameters a data.frame or data.table containing package parameters.
+#' @param pack_atc character. Name of the column containing ATC code.
+#' @param pack_id character. Name of the column containing package id.
+#' @param pack_ddd_low character. Name of the column containing lower limit of daily DDD.
+#' @param pack_ddd_usual character. Name of the column containing usual daily DDD.
+#' @param pack_dur_min character. Name of the column containing minimum duration of the package.
+#' @param pack_dur_usual character. Name of the column containing usual duration of the package.
+#' @param pack_dur_max character. Name of the column containing maximum duration of the package.
+#' @param atc_parameters a data.frame or data.table containing ATC parameters.
+#' @param atc_class character. Name of the column containing ATC class.
+#' @param atc_ddd_low character. Name of the column containing lower limit of daily DDD for the ATC class.
+#' @param atc_ddd_usual character. Name of the column containing usual daily DDD for the ATC class.
+#' @param atc_dur_min character. Name of the column containing minimum duration for the ATC class.
+#' @param atc_dur_max character. Name of the column containing maximum duration for the ATC class.
+#' @param hosp_data a data.frame or data.table containing hospitalizations.
+#' @param hosp_person_id character. Name of the column containing person id.
+#' @param hosp_admission character. Name of the column containing admission date.
+#' @param hosp_discharge character. Name of the column containing discharge date.
+#' @param date_range character. A vector of two dates, expected start and end dates in the drug purchase data.
+#' @param global_gap_max numeric. Maximum time between purchases that can be considered as continuous use. Default is 300.
+#' @param global_min numeric. Minimum duration of a drug purchase. Default is 5.
+#' @param global_max numeric. Maximum duration of a drug purchase. Default is 300.
+#' @param global_max_single numeric. Maximum duration of a single purchase. Default is 150.
+#' @param global_ddd_high numeric. Maximum daily DDD for a purchase per day for any ATC. Default is 10.
+#' @param global_hosp_max numeric. Maximum number of hospital days to be considered when estimating the exposure duration. Default is 30.
+#' @param days_covered numeric. Maximum number of days to be added to the exposure duration to cover the gap between purchases. Default is 5.
+#' @param weight_past numeric. Weight for the past purchase in sliding average calculation. Default is 1.
+#' @param weight_current numeric. Weight for the current purchase in sliding average calculation. Default is 4.
+#' @param weight_next numeric. Weight for the next purchase in sliding average calculation. Default is 1.
+#' @param weight_first_last numeric. Weight for the first and last purchase in sliding average calculation. Default is 5.
+#' @param post_process_perc numeric. Starting percentage for the gap duration to be used in post-processing. If the gap between consecutive drug use periods is at most the specified percentage of the duration of the preceding period, the periods will be connected. The percentage decreases by 0.1 in each iteration. Default is 1.
+#' @param drop_atcs logical. If TRUE the ATC codes without sufficient DDD or package parameter coverage will be ignored and the process continues with rest of the ATC codes, if FALSE, function execution stops. Default is FALSE.
+#' @param data_to_return character. Defines the data to return: drug use periods, updated package parameters, or both. The "periods" returns drug use periods, "parameters" returns updated package parameter file and "both" returns both of the datasets. Default is "periods".
 #'
-#' @return a list of two elements. Main element is \code{periods}: a data.table with one row per drug use period, including person, ATC, period start/end dates, duration, number of purchases, and total DDD. If \code{calculate_pack_dur_usual = TRUE}, an additional element \code{pack_info} contains updated package parameter information.
+#' @return a dataset or datasets selected at \code{data_to_return}. If \code{data_to_return = "periods"} function returns a data.table consisting drug use periods with period number, person identifier, ATC, period start and end dates, period duration in days, days spent in hospital during the period, number of purchases, total purchased DDDs and average daily DDD over the period. If \code{data_to_return = "parameters"}, function returns the original package parameter file with an additional column \code{common_duration} that contains them most common duration of each package in drug purchase data. If \code{data_to_return = "both"}, both datasets are returned as a list of two objects.
 #'
 #' @details
 #'
-#' Before starting to estimate the drug use periods, the function validates the input data and arguments by checking for missing values and unacceptable duplicates.
-#' It will stop execution if such issues are detected, with the following exceptions:
+#' Function validates the input data and arguments before the assessment of drug use periods.
+#' It will stop execution if issues are detected, with the following exceptions:
 #'
 #' \itemize{
 #'   \item Up to 10\% of missing DDD values per ATC class in the drug purchase data is allowed.
 #'   \item Up to 10\% of missing package parameter records per ATC class is allowed.
 #' }
-#' If either threshold is exceeded, the function prompts the user to decide whether to continue.
-#' If the user agrees, ATC classes with insufficient data are excluded, and the function proceeds with the remaining data.
+#' If either threshold is exceeded and \code{drop_atcs = FALSE} function stops with error, but with \code{drop_atcs = TRUE} ATC classes with insufficient data are ignored, and the function proceeds with the remaining data.
 #'
 #' There are five available methods for estimating the duration of each purchase, presented in the order of preference:
 #' \itemize{
-#'   \item Main method: Based on purchased daily doses (DDDs), temporal average of daily DDDs, and individual purchase patterns.
-#'   \item Package DDD method: Based on purchased DDDs and the usual daily DDD for the specific package.
-#'   \item Package duration method: Based on the usual duration of the package, considering the proportion of the package purchased.
-#'   \item ATC-level DDD method: Based on purchased DDDs and usual daily DDDs at the ATC level.
-#'   \item Minimum ATC duration method: Based on the minimum duration defined for the ATC group.
+#'   \item Continuous use: Based on purchased daily doses (DDDs), temporal average of daily DDDs, and individual purchase patterns.
+#'   \item Package-based methods:
+#'     \itemize{
+#'       \item Package DDD method: Based on purchased DDDs and the usual daily DDD for the specific package.
+#'       \item Package duration method: Based on the usual duration of the package, considering the number of the packages (or a proportion of partial package) purchased.
+#'     }
+#'   \item ATC-based methods:
+#'     \itemize{
+#'       \item ATC-level DDD method: Based on purchased DDDs and usual daily DDDs at the ATC level.
+#'       \item Minimum ATC duration method: Based on the minimum duration defined for the ATC group.
+#'     }
 #' }
 #'
-#' Periods that are close in time can be joined in a post-processing step controlled by \code{post_process_perc}. Post processing percentage reduces by 0.1 at each estimation round to prevent very long calculation times for large datasets.
+#' Periods that are close in time are joined in a post-processing step controlled by \code{post_process_perc}. Post processing percentage reduces by 0.1 at each estimation round to prevent long calculation times for large datasets.
 #'
-#' In addition to estimating drug use periods, the function can also calculate common package durations from the purchase data.
-#' These calculated durations can be used to verify and adjust the usual duration parameters of packages.
-#' After making corrections, re-run the function to recalculate drug use periods using the updated package parameters.
+#' Selecting \code{data_to_return = "parameters"} the \code{pre2dup} calculates the most common package duration for each package from the drug purchase data. Package parameter's usual package duration and usual daily DDD (Total DDDs in package/usual duration) can be updated based on common duration, and pre2dup can be re-run to calculate drug use periods using the updated package parameters.
 #'
 #' @import data.table
 #'
 #' @seealso
-#' Each data type has their own check functions. \code{pre2dup} runs the checks internally, but checking the validity before running the program is recommended for faster and easier error detection and handling.
+#' Drug purchases, parameter files and hospitalizations has their own check functions. The \code{pre2dup} runs the checks internally, but checking the validity before running the program is recommended for faster and easier error detection and handling.
 #'
 #' \code{\link{check_purchases}}, \code{\link{check_hospitalizations}}, \code{\link{check_package_parameters}}, \code{\link{check_atc_parameters}}
 #'
@@ -94,13 +98,13 @@
 #'            date_range = c("2025-01-01", "2025-12-31"),
 #'             global_gap_max = 300, global_min = 5, global_max = 300,
 #'              global_max_single = 150, global_ddd_high = 10,
-#'               global_hosp_max = 30, weight_past = 1, weight_current = 4,
-#'                weight_next = 1, weight_first_last = 5,
-#'                 calculate_pack_dur_usual = TRUE,
-#'                  days_covered = 5,
+#'               global_hosp_max = 30,days_covered = 5, weight_past = 1,
+#'                weight_current = 4, weight_next = 1, weight_first_last = 5,
+#'                 drop_atcs = FALSE,
+#'                 data_to_return = "periods",
 #'                  post_process_perc = 1)
 #'
-#'period_data$periods
+#'period_data
 #'
 #' @export
 pre2dup <- function(pre_data,
@@ -140,7 +144,8 @@ pre2dup <- function(pre_data,
                     weight_current = 4,
                     weight_next = 1,
                     weight_first_last = 5,
-                    calculate_pack_dur_usual = FALSE,
+                    drop_atcs = FALSE,
+                    data_to_return = "periods",
                     post_process_perc = 1) {
   # Dataset checks ----
 
@@ -182,13 +187,16 @@ pre2dup <- function(pre_data,
       "Expected Global maximum of single purchase (global_max_single) shorter than or equal to Global maximum (global_max).",
       call. = FALSE
     )
-  if (!is.logical(calculate_pack_dur_usual) ||
-      is.na(calculate_pack_dur_usual)) {
-    stop("Argument 'calculate_pack_dur_usual' must be either TRUE or FALSE.",
+  if (!is.logical(drop_atcs) ||
+      is.na(drop_atcs)) {
+    stop("Argument 'drop_atcs' must be either TRUE or FALSE.",
          call. = FALSE)
   }
+  data_to_return <- match.arg(data_to_return, choices = c("periods", "parameters", "both"))
 
   ## Check and modify datasets -----------------------------------------
+
+  # Check drug purchases data
   pre_data <- check_purchases(
     pre_data,
     pre_person_id = pre_person_id,
@@ -198,11 +206,9 @@ pre2dup <- function(pre_data,
     pre_ratio = pre_ratio,
     pre_ddd = pre_ddd,
     date_range = date_range,
-    return_data = TRUE
+    return_data = TRUE,
+    drop_atcs = drop_atcs # fix
   )
-  if (nrow(pre_data) == 0)
-    stop("No records left after deleting ATCs without sufficient level of DDD records.",
-         call. = FALSE)
 
   # After checks, rename columns for easier internal use (data was handled in check)
   oldnames <- c(pre_person_id, pre_atc, pre_package_id, pre_ratio, pre_ddd)
@@ -210,9 +216,10 @@ pre2dup <- function(pre_data,
   setnames(pre_data, oldnames, newnames)
   # Package parameters
   if (!is.null(package_parameters) &
-      isTRUE(calculate_pack_dur_usual))
+      data_to_return != "periods")
     package_parameters_orig <- package_parameters
 
+  # Check package parameters
   package_parameters <- check_package_parameters(
     dt = package_parameters,
     pack_atc = pack_atc,
@@ -245,6 +252,7 @@ pre2dup <- function(pre_data,
   )
   setnames(package_parameters, oldnames, newnames)
 
+  # Check ATC parameters
   atc_parameters <- check_atc_parameters(
     dt = atc_parameters,
     atc_class = atc_class,
@@ -267,8 +275,8 @@ pre2dup <- function(pre_data,
                 "dur_max_atc")
   setnames(atc_parameters, oldnames, newnames)
 
+  # If hospitalizations exists, check
   if (!is.null(hosp_data)) {
-    # Validate hospital data
     hosp_data <- check_hospitalizations(
       hosp_data,
       hosp_person_id = hosp_person_id,
@@ -283,8 +291,9 @@ pre2dup <- function(pre_data,
   pack_pairs <- package_parameters[, .(packid = pack_no, atc = atc_code)]
   pre_pack_pairs <- rbind(pre_pairs, pack_pairs)
   pre_pack_pairs <- unique(pre_pack_pairs, by = names(pre_pack_pairs))
-  find_multiple_atcs(atc_col = pre_pack_pairs$atc, package_col = pre_pack_pairs$packid)
-
+  find_multiple_atcs(atc_col = pre_pack_pairs$atc,
+                     package_col = pre_pack_pairs$packid,
+                     location = "when matching drug purchases with package parameters")
 
   # Prepare data ------------------------------------------------------------
   # Combine same packages of the day ----
@@ -350,27 +359,23 @@ pre2dup <- function(pre_data,
                                       opti = "missing")
   if (!is.null(package_info_covr)) {
     emessage <- paste0(
-      "Coverage of package parameter information in less than approved (",
+      "Coverage of package parameter information in less than required (at least ",
       limit,
       "%) in following ATC(s): ",
       package_info_covr,
       "."
     )
     message(emessage)
-    continue <- readline(prompt = atc_question)
-    if (tolower(continue) != "y") {
-      stop("Process interrupted by user.", call. = FALSE)
+    if (isFALSE(drop_atcs)) {
+      stop("Process interrupted, dropping ATC codes with insufficient data not selected (drop_atcs = FALSE).", call. = FALSE)
     } else {
       atc_drops <- extract_atc_codes(package_info_covr)
       pre_data <- pre_data[atc_pre %notin% atc_drops, ]
       message(
-        "Excluded ATC(s) with insufficient package parameter information: ",
-        paste(atc_drops, collapse = ", "),
-        ". Process continues with the rest of the data."
+        "Excluded ATC(s) with insufficient package parameter information, the process continues with the rest of the data."
       )
     }
   }
-
   if (nrow(pre_data) == 0)
     stop(
       "No records left after deleting ATCs without sufficient package parameter information.",
@@ -438,7 +443,7 @@ pre2dup <- function(pre_data,
     } else if (all(!is.na(usu_ddd_a) & all(ddd > 0))) {
       method <- "erfl_ddd_atc"
       value <- sum(ddd) / unique(usu_ddd_a)
-    } else if (all(!is.na(min_d_a))) {
+    } else {
       # Return 'min_d_a' if other conditions are not met
       method <- "erfl_min_atc"
       value <- unique(min_d_a)
@@ -461,10 +466,9 @@ pre2dup <- function(pre_data,
   # Count number of different packages per day,
   # if several, then will be omitted from mode calculation
   pre_data[, n_vnr := .N, by = pid_atc_date]
-
   pre_data <- unique(pre_data, by = "pid_atc_date")
 
-  # ###  Count time between purchases and initialize block ----
+  ###  Count time between purchases and initialize block ----
 
   setorder(pre_data, pid_pre, atc_pre, date_pre) # Sort by person, ATC and date
   # Init group by pid and ATC
@@ -480,7 +484,6 @@ pre2dup <- function(pre_data,
   ), by = bl_init]
 
   pre_data[, startp := pid_lag != pid_pre | atc_lag != atc_pre]
-
   pre_data[is.na(startp), startp := TRUE]
 
   # Set blocks based on global gap
@@ -489,9 +492,9 @@ pre2dup <- function(pre_data,
   pre_data[, block_i := seq_len(.N), by = block]
   pre_data[, block_length := .N, by = block]
 
-  # ERFL based on sliding avergage ------------------------------------------
-  ### Count sliding average and personal purchase pattern ----
+  # ERFL based on sliding average ------------------------------------------
 
+  ### Count sliding average and personal purchase pattern ----
   .count_sliding_average <- function(ddd,
                                      time,
                                      w_past,
@@ -520,8 +523,8 @@ pre2dup <- function(pre_data,
                 na.rm = TRUE)
         } else {
           # Handle the last element
-          sliding_average[i] <- sum(w_limit * ddd[i], ddd[i - 1], na.rm = TRUE) /
-            sum(w_limit * time_est, time[i], na.rm = TRUE)
+          sliding_average[i] <- sum(w_limit * ddd[i], w_limit * ddd[i - 1], na.rm = TRUE) /
+            sum(w_limit * time_est, w_limit * time[i], na.rm = TRUE)
         }
       }
       sliding_average
@@ -551,12 +554,11 @@ pre2dup <- function(pre_data,
   }
   pre_data[idx , rsd := .f_rsd(sliding_average), by = block]
 
-  ## Erfl_ddd ----
+  ## Erfl_ddd: based on temporal average of daily DDD ----
   pre_data[, sliding_average := pmin(pmax(sliding_average, min_ddd), global_ddd_high)]
-
   pre_data[, erfl_ddd := ddd_pre * (1 + rsd) / sliding_average]
 
-  # # Choose ERFL and limit to min and max ---------------------------------------
+  # Choose ERFL and limit to min and max ---------------------------------------
   pre_data[, erfl := ifelse(pre_ddd > 0  &
                               !is.na(erfl_ddd) & erfl_ddd > 0 ,
                             erfl_ddd,
@@ -576,11 +578,10 @@ pre2dup <- function(pre_data,
   pre_data[shift(erfl, type = "lag") < btw &
              !(startp), startp := T]
 
-  # # Check if extended ERFL reaches the next purchase ---------------------------
+  # Check if extended ERFL reaches the next purchase ---------------------------
   ### Count hospital days between purchases ----
   pre_data[, purc_end := date_pre + erfl]
   setorder(pre_data, pid_pre, atc_pre, date_pre)
-
   pre_data[, next_purchase := shift(date_pre, type = "lead"), by = list(pid_pre, atc_pre)]
 
   if (!is.null(hosp_data)) {
@@ -605,13 +606,15 @@ pre2dup <- function(pre_data,
   }
 
   ### Extend over gap if hospitalizations and/or allowing few extra days covers the gap ----
-  pre_data[, erfl_extended := erfl + pmin(hosp_days, global_hosp_max) + days_covered, by = block]
+  pre_data[, erfl_extended := erfl + pmin(hosp_days, global_hosp_max) + days_covered]
+  pre_data[, prev_extended := shift(erfl_extended, type = "lag"), by = block]
   pre_data[startp == TRUE &
              btw > 0 &
-             btw <= global_gap_max &
-             shift(erfl_extended, type = "lag") >= btw, startp := FALSE]
+             btw <= global_gap_max & !is.na(prev_extended) &
+             prev_extended >= btw, startp := FALSE]
 
   # Stockpiling -------------------------------------------------------------
+
   message("Step 3/6: Stockpiling assessment...")
 
   # Shift previous and next temporal averages
@@ -657,24 +660,55 @@ pre2dup <- function(pre_data,
 
   # Final decision on stockpiling
   pre_data[idx, stock := fifelse(pos_stock == TRUE &
-                                   round(sp_erfl_extended) >= sp_btw,
+                                   sp_erfl_extended >= sp_btw,
                                  TRUE,
                                  FALSE)]
 
   # Continue period if stockpiling
   pre_data[shift(stock, type = "lag"), startp := FALSE, by = block]
+  idx <- NULL
 
   # Create periods ----------------------------------------------------------
 
   pre_data[, period := cumsum(startp)]
   pre_data[, period_length := .N, by = period]
 
+  # Use package length for periods with < 3 purchases -----------------------
+  idx <- pre_data$period_length < 3
+  pre_data[idx, let(erfl = erfl_pack_based, erfl_method = erfl_met)]
+  pre_data[idx, purc_end := date_pre + erfl]
+
+  # If package length is greater than length based on temporal average DDD was,
+  # hospitalization may start during exposure and connect to the next purchase
+  if (!is.null(hosp_data)) {
+    hospital_times <- calc_hosp_days(
+      pre_id = pre_data[idx]$pid_pre,
+      pre_atc = pre_data[idx]$atc_pre,
+      curr_purc_start = pre_data[idx]$date_pre,
+      exp_end = pre_data[idx]$purc_end,
+      next_start = pre_data[idx]$next_purchase,
+      hosp_id = hosp_data$pid_hosp,
+      hosp_in = hosp_data$admission_date,
+      hosp_out = hosp_data$discharge_date
+    )
+    # Hospital days that started during exposure
+    pre_data[idx]$hosp_days <- hospital_times$hosp_days_exp
+  }
+
+  ### Extend over gap if hospitalizations and/or allowing few extra days covers the gap ----
+  pre_data[idx, erfl_extended := erfl + pmin(hosp_days, global_hosp_max) + days_covered]
+  pre_data[, prev_dur := shift(erfl_extended, type = "lag"), by = block]
+  pre_data[idx, startp := fifelse(!is.na(prev_dur) & prev_dur >= btw, FALSE, startp)]
+  pre_data[, `:=`(period, cumsum(startp))]
+  pre_data[, `:=`(period_length, .N), by = period]
+  idx <- NULL
+
   # Index of last purchase in period
   lidx <- pre_data[, .I[.N], by = .(period)]$V1
 
   # Re-calculate package durations ------------------------------------------
 
-  if (calculate_pack_dur_usual) {
+  if (data_to_return != "periods") {
     message("Step 4/6: Calculating common package durations in data...")
 
     # Pick valid purchases for calculation of times between purchases
@@ -770,166 +804,175 @@ pre2dup <- function(pre_data,
     } else {
       package_parameters_new <- NULL
     }
-  }
-  if (calculate_pack_dur_usual == T &&
-      is.null(package_parameters_new))
-    message("Refill lengths couldn't be re-estimated, probably due to too small data size.")
-  if (isFALSE(calculate_pack_dur_usual))
-    message(
-      "Step 4/6: Common package duration calculation was not selected in the parameters; skipping this step."
-    )
-
-  #####################
-
-  # Prepare exposure periods ------------------------------------------------
-  message("Step 5/6: Preparing drug use periods...")
-  pre_data[, let(
-    dup_start = min(date_pre),
-    dup_last_purchase = max(date_pre),
-    dup_n_purchases = .N
-  ), by = period]
-  # Calculate end dates of drug use periods ----
-  pre_data[lidx, duration := ifelse(dup_n_purchases > 2 & !is.na(rsd) &
-                                      ddd_pre > 0, (ddd_pre *
-                                                      (1 + rsd) / (sliding_average * (
-                                                        1 + exp(-dup_n_purchases)
-                                                      ))), erfl)]
-
-  # ### Limit between minimum and maximum ----
-  pre_data[lidx, duration := pmin(pmax(duration, min_dur), max_dur)]
-
-  pre_data[, duration := ifelse(dup_n_purchases == 1,
-                                pmin(duration, global_max_single),
-                                duration)]
-  pre_data[lidx, last_ends := dup_last_purchase + duration]
-
-  # Calculate hospital days for hospitalizatios started during exposure
-  if (!is.null(hosp_data)) {
-    pre_data[lidx, let(
-      hosp_days_end = calc_hosp_days(
-        pre_id = pid_pre,
-        pre_atc = atc_pre,
-        curr_purc_start = dup_last_purchase,
-        exp_end = last_ends,
-        next_start = NA_integer_,
-        hosp_id = hosp_data$pid_hosp,
-        hosp_in = hosp_data$admission_date,
-        hosp_out = hosp_data$discharge_date
-      )$hosp_days_exp
-    )]
-  } else
-    pre_data[, hosp_days_end := 0]
-
-  # Add hospital days to exposure time, limited by allowed maximum
-  pre_data[lidx, last_dur_hosp := duration + pmin(hosp_days_end, global_hosp_max)]
-  pre_data[lidx, dup_end := dup_last_purchase + last_dur_hosp]
-
-  message("Step 6/6: Post-processing drug use periods...")
-
-  # Combine periods if gap is small or end exceeds the next period start
-  combinable <- TRUE
-  while (combinable) {
-    message(paste("Current post processing percentage:", post_process_perc))
-    pre_data[lidx, prev_start := shift(dup_start, type = "lag"), by = .(pid_pre, atc_pre)]
-    pre_data[lidx, prev_end := shift(dup_end, type = "lag"), by = .(pid_pre, atc_pre)]
-    pre_data[lidx, combine_to_past := ifelse((dup_start - prev_end) <= post_process_perc / 100 * (prev_end -
-                                                                                                    prev_start),
-                                             1,
-                                             0)]
-    pre_data[, combine_to_past := ifelse(is.na(combine_to_past), 0, combine_to_past)]
-    pre_data[, combine_to_past := max(combine_to_past), by = period]
-
-    # To avoid excess looping, reduce the percentage by 0.1 each time
-    post_process_perc <- post_process_perc - 0.1
-
-    if (nrow(pre_data[combine_to_past == 1]) == 0) {
-      combinable <- FALSE
+    if (data_to_return == "parameters" &&
+        !is.null(package_parameters_new)){
+      message("Common package durations calculated, returning updated package parameters.")
+      return(package_parameters_new[])
     } else {
-      pre_data[combine_to_past == 1 , let(period = NA_integer_, dup_start = NA_integer_)]
-      pre_data[, period := nafill(period, type = "locf"), by = .(pid_pre, atc_pre)]
-      pre_data[, dup_start := nafill(dup_start, type = "locf"), by = .(pid_pre, atc_pre)]
-      lidx <- pre_data[, .I[.N], by = .(period)]$V1
-      pre_data[, combine_to_past := NULL]
+      if(data_to_return != "periods" &&
+         is.null(package_parameters_new))
+        message("Common package durations couldn't be re-estimated, probably due to too small data size.")
     }
-  }
-
-  pre_data[, let(
-    dup_n_purchases = .N,
-    dup_last_purchase = max(date_pre),
-    dup_total_DDD = sum(ddd_pre)
-  ), by = period]
-
-  # Collect periods
-  pre2dupdata <- pre_data[lidx, .(
-    period,
-    pid_pre,
-    atc_pre,
-    dup_start,
-    dup_end,
-    dup_n_purchases,
-    dup_last_purchase,
-    dup_total_DDD
-  )]
-  
-  # Period number is messed, make new.
-  pre2dupdata[, period := 1:.N]
-  
-  pre2dupdata[, dup_days := round(dup_end - dup_start)]
-  pre2dupdata[, dup_temporal_average_DDDs := round(dup_total_DDD / dup_days, 3)]
-  
-  # Calculate hospital days for period
-  if (!is.null(hosp_data)) {
-    hospital_times_dup <- calc_dup_hosp_days(
-      pre2dupdata$period,
-      pre2dupdata$pid_pre,
-      pre2dupdata$dup_start,
-      pre2dupdata$dup_end,
-      hosp_data$pid_hosp,
-      hosp_data$admission_date,
-      hosp_data$discharge_date
-    )
-    pre2dupdata <- merge(pre2dupdata, hospital_times_dup, by = "period", all.x = TRUE)
-    pre2dupdata[is.na(dup_hospital_days), dup_hospital_days := 0]
   } else
-    pre2dupdata[, dup_hospital_days := 0]
-
-  cols <- c("dup_start", "dup_last_purchase", "dup_end")
-  pre2dupdata[, (cols) := lapply(.SD, as.Date, origin = "1970-01-01"), .SDcols = cols]
-
-  npids <- length(unique(pre2dupdata$pid_pre))
-  setcolorder(
-    pre2dupdata,
-    c(
-      "period",
-      "pid_pre",
-      "atc_pre",
-      "dup_start",
-      "dup_end",
-      "dup_days",
-      "dup_hospital_days",
-      "dup_n_purchases",
-      "dup_last_purchase",
-      "dup_total_DDD",
-      "dup_temporal_average_DDDs"
+    message(
+      "Step 4/6: Common package duration calculation was not selected in function call; skipping this step."
     )
-  )
-  setnames(pre2dupdata,
-           c("pid_pre", "atc_pre"),
-           c(pre_person_id, pre_atc))
+  if(data_to_return != "parameters"){
+    # Prepare exposure periods ------------------------------------------------
+    message("Step 5/6: Preparing drug use periods...")
+    pre_data[, let(
+      dup_start = min(date_pre),
+      dup_last_purchase = max(date_pre),
+      dup_n_purchases = .N
+    ), by = period]
+    # Calculate end dates of drug use periods ----
+    pre_data[lidx, duration := ifelse(dup_n_purchases  > 2 & !is.na(rsd) &
+                                        ddd_pre > 0, (ddd_pre *
+                                                        (1 + rsd) / (sliding_average * (
+                                                          1 + exp(-dup_n_purchases)
+                                                        ))), erfl)]
 
-  # Inform user
-  message(
-    "Drug use periods calculated. ",
-    nrow(pre2dupdata),
-    " periods created for ",
-    npids,
-    " persons."
-  )
+    # ### Limit between minimum and maximum ----
+    pre_data[lidx, duration := pmin(pmax(duration, min_dur), max_dur)]
+    pre_data[, duration := ifelse(dup_n_purchases == 1,
+                                  pmin(duration, global_max_single),
+                                  duration)]
+    pre_data[lidx, last_ends := dup_last_purchase + duration]
 
-  # Return results ----------------------------------------------------------
-  if (calculate_pack_dur_usual) {
-    return(list(periods = pre2dupdata[], pack_info = package_parameters_new[]))
-  } else {
-    return(list(periods = pre2dupdata[]))
+    # Calculate hospital days for hospitalizatios started during exposure
+    if (!is.null(hosp_data)) {
+      pre_data[lidx, let(
+        hosp_days_end = calc_hosp_days(
+          pre_id = pid_pre,
+          pre_atc = atc_pre,
+          curr_purc_start = dup_last_purchase,
+          exp_end = last_ends,
+          next_start = NA_integer_,
+          hosp_id = hosp_data$pid_hosp,
+          hosp_in = hosp_data$admission_date,
+          hosp_out = hosp_data$discharge_date
+        )$hosp_days_exp
+      )]
+    } else
+      pre_data[, hosp_days_end := 0]
+
+    # Add hospital days to exposure time, limited by allowed maximum
+    pre_data[lidx, last_dur_hosp := duration + pmin(hosp_days_end, global_hosp_max)]
+    pre_data[lidx, dup_end := dup_last_purchase + last_dur_hosp]
+
+    message("Step 6/6: Post-processing drug use periods...")
+
+    # Combine periods if gap is small or end exceeds the next period start
+    combinable <- TRUE
+    while (combinable) {
+      message(paste("Current post processing percentage:", post_process_perc))
+      pre_data[lidx, prev_start := shift(dup_start, type = "lag"), by = .(pid_pre, atc_pre)]
+      pre_data[lidx, prev_end := shift(dup_end, type = "lag"), by = .(pid_pre, atc_pre)]
+      pre_data[lidx, combine_to_past := ifelse((dup_start - prev_end) <= post_process_perc / 100 * (prev_end -
+                                                                                                      prev_start),
+                                               1,
+                                               0)]
+      pre_data[, combine_to_past := ifelse(is.na(combine_to_past), 0, combine_to_past)]
+      pre_data[, combine_to_past := max(combine_to_past), by = period]
+
+      # To avoid excess looping, reduce the percentage by 0.1 each time
+      post_process_perc <- post_process_perc - 0.1
+
+      if (nrow(pre_data[combine_to_past == 1]) == 0) {
+        combinable <- FALSE
+      } else {
+        pre_data[combine_to_past == 1 , let(period = NA_integer_, dup_start = NA_integer_)]
+        pre_data[, period := nafill(period, type = "locf"), by = .(pid_pre, atc_pre)]
+        pre_data[, dup_start := nafill(dup_start, type = "locf"), by = .(pid_pre, atc_pre)]
+        lidx <- pre_data[, .I[.N], by = .(period)]$V1
+        pre_data[, combine_to_past := NULL]
+      }
+    }
+
+    pre_data[, let(
+      dup_n_purchases = .N,
+      dup_last_purchase = max(date_pre),
+      dup_total_DDD = sum(ddd_pre)
+    ), by = period]
+
+    # Collect periods
+    pre2dupdata <- pre_data[lidx, .(
+      period,
+      pid_pre,
+      atc_pre,
+      dup_start,
+      dup_end,
+      dup_n_purchases,
+      dup_last_purchase,
+      dup_total_DDD
+    )]
+
+    # Period number is messed, make new and define exposure days and mean daily DDD.
+    pre2dupdata[, period := 1:.N]
+    pre2dupdata[, dup_days := round(dup_end - dup_start)]
+    pre2dupdata[, dup_temporal_average_DDDs := round(dup_total_DDD / dup_days, 3)]
+
+    # Calculate hospital days for period
+    if (!is.null(hosp_data)) {
+      hospital_times_dup <- calc_dup_hosp_days(
+        pre2dupdata$period,
+        pre2dupdata$pid_pre,
+        pre2dupdata$dup_start,
+        pre2dupdata$dup_end,
+        hosp_data$pid_hosp,
+        hosp_data$admission_date,
+        hosp_data$discharge_date
+      )
+      pre2dupdata <- merge(pre2dupdata, hospital_times_dup, by = "period", all.x = TRUE)
+      pre2dupdata[is.na(dup_hospital_days), dup_hospital_days := 0]
+    } else
+      pre2dupdata[, dup_hospital_days := 0]
+
+    cols <- c("dup_start", "dup_last_purchase", "dup_end")
+    pre2dupdata[, (cols) := lapply(.SD, as.Date, origin = "1970-01-01"), .SDcols = cols]
+
+    npids <- length(unique(pre2dupdata$pid_pre))
+    setcolorder(
+      pre2dupdata,
+      c(
+        "period",
+        "pid_pre",
+        "atc_pre",
+        "dup_start",
+        "dup_end",
+        "dup_days",
+        "dup_hospital_days",
+        "dup_n_purchases",
+        "dup_last_purchase",
+        "dup_total_DDD",
+        "dup_temporal_average_DDDs"
+      )
+    )
+    setnames(pre2dupdata,
+             c("pid_pre", "atc_pre"),
+             c(pre_person_id, pre_atc))
+
+    # Inform user
+    message(
+      "Drug use periods calculated. ",
+      nrow(pre2dupdata),
+      " periods created for ",
+      npids,
+      " persons."
+    )
+
+    # Return results ----------------------------------------------------------
+    if(data_to_return == "periods"){
+      message("Returning drug use periods.")
+      return(pre2dupdata[])
+    } else {
+      if (data_to_return == "both" && !is.null(package_parameters_new)) {
+        message("Returning a list of two: drug use periods (periods) and updated package parameters (package parameters).")
+        return(list(periods = pre2dupdata[], package_parameters = package_parameters_new[]))
+      } else {
+        message("Returning drug use periods.")
+        return(pre2dupdata[])
+      }
+    }
   }
 }

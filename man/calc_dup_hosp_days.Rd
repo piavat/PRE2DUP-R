@@ -15,19 +15,19 @@ calc_dup_hosp_days(
 )
 }
 \arguments{
-\item{period_no}{Integer vector for period identification.}
+\item{period_no}{integer. Vector for period identification.}
 
 \item{pre_id}{Vector of person identifiers for drug purchases.}
 
-\item{dup_start}{Integer vector for the start of drug use periods.}
+\item{dup_start}{integer. Vector for the start of drug use periods.}
 
-\item{dup_end}{Integer vector for the end of drug use periods.}
+\item{dup_end}{integer. Vector for the end of drug use periods.}
 
 \item{hosp_id}{Vector of person identifiers for hospitalizations.}
 
-\item{hosp_in}{Integer vector for hospitalization admission dates.}
+\item{hosp_in}{integer. Vector for hospitalization admission dates.}
 
-\item{hosp_out}{Integer vector for hospitalization discharge dates.}
+\item{hosp_out}{integer. Vector for hospitalization discharge dates.}
 }
 \value{
 A data.table with two columns:

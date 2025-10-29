@@ -17,17 +17,17 @@ check_hospitalizations(
 \arguments{
 \item{dt}{data.frame or data.table containing hospitalization records.}
 
-\item{hosp_person_id}{Character. Column name for the person identifier.}
+\item{hosp_person_id}{character. Column name for the person identifier.}
 
-\item{hosp_admission}{Character. Column name for hospital admission date.}
+\item{hosp_admission}{character. Column name for hospital admission date.}
 
-\item{hosp_discharge}{Character. Column name for hospital discharge date.}
+\item{hosp_discharge}{character. Column name for hospital discharge date.}
 
-\item{date_range}{Character vector of length 2. Date range for hospitalizations (e.g., c("1995-01-01", "2025-12-31")). Default is NULL (no date range check).}
+\item{date_range}{character vector of length 2. Date range for hospitalizations (e.g., c("1995-01-01", "2025-12-31")). Default is NULL (no date range check).}
 
-\item{print_all}{Logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.}
+\item{print_all}{logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.}
 
-\item{return_data}{Logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.}
+\item{return_data}{logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.}
 }
 \value{
 If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with dates converted to integer and overlapping hospitalizations combined.

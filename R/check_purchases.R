@@ -5,15 +5,16 @@
 #' If all checks pass, the function can return a validated data.table with the required columns and proper types.
 #'
 #' @param dt data.frame or data.table containing drug purchase records.
-#' @param pre_person_id Character. Column name for the person identifier.
-#' @param pre_atc Character. Column name for the ATC code.
-#' @param pre_package_id Character. Column name for the package identifier (e.g., Vnr in Nordic data).
-#' @param pre_date Character. Column name for the drug purchase date.
-#' @param pre_ratio Character. Column name for the amount of drug purchased: for whole packages, number of packages; for partial supplies, the proportion of a package (e.g., 0.5 for 14 tablets from a 28-tablet package).
-#' @param pre_ddd Character. Column name for defined daily dose (DDD) of the purchase.
-#' @param date_range Character vector of length 2. Date range for purchase dates (e.g., c("1995-01-01", "2018-12-31")). Default is NULL (no date range check).
-#' @param print_all Logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.
-#' @param return_data Logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.
+#' @param pre_person_id character. Column name for the person identifier.
+#' @param pre_atc character. Column name for the ATC code.
+#' @param pre_package_id character. Column name for the package identifier (e.g., Vnr in Nordic data).
+#' @param pre_date character. Column name for the drug purchase date.
+#' @param pre_ratio character. Column name for the amount of drug purchased: for whole packages, number of packages; for partial supplies, the proportion of a package (e.g., 0.5 for 14 tablets from a 28-tablet package).
+#' @param pre_ddd character. Column name for defined daily dose (DDD) of the purchase.
+#' @param date_range character vector of length 2. Date range for purchase dates (e.g., c("1995-01-01", "2018-12-31")). Default is NULL (no date range check).
+#' @param print_all logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.
+#' @param return_data logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.
+#' @param drop_atcs logical. If TRUE, process ignores ATCs with insufficient level of DDD coverage and continues with the rest of the data.
 #'
 #' @return
 #' If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with converted types.
@@ -44,7 +45,7 @@
 #' ddds <- c(7.5, 30, 30, 28, 14, 56)
 #' purchases <- data.frame(ID, ATC, vnr, dates, ratios, ddds)
 #'
-#' check_purchases(
+#' validated_purchases <- check_purchases(
 #'   dt = purchases,
 #'   pre_person_id = "ID",
 #'   pre_atc = "ATC",
@@ -54,8 +55,10 @@
 #'   pre_ddd = "ddds",
 #'   date_range = c("1995-01-01", "2018-12-31"),
 #'   print_all = TRUE,
-#'   return_data = TRUE
+#'   return_data = TRUE,
+#'   drop_atcs = FALSE
 #' )
+#'print(validated_purchases)
 #'
 #' @export
 check_purchases <- function(dt,
@@ -67,13 +70,15 @@ check_purchases <- function(dt,
                             pre_ddd = NULL,
                             date_range = NULL,
                             print_all = FALSE,
-                            return_data = FALSE) {
+                            return_data = FALSE,
+                            drop_atcs = FALSE) {
 
   data_name <- deparse(substitute(dt))
+
   # Checks that stops the execution of the function-----
-  ##  Stops if the dataset is empty, arguments are missing or
+
   if(nrow(dt) == 0){
-    stop(paste("No data in the dataset", sQuote(data_name)))
+    stop(paste("No data in the dataset", sQuote(data_name)), call. = FALSE)
   }
 
   # Stops if arguments are not filled
@@ -88,6 +93,12 @@ check_purchases <- function(dt,
     pre_ddd = pre_ddd,
     required_columns = names(formals())[2:7]
   )
+
+  if (!is.data.table(dt))
+    dt <- as.data.table(dt)
+  # Checks, that will be converted to warnings, stops later ----
+  warning_list <- list()
+
   # Stops if the dataset is missing required columns
   required_columns = c(pre_person_id, pre_atc,
                        pre_package_id, pre_date,
@@ -95,95 +106,97 @@ check_purchases <- function(dt,
   missing_columns <- setdiff(required_columns, names(dt))
   if (length(missing_columns) > 0) {
     emessage <- err_message(missing_columns, "missing from the dataset.", arg_or_col = "column")
-    stop(emessage, call. = FALSE)
+    warning_list <- append(warning_list, emessage)
   }
-  # Stops if a package has different ATCs
-  find_multiple_atcs(dt[[pre_atc]], dt[[pre_package_id]])
+  if(length(missing_columns) == 0){
+    # Stops if a package has different ATCs
+    find_multiple_atcs(atc_col = dt[[pre_atc]],
+                       package_col = dt[[pre_package_id]],
+                       location = "in drug purchases data")
 
-  if (!is.data.table(dt))
-    dt <- as.data.table(dt)
+    # Person_id check
+    if(is.numeric(dt[[pre_person_id]])) {
+      errows <- dt[, .I[check_numeric(col)],
+                   env  = list(col = as.name(pre_person_id))]
+      warning_list <- append(warning_list,
+                             make_warning(errows, colvars = pre_person_id,
+                                          warning_message = mess_invalid_missing,
+                                          print_all = print_all))
+    } else {
+      errows <- dt[, .I[check_non_numeric(col)],
+                   env  = list(col = as.name(pre_person_id))]
 
-  # Checks, that will be converted to warnings, stops later ----
-  warning_list <- list()
-  # Person_id check
-  if(is.numeric(dt[[pre_person_id]])) {
-    errows <- dt[, .I[check_numeric(col)],
-                 env  = list(col = as.name(pre_person_id))]
-    warning_list <- append(warning_list,
-                           make_warning(errows, colvars = pre_person_id,
-                                        warning_message = mess_invalid_missing,
-                                        print_all = print_all))
-  } else {
+      warning_list <- append(warning_list,
+                             make_warning(errows, colvars = pre_person_id,
+                                          warning_message = mess_invalid_missing,
+                                          print_all = print_all))
+    }
+    # ATC check
     errows <- dt[, .I[check_non_numeric(col)],
-                 env  = list(col = as.name(pre_person_id))]
+                 env  = list(col = as.name(pre_atc))]
 
     warning_list <- append(warning_list,
-                           make_warning(errows, colvars = pre_person_id,
+                           make_warning(errows, colvars = pre_atc,
                                         warning_message = mess_invalid_missing,
                                         print_all = print_all))
-  }
-  # ATC check
-  errows <- dt[, .I[check_non_numeric(col)],
-               env  = list(col = as.name(pre_atc))]
-
-  warning_list <- append(warning_list,
-                         make_warning(errows, colvars = pre_atc,
-                                      warning_message = mess_invalid_missing,
-                                      print_all = print_all))
-  # Package_id and ratio should not have missing values
-  numeric_cols <- c(pre_package_id, pre_ratio)
-  for(col in numeric_cols) {
-    errows <- dt[, .I[check_numeric(col)],
-                 env  = list(col = as.name(col))]
+    # Package_id and ratio should not have missing values
+    numeric_cols <- c(pre_package_id, pre_ratio)
+    for(col in numeric_cols) {
+      errows <- dt[, .I[check_numeric(col)],
+                   env  = list(col = as.name(col))]
+      warning_list <- append(warning_list,
+                             make_warning(errows, colvars = col,
+                                          warning_message = mess_invalid_missing,
+                                          print_all = print_all))
+    }
+    # DDD check: missing is accepted, but not zero or negative values
+    # Notification about the zeros in DDD is a heads up
+    errows <- dt[, .I[check_numeric(col, allow_na = TRUE)],
+                 env  = list(col = as.name(pre_ddd))]
     warning_list <- append(warning_list,
-                           make_warning(errows, colvars = col,
-                                        warning_message = mess_invalid_missing,
+                           make_warning(errows, colvars = pre_ddd,
+                                        warning_message = mess_invalid,
                                         print_all = print_all))
-  }
-  # DDD check: missing is accepted, but not zero or negative values
-  # Notification about the zeros in DDD is a heads up
-  errows <- dt[, .I[check_numeric(col, allow_na = TRUE)],
-               env  = list(col = as.name(pre_ddd))]
-  warning_list <- append(warning_list,
-                         make_warning(errows, colvars = pre_ddd,
-                                      warning_message = mess_invalid,
-                                      print_all = print_all))
 
-  # Date check: dates must not missing, convertible to integer and within range
-  # At this point make separate vector for integers to not to mess the original data.
-  date_pre <- sapply(dt[, col,  env = list(col = as.name(pre_date))], date_to_integer, USE.NAMES = FALSE)
-  errows <- which(is.na(date_pre))
-  warning_list <- append(warning_list,
-                         make_warning(errows, colvars = pre_date,
-                                      warning_message = mess_invalid_missing,
-                                      print_all = print_all))
-  if (!is.null(date_range)) {
-    check_date_range(date_range)
-  }
-  if(!is.null(date_range) &&
-     !any(is.na(date_pre))) {
-    errows <- which(date_pre < date_to_integer(date_range[1]) |
-                      date_pre > date_to_integer(date_range[2]))
+    # Date check: dates must not missing, convertible to integer and within range
+    # At this point make separate vector for integers to not to mess the original data.
+    date_pre <- sapply(dt[, col,  env = list(col = as.name(pre_date))], date_to_integer, USE.NAMES = FALSE)
+    errows <- which(is.na(date_pre))
     warning_list <- append(warning_list,
                            make_warning(errows, colvars = pre_date,
-                                        warning_message = "has values outside date range",
+                                        warning_message = mess_invalid_missing,
                                         print_all = print_all))
-  }
-
-  DDD_covr <- check_coverage(dt[[pre_atc]], dt[[pre_ddd]], limit = limit, opti = "missing")
-  if(!is.null(DDD_covr)) {
-    emessage <- paste0("Coverage of DDD records in drug purchases in less than approved (", limit, "%) in following ATC(s): ", DDD_covr, ".")
-    message(emessage)
-    continue <- readline(prompt = atc_question)
-    if (tolower(continue) != "y") {
+    if (!is.null(date_range)) {
+      check_date_range(date_range)
+    }
+    if(!is.null(date_range) &&
+       !any(is.na(date_pre))) {
+      errows <- which(date_pre < date_to_integer(date_range[1]) |
+                        date_pre > date_to_integer(date_range[2]))
       warning_list <- append(warning_list,
-                             paste0("Coverage of DDD records in drug purchases is less than approved (",
-                                    limit, "%) in following ATC(s): ",
-                                    DDD_covr, "."))
-    } else {
-      atc_drops <- extract_atc_codes(DDD_covr)
-      dt <- dt[pre_atc %notin% atc_drops, env = list(pre_atc = as.name(pre_atc))]
-      message("Excluded ATC(s) with insufficient DDD information: ", paste(atc_drops, collapse = ", "), ". Process continues with the rest of the data.")
+                             make_warning(errows, colvars = pre_date,
+                                          warning_message = "has values outside date range",
+                                          print_all = print_all))
+    }
+
+    DDD_covr <- check_coverage(dt[[pre_atc]], dt[[pre_ddd]], limit = limit, opti = "missing")
+    if(!is.null(DDD_covr)) {
+      emessage <- paste0("Coverage of DDD records in drug purchases is less than required (at least ",
+                         limit, "%) in following ATC(s): ",
+                         DDD_covr, ".")
+      message(emessage)
+      if (isFALSE(drop_atcs)) {
+        stop("Process interrupted, dropping ATC codes with insufficient data not selected (drop_atcs = FALSE).", call. = FALSE)
+      } else {
+        atc_drops <- extract_atc_codes(DDD_covr)
+        dt <- dt[pre_atc %notin% atc_drops, env = list(pre_atc = as.name(pre_atc))]
+        if (nrow(dt) == 0) {
+          stop("No drug purchase records remain after dropping ATC codes with insufficient DDD data.",
+               call. = FALSE)
+        } else {
+          message("Excluded ATC(s) with insufficient DDD information, the process continues with the rest of the data.")
+        }
+      }
     }
   }
 
@@ -192,11 +205,9 @@ check_purchases <- function(dt,
     for (warning in warning_list) {
       message(warning)
     }
-    stop(paste0(
-      "Errors in dataset assigned to ",
-      sQuote(data_name) ,
-      ". See listing above for details."
-    ), call. = FALSE)
+    stopmessage <- "Errors in drug purchases (pre_data). See listing above for details."
+    message("\n")
+    stop(stopmessage, call. = FALSE)
   } else {
     message(paste("Checks passed for", sQuote(data_name)))
     if(return_data) {

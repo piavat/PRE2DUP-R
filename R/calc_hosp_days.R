@@ -18,7 +18,7 @@
 #' }
 #'
 #' @details
-#' The function merges drug purchase and hospitalization data by person ID, then calculates the overlap between purchase periods and hospitalizations. Hospital discharge date is not included in the total stay. Hospitalization days are summed for each purchase period. 
+#' The function merges drug purchase and hospitalization data by person ID, then calculates the overlap between purchase periods and hospitalizations. Hospital discharge date is not included in the total stay. Hospitalization days are summed for each purchase period.
 #'
 #' @import data.table
 #' @keywords internal

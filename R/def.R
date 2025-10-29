@@ -111,7 +111,8 @@ utils::globalVariables(
     "dup_temporal_average_DDDs",
     "pid",
     "start_date",
-    "end_date"
+    "end_date",
+    "prev_extended"
   )
 )
 # Messages for invalid or missing values in data checks
@@ -122,5 +123,3 @@ mess_invalid <- "has invalid values"
 mess_invalid_order <- "has values are in wrong order"
 # Limit for missing DDD or package info
 limit <- 90
-# Question to drop ATC classes
-atc_question <- "Do you want to exclude these ATC classes and continue process for the rest of the ATCs? (y/n): "

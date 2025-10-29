@@ -30,9 +30,14 @@
       check_purchases(test_data[, -2], pre_person_id = "person_id", pre_atc = "atc",
       pre_package_id = "package_vnr", pre_date = "purchase_date", pre_ratio = "ratio",
       pre_ddd = "total_ddd")
+    Message
+      column 'atc' is missing from the dataset. 
+      
+      
+      
     Condition
       Error:
-      ! column 'atc' is missing from the dataset. 
+      ! Errors in drug purchases (pre_data). See listing above for details.
 
 ---
 
@@ -40,9 +45,14 @@
       check_purchases(test_data[, -c(2, 4)], pre_person_id = "person_id", pre_atc = "atc",
       pre_package_id = "package_vnr", pre_date = "purchase_date", pre_ratio = "ratio",
       pre_ddd = "total_ddd")
+    Message
+      columns 'atc', 'purchase_date' are missing from the dataset. 
+      
+      
+      
     Condition
       Error:
-      ! columns 'atc', 'purchase_date' are missing from the dataset. 
+      ! Errors in drug purchases (pre_data). See listing above for details.
 
 # check_purchases gives warnings about invalid values
 
@@ -57,9 +67,11 @@
       Column 'ratio' has invalid or missing values in 5 rows: 3, 4, 5, 6, 7
       Column 'total_ddd' has invalid values in 1 rows: 3
       Column 'purchase_date' has invalid or missing values in 4 rows: 2, 3, 4, 5
+      
+      
     Condition
       Error:
-      ! Errors in dataset assigned to 'test_data_errors'. See listing above for details.
+      ! Errors in drug purchases (pre_data). See listing above for details.
 
 # check_purchases warns about wrongly set date range
 
@@ -79,9 +91,11 @@
         pre_ddd = "total_ddd", date_range = c("2022-01-05", "2022-06-20"))
     Message
       Column 'purchase_date' has values outside date range in 2 rows: 1, 7
+      
+      
     Condition
       Error:
-      ! Errors in dataset assigned to 'test_data'. See listing above for details.
+      ! Errors in drug purchases (pre_data). See listing above for details.
 
 # check_purchases stops if one package has several ATCs
 
@@ -91,43 +105,56 @@
         pre_ddd = "total_ddd", date_range = c("2022-01-05", "2022-06-20"))
     Condition
       Error:
-      ! Expected only one ATC-code by package number, exceptions found: 12345: N05AH02, N05AH; 54321: N05AH, N05AH02.
+      ! Error in drug purchases data, expected only one ATC-code by package number, exceptions found: 12345: N05AH02, N05AH; 54321: N05AH, N05AH02.
 
 # check_purchases informs ATCs without sufficient information and continues with the rest
 
     Code
       outdata <- check_purchases(test_data_missing_ddd, pre_person_id = "person_id",
         pre_atc = "atc", pre_package_id = "package_vnr", pre_date = "purchase_date",
-        pre_ratio = "ratio", pre_ddd = "total_ddd", return_data = TRUE)
+        pre_ratio = "ratio", pre_ddd = "total_ddd", drop_atcs = TRUE, return_data = TRUE)
     Message
-      Coverage of DDD records in drug purchases in less than approved (90%) in following ATC(s): N05AH02 (80.0%).
-      Excluded ATC(s) with insufficient DDD information: N05AH02. Process continues with the rest of the data.
+      Coverage of DDD records in drug purchases is less than required (at least 90%) in following ATC(s): N05AH02 (80.0%).
+      Excluded ATC(s) with insufficient DDD information, the process continues with the rest of the data.
       Checks passed for 'test_data_missing_ddd'
 
-# check_purchases informs ATCs without sufficient information and stops with promt 'no'
+# check_purchases informs ATCs without sufficient information and stops with drop_ATC:s = FALSE
 
     Code
       check_purchases(test_data_missing_ddd, pre_person_id = "person_id", pre_atc = "atc",
         pre_package_id = "package_vnr", pre_date = "purchase_date", pre_ratio = "ratio",
-        pre_ddd = "total_ddd", return_data = TRUE)
+        pre_ddd = "total_ddd", return_data = TRUE, drop_atcs = FALSE)
     Message
-      Coverage of DDD records in drug purchases in less than approved (90%) in following ATC(s): N05AH02 (80.0%).
-      Coverage of DDD records in drug purchases is less than approved (90%) in following ATC(s): N05AH02 (80.0%).
+      Coverage of DDD records in drug purchases is less than required (at least 90%) in following ATC(s): N05AH02 (80.0%).
     Condition
       Error:
-      ! Errors in dataset assigned to 'test_data_missing_ddd'. See listing above for details.
+      ! Process interrupted, dropping ATC codes with insufficient data not selected (drop_atcs = FALSE).
 
 # check_purchases returns an error when vnr is missing after proceeding with missing DDD
 
     Code
       check_purchases(test_data_missing_vnr, pre_person_id = "person_id", pre_atc = "atc",
         pre_package_id = "package_vnr", pre_date = "purchase_date", pre_ratio = "ratio",
-        pre_ddd = "total_ddd", return_data = TRUE)
+        pre_ddd = "total_ddd", return_data = TRUE, drop_atcs = TRUE)
     Message
-      Coverage of DDD records in drug purchases in less than approved (90%) in following ATC(s): N05AH02 (80.0%).
-      Excluded ATC(s) with insufficient DDD information: N05AH02. Process continues with the rest of the data.
+      Coverage of DDD records in drug purchases is less than required (at least 90%) in following ATC(s): N05AH02 (80.0%).
+      Excluded ATC(s) with insufficient DDD information, the process continues with the rest of the data.
       Column 'package_vnr' has invalid or missing values in 1 rows: 10
+      
+      
     Condition
       Error:
-      ! Errors in dataset assigned to 'test_data_missing_vnr'. See listing above for details.
+      ! Errors in drug purchases (pre_data). See listing above for details.
+
+# check_purchases warns that no drug purchase records remained after dropping ATCs
+
+    Code
+      check_purchases(test_data_missing_ddd, pre_person_id = "person_id", pre_atc = "atc",
+        pre_package_id = "package_vnr", pre_date = "purchase_date", pre_ratio = "ratio",
+        pre_ddd = "total_ddd", return_data = TRUE, drop_atcs = TRUE)
+    Message
+      Coverage of DDD records in drug purchases is less than required (at least 90%) in following ATC(s): N05AH02 (50.0%), N05AH03 (50.0%).
+    Condition
+      Error:
+      ! No drug purchase records remain after dropping ATC codes with insufficient DDD data.
 

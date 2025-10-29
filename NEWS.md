@@ -25,6 +25,13 @@ output: html_document
 - Improvements to introduction.
 
 
+# PRE2DUPR 0.2.0
+  * Added new argument to define the function output: users can now choose to return exposure periods, updated package parameters, or both. Argument calc_pack_dur_usual removed.
+  * Replaced interactive prompt for handling ATC codes lacking DDD records or package parameters coverage with a function argument, allowing automated processing.
+  * Improved handling of short purchase sequences: for drug use periods based on fewer than three purchases, purchase duration estimates are now always derived from package-based parameters.
+  * Improved usual package duration calculation: the algorithm now prefers combining with the closest package duration rather than the one with the highest frequency within two days.  
+- Improvements to documentation.
+
 ---
 
 Planned updates: Documentation of the PRE2DUPR methodology

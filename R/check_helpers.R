@@ -49,6 +49,7 @@ err_message <- function(miss, error, arg_or_col = c("argument", "column")){
           ngettext(length(miss), "is", "are"), error, "\n")
   }
 }
+
 #' Check Date Range
 #'
 #' @description Checks if the provided date range is valid. It ensures that the date range contains exactly two valid dates and that the starting date is before the ending date. It is used internally in the package to validate date ranges provided by the user.
@@ -107,7 +108,6 @@ make_warning <- function(errorws, colvars, warning_message, print_all = TRUE) {
 #' @returns an integer representing the date in days since 1970-01-01, or NA_integer_ if the input is NA.
 #' @keywords internal
 date_to_integer <- function(x) {
-
   if (is.na(x)) {
     return(NA_integer_)
   }
@@ -194,10 +194,11 @@ check_order <- function(lower, usual = NULL, upper){
 #'
 #' @param atc_col a character vector containing ATC codes.
 #' @param package_col an integer vector containing package identifiers corresponding to the ATC codes.
+#' @param location character. Short description of finding location.
 #'
 #' @returns invisible NULL if all packages have a single ATC code, otherwise raises an error with a message listing the packages that have multiple ATC codes.
 #' @keywords internal
-find_multiple_atcs <- function(atc_col, package_col) {
+find_multiple_atcs <- function(atc_col, package_col, location) {
   # Count unique ATC-codes for each package
   unique_atcs_per_package <- tapply(atc_col, package_col, function(x)
     paste(unique(x), collapse = ", "))
@@ -211,8 +212,8 @@ find_multiple_atcs <- function(atc_col, package_col) {
   # Check if there are more than one ATC-code in packages
   if (any(n_unique_atcs > 1)) {
     # Create an error message for packages with more than one ATC-code
-    error_message <- paste0(
-      "Expected only one ATC-code by package number, exceptions found: ",
+    error_message <- paste0("Error ", location,
+      ", expected only one ATC-code by package number, exceptions found: ",
       gsub('\"|c(|)', " ", paste(atcs_combined[n_unique_atcs > 1], collapse = "; "))
       , ".")
     stop(error_message, call. = FALSE)
@@ -227,7 +228,7 @@ find_multiple_atcs <- function(atc_col, package_col) {
 #' @param val a numeric vector of values corresponding to the ATC codes.
 #' @param limit a numeric value representing the upper limit for coverage percentage. Default is 90.
 #' @param opti a character string indicating the type of coverage check to perform. It can be either "missing" (to check for non-missing values) or "zero" (to check for values greater than zero). Default is "missing".
-#' 
+#'
 #' @returns a character string listing ATC codes that do not meet the coverage limit, formatted as "ATC (coverage%)". If all ATC codes meet the limit, returns NULL.
 #' @keywords internal
 #' @import data.table

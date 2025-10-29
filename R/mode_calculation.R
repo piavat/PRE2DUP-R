@@ -1,5 +1,3 @@
-
-
 #' Calculates the most common duration between purchases
 #'
 #' Calculates the mode of time intervals between purchases for each package.
@@ -17,9 +15,6 @@
 #'
 #' @keywords internal
 #' @importFrom stats median
-
-
-
 mode_calculation <- function(pack_id, pre_ratio, dur, report_iters = 50) {
 
   # Create a data.table with each duration
@@ -57,29 +52,41 @@ mode_calculation <- function(pack_id, pre_ratio, dur, report_iters = 50) {
     by = pack_id]
 
     dt[, `:=`(
-      con_prev = !is.na(prev_dur) & (dur - prev_dur < 3) & (pre_ratio != prev_ratio),
-      con_next = !is.na(next_dur) & (next_dur - dur < 3) & (pre_ratio != next_ratio),
+      con_prev = !is.na(prev_dur) & (dur - prev_dur) < 3 & (pre_ratio != prev_ratio),
+      con_next = !is.na(next_dur) & (next_dur - dur) < 3 & (pre_ratio != next_ratio),
       ratio_less = !is.na(next_ratio) & !is.na(prev_ratio) & (next_ratio < prev_ratio)
     ), by = pack_id]
 
     ## Exit if no more combinable durations
     if (!any(dt$con_prev | dt$con_next)) break
 
-    # Find the smallest group to merge
+    # Merge connectable durations within two days:
+    # If several choices prioritize the closest
+    # if neighboring durations are equally close
+    # choose the one with more packages.
     min_N <- min(dt[con_prev | con_next]$pre_ratio)
     dt[, new_dur := fifelse(
-      pre_ratio == min_N & !con_prev & con_next, next_dur,
+      pre_ratio == min_N & con_prev & con_next,
+      fifelse(
+        abs(next_dur - dur) < abs(dur - prev_dur), next_dur,
+        fifelse(
+          abs(next_dur - dur) > abs(dur - prev_dur), prev_dur,
+          fifelse(
+            next_ratio > prev_ratio, next_dur, prev_dur
+          )
+        )
+      ),
       fifelse(
         pre_ratio == min_N & con_prev & !con_next, prev_dur,
         fifelse(
-          pre_ratio == min_N & con_prev & con_next & ratio_less, prev_dur,
-          fifelse(
-            pre_ratio == min_N & con_prev & con_next & !ratio_less, next_dur,
-            dur
-          )
+          pre_ratio == min_N & !con_prev & con_next, next_dur,
+          dur
         )
       )
     )]
+
+    # Break if durations doesn't change
+    if (all(dt$new_dur == dt$dur)) break
 
     dt[, dur := new_dur][, new_dur := NULL]
 

@@ -39,7 +39,7 @@ The `PRE2DUPR` package comes with example datasets that you can use to test the 
 - `ATC_parameters_example`: A dataset containing ATC code characteristics. 
 
 All data types have associated functions to validate the input before running `pre2dup`. 
-These functions are called internally by the program, so you don't need to run them manually unless you want to check your data beforehand. 
+These functions are run internally by the program, so you don't need to run them manually unless you want to check your data beforehand. 
 
 It is recommended to run these checks in advance to detect and correct errors more easily and efficiently. Note that the internal checks in `pre2dup` will display only the first five rows with detected errors. When run separately, all rows with issues can be listed by adjusting the function parameter `print_all = TRUE`.
 
@@ -60,6 +60,7 @@ check_purchases(dt = purchases_example,
                 pre_date = "purchase_date",
                 pre_ratio = "n_packages",
                 pre_ddd = "amount",
+                drop_atcs = TRUE,
                 print_all = TRUE)
                 
 # Checks passed for ‘purchases_example’
@@ -163,14 +164,15 @@ outdata <- pre2dup(
   global_max_single = 150,
   global_ddd_high = 10,
   global_hosp_max = 30,
+  days_covered = 5,
   weight_past = 1,
   weight_current = 4,
   weight_next = 1,
   weight_first_last = 5,
-  calculate_pack_dur_usual = T,
-  days_covered = 5,
+  drop_atcs = TRUE,
+  data_to_return = "periods",
   post_process_perc = 1)
-  
+
 # Step 1/6: Checking parameters and datasets...
 # Checks passed for ‘pre_data’
 # Checks passed for ‘package_parameters’
@@ -179,18 +181,17 @@ outdata <- pre2dup(
 # Preparing hospitalization data and merging overlapping hospitalizations.
 # Step 2/6: Calculating purchase durations...
 # Step 3/6: Stockpiling assessment...
-# Step 4/6: Calculating common package durations in data...
-# Refill lengths couldn't be re-estimated, probably due to too small data size.
+# Step 4/6: Common package duration calculation was not selected in function call; skipping this step.
 # Step 5/6: Preparing drug use periods...
 # Step 6/6: Post-processing drug use periods...
 # Current post processing percentage: 1
-# Drug use periods calculated. 7 periods created for 5 persons.  
+# Drug use periods calculated. 7 periods created for 5 persons.
+# Returning drug use periods.
 
-# Drug use periods are stored in the `periods` element of the output list.
-dup <- outdata$periods
-dup
-#    period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs
-#     <int> <fctr>  <char>     <Date>     <Date>    <num>             <num>           <int>            <Date>         <num>                     <num>
+# Drug use periods
+outdata
+#   period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs
+# <int> <fctr>  <char>     <Date>     <Date>    <num>             <num>           <int>            <Date>         <num>                     <num>
 # 1:      1      1 N05AH02 2025-01-01 2025-04-14      104                 0               3        2025-03-08         99.99                     0.961
 # 2:      2      2 N05AH02 2025-01-15 2025-04-28      104                 5               3        2025-03-22         99.99                     0.961
 # 3:      3      3 N05AH02 2025-02-01 2025-05-15      104                 0               3        2025-04-08         99.99                     0.961
@@ -199,19 +200,13 @@ dup
 # 6:      6      4 N05AH04 2025-01-20 2025-09-10      233                 0               2        2025-04-30        200.00                     0.858
 # 7:      7      5 N05AH04 2025-01-01 2025-08-22      233                38               2        2025-04-11        200.00                     0.858
 
-# Package parameters with updated common durations is not returned, because the common durations were not calculated in this example.
-outdata$pack_info
-# NULL
-
 ```
 
 ## Workflow when using estimated usual package durations from data 
-The `pre2dup` function has an option to estimate the usual package durations from the data. This is useful when you want to derive package durations based on the actual purchase patterns in your dataset.
-Set `calculate_pack_dur_usual = T`, run the program and update package parameters based on common duration in data. 
-
+The `pre2dup` function has an option to calculate typical package durations from the drug purchases data. This is useful when user wants to derive package parameter's usual package durations based on the actual purchase patterns. User runs first the `pre2dup` with argument `data_to_return = "parameters"`. The function then returns a package parameter file that includes an additional column for the typical package durations. The user can use this information to update the parameters usual package duration and usual daily DDD and run `pre2dup` with `data_to_return = "periods"` to create the drug exposure periods.
 
 ``` r
-# Make data so big, that it can calculate common durations
+# Step 1: Calculate common package durations in drug purchases data
 id <- sort(rep(1:5, each = 20))
 vnr <- rep(c(rep(30627, 10), rep(41738, 10)), 5)
 ATC <- rep(c(rep("N05AH02", 10), rep("N05AH04", 10)), 5)
@@ -223,8 +218,8 @@ amount <- rep(c(rep(33, 10), rep(80, 10)), 5)
 
 purchases_data <- data.frame(id, vnr, ATC, purchase_date, n_packages, amount)
 
-# This example uses function default values, they can be changed to fit your needs.
-outdata <- pre2dup(
+# Run pre2dup with data_to_return = "parameters". 
+updated_params <- pre2dup(
   pre_data = purchases_data,
   pre_person_id = "id",
   pre_atc = "ATC",
@@ -257,14 +252,15 @@ outdata <- pre2dup(
   global_max_single = 150,
   global_ddd_high = 10,
   global_hosp_max = 30,
+  days_covered = 5,
   weight_past = 1,
   weight_current = 4,
   weight_next = 1,
   weight_first_last = 5,
-  calculate_pack_dur_usual = T,
-  days_covered = 5,
-  post_process_perc = 1)
-  
+  drop_atcs = TRUE,
+  data_to_return = "parameters")
+
+
 # Step 1/6: Checking parameters and datasets...
 # Checks passed for ‘pre_data’
 # Checks passed for ‘package_parameters’
@@ -274,18 +270,9 @@ outdata <- pre2dup(
 # Step 2/6: Calculating purchase durations...
 # Step 3/6: Stockpiling assessment...
 # Step 4/6: Calculating common package durations in data...
-# Step 5/6: Preparing drug use periods...
-# Step 6/6: Post-processing drug use periods...
-# Current post processing percentage: 1
-# Drug use periods calculated. 10 periods created for 5 persons.
+# Common package durations calculated, returning updated package parameters.
 
-# Program returns periods, but not used for now 
-dup <- outdata$periods
-
-# Program returns updated package parameters
-updated_params <- outdata$pack_info
-
-# Check new common durations
+# Step 2: Check new common durations and use as new usual duration
 updated_params[!is.na(updated_params$common_duration), ]
 #     vnr     ATC product_name strength strength_num packagesize packsize_num drug_form_harmonized ddd_per_pack minimum_dur usual_dur maximum_dur lower_ddd usual_ddd common_duration
 # 6 30627 N05AH02      LEPONEX    100MG          100         100          100               TABLET     33.33333          25     33.33         100    0.3333      1.00              40
@@ -298,8 +285,11 @@ updated_params$usual_duration_new <- ifelse(
   updated_params$usual_dur
 )
 
-# Run PRE2DUP with the updated package parameters
-outdata <- pre2dup(
+# Update also usual daily DDD
+updated_params$usual_ddd_new <- updated_params$ddd_per_pack/updated_params$usual_duration_new
+
+# Step 3: Run pre2dup with the updated package parameters and with data_to_return = "periods"
+final_periods <- pre2dup(
   pre_data = purchases_data,
   pre_person_id = "id",
   pre_atc = "ATC",
@@ -311,9 +301,9 @@ outdata <- pre2dup(
   pack_atc = "ATC",
   pack_id = "vnr",
   pack_ddd_low = "lower_ddd",
-  pack_ddd_usual ="usual_ddd",
+  pack_ddd_usual ="usual_ddd_new", # New column
   pack_dur_min = "minimum_dur",
-  pack_dur_usual =  "usual_duration_new", # This is the new column
+  pack_dur_usual =  "usual_duration_new", # New column
   pack_dur_max = "maximum_dur",
   atc_parameters = ATC_parameters,
   atc_class = "partial_atc",
@@ -332,12 +322,13 @@ outdata <- pre2dup(
   global_max_single = 150,
   global_ddd_high = 10,
   global_hosp_max = 30,
+  days_covered = 5,
   weight_past = 1,
   weight_current = 4,
   weight_next = 1,
   weight_first_last = 5,
-  calculate_pack_dur_usual = F,# Done already
-  days_covered = 5,
+  drop_atcs = TRUE,
+  data_to_return = "periods",
   post_process_perc = 1)
 
 # Step 1/6: Checking parameters and datasets...
@@ -348,17 +339,16 @@ outdata <- pre2dup(
 # Preparing hospitalization data and merging overlapping hospitalizations.
 # Step 2/6: Calculating purchase durations...
 # Step 3/6: Stockpiling assessment...
-# Step 4/6: Common package duration calculation was not selected in the parameters; skipping this step.
+# Step 4/6: Common package duration calculation was not selected in function call; skipping this step.
 # Step 5/6: Preparing drug use periods...
 # Step 6/6: Post-processing drug use periods...
 # Current post processing percentage: 1
 # Drug use periods calculated. 10 periods created for 5 persons.
+# Returning drug use periods.
 
 # The final output
-final_periods <- outdata$periods
 final_periods
 #    period     id     ATC  dup_start    dup_end dup_days dup_hospital_days dup_n_purchases dup_last_purchase dup_total_DDD dup_temporal_average_DDDs
-#     <int> <fctr>  <char>     <Date>     <Date>    <num>             <num>           <int>            <Date>         <num>                     <num>
 # 1:      1      1 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809
 # 2:      2      1 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654
 # 3:      3      2 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809
@@ -368,7 +358,7 @@ final_periods
 # 7:      7      4 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809
 # 8:      8      4 N05AH04 2022-05-01 2025-09-05     1224                 0              10        2025-04-15           800                     0.654
 # 9:      9      5 N05AH02 2020-02-10 2021-03-23      408                 0              10        2021-02-04           330                     0.809
-# 10:    10      5 N05AH04 2022-05-01 2025-09-05     1224                38              10        2025-04-15           800                     0.654
+# 10:     10     5 N05AH04 2022-05-01 2025-09-05     1224                38              10        2025-04-15           800                     0.654
 
 ```
 

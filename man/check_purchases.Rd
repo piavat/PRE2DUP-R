@@ -14,29 +14,32 @@ check_purchases(
   pre_ddd = NULL,
   date_range = NULL,
   print_all = FALSE,
-  return_data = FALSE
+  return_data = FALSE,
+  drop_atcs = FALSE
 )
 }
 \arguments{
 \item{dt}{data.frame or data.table containing drug purchase records.}
 
-\item{pre_person_id}{Character. Column name for the person identifier.}
+\item{pre_person_id}{character. Column name for the person identifier.}
 
-\item{pre_atc}{Character. Column name for the ATC code.}
+\item{pre_atc}{character. Column name for the ATC code.}
 
-\item{pre_package_id}{Character. Column name for the package identifier (e.g., Vnr in Nordic data).}
+\item{pre_package_id}{character. Column name for the package identifier (e.g., Vnr in Nordic data).}
 
-\item{pre_date}{Character. Column name for the drug purchase date.}
+\item{pre_date}{character. Column name for the drug purchase date.}
 
-\item{pre_ratio}{Character. Column name for the amount of drug purchased: for whole packages, number of packages; for partial supplies, the proportion of a package (e.g., 0.5 for 14 tablets from a 28-tablet package).}
+\item{pre_ratio}{character. Column name for the amount of drug purchased: for whole packages, number of packages; for partial supplies, the proportion of a package (e.g., 0.5 for 14 tablets from a 28-tablet package).}
 
-\item{pre_ddd}{Character. Column name for defined daily dose (DDD) of the purchase.}
+\item{pre_ddd}{character. Column name for defined daily dose (DDD) of the purchase.}
 
-\item{date_range}{Character vector of length 2. Date range for purchase dates (e.g., c("1995-01-01", "2018-12-31")). Default is NULL (no date range check).}
+\item{date_range}{character vector of length 2. Date range for purchase dates (e.g., c("1995-01-01", "2018-12-31")). Default is NULL (no date range check).}
 
-\item{print_all}{Logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.}
+\item{print_all}{logical. If TRUE, all row numbers that caused warnings are printed; if FALSE, only the first 5 problematic rows are printed.}
 
-\item{return_data}{Logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.}
+\item{return_data}{logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.}
+
+\item{drop_atcs}{logical. If TRUE, process ignores ATCs with insufficient level of DDD coverage and continues with the rest of the data.}
 }
 \value{
 If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with converted types.
@@ -72,7 +75,7 @@ ratios <- c(0.5, 2, 2, 1, 0.5, 2)
 ddds <- c(7.5, 30, 30, 28, 14, 56)
 purchases <- data.frame(ID, ATC, vnr, dates, ratios, ddds)
 
-check_purchases(
+validated_purchases <- check_purchases(
   dt = purchases,
   pre_person_id = "ID",
   pre_atc = "ATC",
@@ -82,7 +85,9 @@ check_purchases(
   pre_ddd = "ddds",
   date_range = c("1995-01-01", "2018-12-31"),
   print_all = TRUE,
-  return_data = TRUE
+  return_data = TRUE,
+  drop_atcs = FALSE
 )
+print(validated_purchases)
 
 }

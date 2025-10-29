@@ -8,7 +8,6 @@
 
 library(testthat)
 library(PRE2DUPR)
-library(mockery)
 library(data.table)
 
 test_check("PRE2DUPR")

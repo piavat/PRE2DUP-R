@@ -11,7 +11,8 @@ test_that("check_atc_parameters works as expected with valid data", {
   # Data without errors, all relevant checks passed. Function returns data.table.
 
   # Passed package parameters
-  outdata <- check_atc_parameters(
+  outdata <- suppressWarnings(suppressMessages(
+    check_atc_parameters(
     dt = df_atc_params,
     atc_class = "ATC_class",
     atc_ddd_low = "lower_ddd",
@@ -19,7 +20,7 @@ test_that("check_atc_parameters works as expected with valid data", {
     atc_dur_min = "minimum_duration",
     atc_dur_max = "maximum_duration",
     return_data = TRUE
-  )
+  )))
   expect_true(is.data.table(outdata))
   expect_true(all(dim(outdata) == dim(df_atc_params)))
   expect_true(typeof(outdata$ATC_class) == "character")

@@ -7,13 +7,13 @@ hospital_data <- data.frame(PID, Entry, Leave)
 test_that("check_hospitalizations works as expected for errorless hospitalization data", {
 
   # All data is correct
-  outdata <- check_hospitalizations(
+  outdata <- suppressWarnings(suppressMessages(check_hospitalizations(
     hospital_data,
     hosp_person_id = "PID",
     hosp_admission = "Entry",
     hosp_discharge = "Leave",
     return_data = TRUE
-  )
+  )))
   expect_true(is.data.table(outdata))
   expect_true(is.factor(outdata$pid_hosp))
   expect_true(is.integer(outdata$admission_date))
@@ -36,7 +36,6 @@ test_that("check_hospitalizations detects missing arguments", {
       hosp_person_id = "PID"),
     error = TRUE
   )
-
   expect_snapshot(
     check_hospitalizations(
       hospital_data,
@@ -47,6 +46,7 @@ test_that("check_hospitalizations detects missing arguments", {
     error = TRUE
   )
 })
+
 test_that("check_hospitalizations detects missing data columns", {
   # Required columns are missing
   hospital_data$Entry <- NULL
@@ -86,7 +86,6 @@ test_that("check_hospitalizations detects errorneus date ranges", {
     ),
     error = TRUE
   )
-
   expect_snapshot(
     check_hospitalizations(
       hospital_data,
@@ -97,7 +96,6 @@ test_that("check_hospitalizations detects errorneus date ranges", {
     ),
     error = TRUE
   )
-
   expect_snapshot(
     check_hospitalizations(
       hospital_data,
@@ -109,7 +107,6 @@ test_that("check_hospitalizations detects errorneus date ranges", {
     error = TRUE
   )
 })
-
 
 test_that("check_hospitalizations detects dates outside date ranges", {
   # Dates outside date range
@@ -158,7 +155,6 @@ test_that("check_hospitalizations detects overlapping hospitalizations", {
     date_range = c("2020-01-01", "2024-02-01")
   ),
   error = FALSE)
-
 
   # Hospitalizations are overlapping
   hospital_data$Leave[1] <- "2023-02-03"
@@ -249,8 +245,8 @@ test_that("check_hospitalizations detects overlapping hospitalizations", {
   expect_true(is.integer(outdata$discharge_date))
   expect_equal(as.character(as.Date(outdata$admission_date)), c("2011-01-31", "2011-01-27", "2011-02-07", "2011-01-27", "2011-01-27", "2023-01-25"))
   expect_equal(as.character(as.Date(outdata$discharge_date)), c("2011-02-15", "2011-01-30", "2011-02-25", "2011-02-06", "2011-02-16", "2023-02-06"))
-
 })
+
 test_that("check_hospitalizations reports error if the hospitalization data has not records", {
   hospital_data <- data.frame(
     PID = character(),
@@ -267,16 +263,14 @@ test_that("check_hospitalizations reports error if the hospitalization data has 
   )
 })
 
-
 test_that("check_hospitalizations connects consecutive hospitalizations", {
-  
+
   # All data is correct
   hospital_data <- data.table(
     PID = c(1, 1, 1, 1),
     Entry = as.Date(c("2020-01-01", "2020-01-30", "2020-03-01", "2020-03-30")),
     Leave = as.Date(c("2020-01-30", "2020-03-01", "2020-03-30", "2020-04-10"))
   )
-  
   outdata <- suppressMessages(check_hospitalizations(
     hospital_data,
     hosp_person_id = "PID",
@@ -293,14 +287,13 @@ test_that("check_hospitalizations connects consecutive hospitalizations", {
 })
 
 test_that("check_hospitalizations connects consecutive hospitalizations for two person", {
-  
+
   # All data is correct
   hospital_data <- data.table(
     PID = c(1, 1, 2, 2),
     Entry = as.Date(c("2020-01-01", "2020-01-30", "2020-03-01", "2020-03-30")),
     Leave = as.Date(c("2020-01-30", "2020-03-01", "2020-03-30", "2020-04-10"))
   )
-  
   outdata <- suppressMessages(check_hospitalizations(
     hospital_data,
     hosp_person_id = "PID",
@@ -308,7 +301,7 @@ test_that("check_hospitalizations connects consecutive hospitalizations for two 
     hosp_discharge = "Leave",
     return_data = TRUE
   ))
-  
+
   expect_true(is.data.table(outdata))
   expect_true(is.factor(outdata$pid_hosp))
   expect_true(is.integer(outdata$admission_date))
@@ -316,9 +309,3 @@ test_that("check_hospitalizations connects consecutive hospitalizations for two 
   expect_equal(outdata$admission_date, c(18262, 18322))
   expect_equal(outdata$discharge_date,c(18322, 18362))
 })
-
-
-
-
-
-

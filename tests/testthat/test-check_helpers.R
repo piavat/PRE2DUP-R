@@ -144,20 +144,24 @@ test_that("check_non_numeric returns nothing with correct alphanumeric values", 
 
 # Test find_multiple ATCs
 test_that("find_multiple_atcs returns correct results with one package", {
-  expect_snapshot(find_multiple_atcs(atc_col = c("N03AB10", "N03AB20", "N03AB30")
-                                     , package_col = c(12345, 12345, 333455))
-                  , error = TRUE)
+  expect_snapshot(find_multiple_atcs(atc_col = c("N03AB10", "N03AB20", "N03AB30"),
+                                     package_col = c(12345, 12345, 333455),
+                                     location = "message in snapshot test"),
+                  error = TRUE)
 })
 
 test_that("find_multiple_atcs returns correct results with several packages", {
   expect_snapshot(find_multiple_atcs(
-    atc_col = c("N03AB10", "N03AB20", "N03AB30", "N03AB40")
-    , package_col = c(12345, 12345, 22345, 22345)), error = TRUE)
+    atc_col = c("N03AB10", "N03AB20", "N03AB30", "N03AB40"),
+    package_col = c(12345, 12345, 22345, 22345),
+    location = "message in snapshot test"),
+    error = TRUE)
 })
 test_that("find_multiple_atcs returns NULL if not errors", {
-  expect_equal(find_multiple_atcs(atc_col = c("N03AB10", "N03AB20"), package_col = c(12345, 22345)), NULL)
+  expect_equal(find_multiple_atcs(atc_col = c("N03AB10", "N03AB20"),
+                                  package_col = c(12345, 22345),
+                                  location = "message in snapshot test"), NULL)
 })
-
 
 # Test check_numeric
 values <- c(10, NA, -3, Inf, 5, 0)
@@ -278,7 +282,6 @@ test_that("check_coverage reports missing, if 49% of info is available, but 50% 
 
   expect_equal(coverage, "N03AB10 (49.0%)")
 })
-
 
 ### check_order tests -----
 test_that("check_order correctly identifies incorrect ordering", {

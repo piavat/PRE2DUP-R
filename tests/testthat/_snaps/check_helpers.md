@@ -94,19 +94,19 @@
 
     Code
       find_multiple_atcs(atc_col = c("N03AB10", "N03AB20", "N03AB30"), package_col = c(
-        12345, 12345, 333455))
+        12345, 12345, 333455), location = "message in snapshot test")
     Condition
       Error:
-      ! Expected only one ATC-code by package number, exceptions found: 12345: N03AB10, N03AB20.
+      ! Error message in snapshot test, expected only one ATC-code by package number, exceptions found: 12345: N03AB10, N03AB20.
 
 # find_multiple_atcs returns correct results with several packages
 
     Code
       find_multiple_atcs(atc_col = c("N03AB10", "N03AB20", "N03AB30", "N03AB40"),
-      package_col = c(12345, 12345, 22345, 22345))
+      package_col = c(12345, 12345, 22345, 22345), location = "message in snapshot test")
     Condition
       Error:
-      ! Expected only one ATC-code by package number, exceptions found: 12345: N03AB10, N03AB20; 22345: N03AB30, N03AB40.
+      ! Error message in snapshot test, expected only one ATC-code by package number, exceptions found: 12345: N03AB10, N03AB20; 22345: N03AB30, N03AB40.
 
 # check_order correctly identifies incorrect ordering
 

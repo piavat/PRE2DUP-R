@@ -5,15 +5,15 @@
 #' The function stops execution and prints error messages if critical errors are found.
 #'
 #' @param dt data.frame or data.table containing the package parameters to validate.
-#' @param pack_atc Character. Name of the column containing the Anatomical Therapeutic Chemical (ATC) Classification code.
-#' @param pack_id Character. Name of the column containing the package identifier (e.g., vnr code).
-#' @param pack_ddd_low Character. Name of the column with the minimum daily DDD value.
-#' @param pack_ddd_usual Character. Name of the column with the usual daily DDD value.
-#' @param pack_dur_min Character. Name of the column with the minimum package duration (in days).
-#' @param pack_dur_usual Character. Name of the column with the usual package duration (in days).
-#' @param pack_dur_max Character. Name of the column with the maximum package duration (in days).
-#' @param print_all Logical. If TRUE, all warnings are printed. If FALSE, only the first 5 problematic rows are printed.
-#' @param return_data Logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.
+#' @param pack_atc character. Name of the column containing the Anatomical Therapeutic Chemical (ATC) Classification code.
+#' @param pack_id character. Name of the column containing the package identifier (e.g., vnr code).
+#' @param pack_ddd_low character. Name of the column with the minimum daily DDD value.
+#' @param pack_ddd_usual character. Name of the column with the usual daily DDD value.
+#' @param pack_dur_min character. Name of the column with the minimum package duration (in days).
+#' @param pack_dur_usual character. Name of the column with the usual package duration (in days).
+#' @param pack_dur_max character. Name of the column with the maximum package duration (in days).
+#' @param print_all logical. If TRUE, all warnings are printed. If FALSE, only the first 5 problematic rows are printed.
+#' @param return_data logical. If TRUE and no errors are detected, returns a data.table with the validated columns and proper types. If FALSE, only a message is printed.
 #'
 #' @return
 #' If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with converted types.
@@ -55,7 +55,7 @@
 #'   pack_dur_max = "maximum_duration",
 #'   return_data = TRUE
 #' )
-#' package_parameters
+#' print(package_parameters)
 #'
 #' @export
 check_package_parameters <- function(dt,

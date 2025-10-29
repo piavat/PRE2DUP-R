@@ -18,19 +18,19 @@ check_atc_parameters(
 \arguments{
 \item{dt}{data.frame or data.table containing the ATC parameters to validate.}
 
-\item{atc_class}{Character. Name of the column containing the ATC class or code.}
+\item{atc_class}{character. Name of the column containing the ATC class or code.}
 
-\item{atc_ddd_low}{Character. Name of the column with the minimum daily DDD value.}
+\item{atc_ddd_low}{character. Name of the column with the minimum daily DDD value.}
 
-\item{atc_ddd_usual}{Character. Name of the column with the usual daily DDD value.}
+\item{atc_ddd_usual}{character. Name of the column with the usual daily DDD value.}
 
-\item{atc_dur_min}{Character. Name of the column with the minimum duration (in days).}
+\item{atc_dur_min}{character. Name of the column with the minimum duration (in days).}
 
-\item{atc_dur_max}{Character. Name of the column with the maximum duration (in days).}
+\item{atc_dur_max}{character. Name of the column with the maximum duration (in days).}
 
-\item{print_all}{Logical. If TRUE, all warnings are printed.}
+\item{print_all}{logical. If TRUE, all warnings are printed.}
 
-\item{return_data}{Logical. If TRUE, the function returns the validated data. If FALSE, only a message is printed.}
+\item{return_data}{logical. If TRUE, the function returns the validated data. If FALSE, only a message is printed.}
 }
 \value{
 If \code{return_data = TRUE}, returns a data.table containing only the validated columns, with converted types.
@@ -63,7 +63,7 @@ atc_data <- data.frame(
   atc_dur_max = c(40, 56, 100)
 )
 # Validate and return the data if all checks pass
-check_atc_parameters(
+atc_parameters <- check_atc_parameters(
   dt = atc_data,
   atc_class = "atc_class",
   atc_ddd_low = "atc_ddd_low",
@@ -73,5 +73,5 @@ check_atc_parameters(
   print_all = TRUE,
   return_data = TRUE
 )
-
+print(atc_parameters)
 }
