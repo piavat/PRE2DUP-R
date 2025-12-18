@@ -12,7 +12,40 @@ The PRE2DUP (From prescription drug purchases to drug use periods) method is a n
 ## PRE2DUP-R
 There is a growing demand for open-source version of PRE2DUP in the programming language and software familiar in the research field. R-package PRE2DUP-R provides an advanced tool for generating reliable drug use estimates from large dispensing databases and practical tools for data pre-processing and cleaning. It will form the basis for development of sub-programs for specific tasks which may be required in particular research fields.   
 
-For more information, see introduction to method:
+## The use of PRE2DUP-R
+
+Please see an example of practical use of PRE2DUP-R here: [Introduction](https://piavat.github.io/PRE2DUP-R/articles/introduction.html), and instructions how to create package parameter file for study drugs here: [Package parameters](https://piavat.github.io/PRE2DUP-R/tutorials/Instruction_to_build_package_parameter.html) (more details via the link at the bottom of the Package parameters page). 
+
+
+## Reporting Guidelines
+Please always specify the version of **PRE2DUP-R** used and always state using default values and/or report any deviations from those to support open and transparent reporting. 
+
+**Example**: 
+“Analysis were conducted with PRE2DUP-R (replace xxx with version number) with R version (replace xxx with version number), with default values except for zzz" (replace zzz with the list of deviations and which values were used)”
+
+## How to Cite
+If you use **PRE2DUP-R** in your research, please cite the following:
+
+**Authors**:
+
+- Pia Vattulainen - R Implementation, Open-Source Development, Project Maintenance, Method Development
+
+- Antti Tanskanen - Method Development, Original Concept
+
+- Heidi Taipale - Method Development, Original Concept
+
+**Project title**: PRE2DUP-R: Create treatment periods from drug purchases data
+
+**Year**: 2025
+
+Please use the following citation format:
+
+Vattulainen, P., Tanskanen, A., & Taipale, H. (2025). PRE2DUP-R: Create treatment periods from drug purchases data. GitHub. https://github.com/piavat/PRE2DUP-R
+
+We recommend referencing the repository directly:  
+https://github.com/piavat/PRE2DUP-R
+
+## For more information, see introduction to method:
 
 Tanskanen, A., Taipale, H., Koponen, M., Tolppanen, A. M., Hartikainen, S., Ahonen, R., & Tiihonen, J. (2015). From prescription drug purchases to drug use periods – a second generation method (PRE2DUP). BMC medical informatics and decision making, 15, 21. https://doi.org/10.1186/s12911-015-0140-z
 
