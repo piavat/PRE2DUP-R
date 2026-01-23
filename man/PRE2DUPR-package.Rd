@@ -8,6 +8,15 @@
 \description{
 PRE2DUP-R for creating drug treatment periods from drug purchases.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://piavat.github.io/PRE2DUP-R/}
+  \item \url{https://github.com/piavat/PRE2DUP-R}
+  \item Report bugs at \url{https://github.com/piavat/PRE2DUP-R/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Pia Vattulainen \email{vattpia@gmail.com}
 

@@ -1,3 +1,6 @@
+# PRE2DUPR 0.2.1
+* Replaced internal `shift()` calls with `data.table::shift()` to ensure consistent behavior across environments.
+
 # PRE2DUPR 0.2.0
 * Added new argument to define the function output: users can now choose to return exposure periods, updated package parameters, or both. Argument calc_pack_dur_usual removed.
   * Replaced interactive prompt for handling ATC codes lacking DDD records or package parameters coverage with a function argument, allowing automated processing.

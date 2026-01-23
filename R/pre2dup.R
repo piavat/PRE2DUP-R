@@ -474,13 +474,13 @@ pre2dup <- function(pre_data,
   # Init group by pid and ATC
   pre_data[, bl_init := as.integer(factor(paste(pid_pre, atc_pre, sep = "_")))]
 
-  pre_data[, btw := date_pre - shift(date_pre, type = "lag", fill = date_pre[1L]), by = bl_init]
+  pre_data[, btw := date_pre - data.table::shift(date_pre, type = "lag", fill = date_pre[1L]), by = bl_init]
 
   # Define periods start points
   setorder(pre_data, bl_init, pid_pre, atc_pre)
   pre_data[, let(
-    pid_lag = shift(pid_pre, type = "lag"),
-    atc_lag = shift(atc_pre, type = "lag")
+    pid_lag = data.table::shift(pid_pre, type = "lag"),
+    atc_lag = data.table::shift(atc_pre, type = "lag")
   ), by = bl_init]
 
   pre_data[, startp := pid_lag != pid_pre | atc_lag != atc_pre]
@@ -575,14 +575,14 @@ pre2dup <- function(pre_data,
   pre_data[, erfl := ifelse(erfl_method == "erfl_min_atc", erfl, pmin(pmax(min_dur, erfl), max_dur))]
 
   # If ERFL doesn't reach the next purcase, restart period   ----------------
-  pre_data[shift(erfl, type = "lag") < btw &
+  pre_data[data.table::shift(erfl, type = "lag") < btw &
              !(startp), startp := T]
 
   # Check if extended ERFL reaches the next purchase ---------------------------
   ### Count hospital days between purchases ----
   pre_data[, purc_end := date_pre + erfl]
   setorder(pre_data, pid_pre, atc_pre, date_pre)
-  pre_data[, next_purchase := shift(date_pre, type = "lead"), by = list(pid_pre, atc_pre)]
+  pre_data[, next_purchase := data.table::shift(date_pre, type = "lead"), by = list(pid_pre, atc_pre)]
 
   if (!is.null(hosp_data)) {
     hospital_times <- calc_hosp_days(
@@ -607,7 +607,7 @@ pre2dup <- function(pre_data,
 
   ### Extend over gap if hospitalizations and/or allowing few extra days covers the gap ----
   pre_data[, erfl_extended := erfl + pmin(hosp_days, global_hosp_max) + days_covered]
-  pre_data[, prev_extended := shift(erfl_extended, type = "lag"), by = block]
+  pre_data[, prev_extended := data.table::shift(erfl_extended, type = "lag"), by = block]
   pre_data[startp == TRUE &
              btw > 0 &
              btw <= global_gap_max & !is.na(prev_extended) &
@@ -619,8 +619,8 @@ pre2dup <- function(pre_data,
 
   # Shift previous and next temporal averages
   pre_data[, let(
-    pre_ta = shift(sliding_average, type = "lag"),
-    pas_ta = shift(sliding_average, type = "lead")
+    pre_ta = data.table::shift(sliding_average, type = "lag"),
+    pas_ta = data.table::shift(sliding_average, type = "lead")
   ), by = block]
 
   # Find dropping temporal average doses
@@ -637,23 +637,23 @@ pre2dup <- function(pre_data,
 
   # Detect possible stockpiling
   pre_data[idx, pos_stock := fifelse(drop == TRUE &
-                                       shift(startp, type = "lead") == TRUE, TRUE, FALSE), by = block]
+                                       data.table::shift(startp, type = "lead") == TRUE, TRUE, FALSE), by = block]
 
   # Combine purchased total DDDs and times between purchases
   pre_data[idx, let(
-    sp_ddd = shift(ddd_pre, type = "lag") + ddd_pre,
-    sp_btw = btw + shift(btw, type = "lead")
+    sp_ddd = data.table::shift(ddd_pre, type = "lag") + ddd_pre,
+    sp_btw = btw + data.table::shift(btw, type = "lead")
   ), by = block]
 
   # Calculate sliding average for stockpiling purchases
   pre_data[idx, sp_erfl := sp_ddd * (1 + rsd) / sliding_average]
 
   # Maximum of stockpiling ERFLs is the summed maximum of the connected purchases
-  pre_data[idx, sp_max := shift(max_dur, type = "lag") + max_dur]
+  pre_data[idx, sp_max := data.table::shift(max_dur, type = "lag") + max_dur]
   pre_data[idx, sp_erfl := pmin(sp_erfl, sp_max), by = block]
 
   # Count hospital days between purchases
-  pre_data[idx, sp_hosp_days := shift(hosp_days, type = "lag") + hosp_days
+  pre_data[idx, sp_hosp_days := data.table::shift(hosp_days, type = "lag") + hosp_days
            , by = block]
   pre_data[idx, sp_erfl_extended := sp_erfl +
              pmin(sp_hosp_days, global_hosp_max) + days_covered]
@@ -665,7 +665,7 @@ pre2dup <- function(pre_data,
                                  FALSE)]
 
   # Continue period if stockpiling
-  pre_data[shift(stock, type = "lag"), startp := FALSE, by = block]
+  pre_data[data.table::shift(stock, type = "lag"), startp := FALSE, by = block]
   idx <- NULL
 
   # Create periods ----------------------------------------------------------
@@ -697,7 +697,7 @@ pre2dup <- function(pre_data,
 
   ### Extend over gap if hospitalizations and/or allowing few extra days covers the gap ----
   pre_data[idx, erfl_extended := erfl + pmin(hosp_days, global_hosp_max) + days_covered]
-  pre_data[, prev_dur := shift(erfl_extended, type = "lag"), by = block]
+  pre_data[, prev_dur := data.table::shift(erfl_extended, type = "lag"), by = block]
   pre_data[idx, startp := fifelse(!is.na(prev_dur) & prev_dur >= btw, FALSE, startp)]
   pre_data[, `:=`(period, cumsum(startp))]
   pre_data[, `:=`(period_length, .N), by = period]
@@ -733,7 +733,7 @@ pre2dup <- function(pre_data,
 
     # Make temporary data with valid purchases
     # Lift the duration
-    pre_data[, btw_next := shift(btw, type = "lead"), by = period]
+    pre_data[, btw_next := data.table::shift(btw, type = "lead"), by = period]
 
     tmp <- pre_data[valid == TRUE, .(packid_pre, btw_next, ratio_pre)]
 
@@ -866,8 +866,8 @@ pre2dup <- function(pre_data,
     combinable <- TRUE
     while (combinable) {
       message(paste("Current post processing percentage:", post_process_perc))
-      pre_data[lidx, prev_start := shift(dup_start, type = "lag"), by = .(pid_pre, atc_pre)]
-      pre_data[lidx, prev_end := shift(dup_end, type = "lag"), by = .(pid_pre, atc_pre)]
+      pre_data[lidx, prev_start := data.table::shift(dup_start, type = "lag"), by = .(pid_pre, atc_pre)]
+      pre_data[lidx, prev_end := data.table::shift(dup_end, type = "lag"), by = .(pid_pre, atc_pre)]
       pre_data[lidx, combine_to_past := ifelse((dup_start - prev_end) <= post_process_perc / 100 * (prev_end -
                                                                                                       prev_start),
                                                1,
