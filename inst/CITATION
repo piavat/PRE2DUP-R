@@ -1,0 +1,34 @@
+citHeader("To cite PRE2DUP-R in publications, please use:")
+
+citEntry(
+  entry      = "Manual",
+  title      = "PRE2DUP-R: A program to create treatment periods from drug purchases data",
+  author     = person("P.", "Vattulainen"),
+  year       = "2026",
+  note       = "R package version 0.2.2",
+  url        = "https://github.com/piavat/PRE2DUP-R",
+  textVersion= "Vattulainen P (2026). PRE2DUP-R: A program to create treatment periods from drug purchases data. R package version 0.2.2. https://github.com/piavat/PRE2DUP-R"
+)
+
+citEntry(
+  entry      = "Article",
+  author     = c(
+    person("P.", "Vattulainen"),
+    person("A.", "Tanskanen"),
+    person("H.", "Taipale")
+  ),
+  title      = "PRE2DUP-R, advanced, open science method to estimate drug use periods for pharmacoepidemiology",
+  journal    = "International Journal of Medical Informatics",
+  year       = "2026",
+  volume     = "212",
+  pages      = "106344",
+  doi        = "10.1016/j.ijmedinf.2026.106344",
+  note       = "Analyses performed with PRE2DUP-R version 0.2.0",
+  textVersion= paste(
+    "Vattulainen P, Tanskanen A, Taipale H (2026).",
+    "PRE2DUP-R, advanced, open science method to estimate drug use periods for pharmacoepidemiology.",
+    "International Journal of Medical Informatics, 212, 106344.",
+    "https://doi.org/10.1016/j.ijmedinf.2026.106344.",
+    "Analyses performed with PRE2DUP-R version 0.2.0."
+  )
+)

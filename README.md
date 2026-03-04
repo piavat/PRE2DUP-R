@@ -24,7 +24,13 @@ Please always specify the version of **PRE2DUP-R** used and always state using d
 “Analysis were conducted with PRE2DUP-R (replace xxx with version number) with R version (replace xxx with version number), with default values except for zzz" (replace zzz with the list of deviations and which values were used)”
 
 ## How to Cite
-If you use **PRE2DUP-R** in your research, please cite the following:
+If you use **PRE2DUP-R** in your research, please cite the associated publication and the R package:
+
+To obtain the correct citation for the package, run in R:
+```r
+citation("PRE2DUPR")
+```
+This will return the recommended citation in the appropriate format.
 
 **Authors**:
 
@@ -36,16 +42,11 @@ If you use **PRE2DUP-R** in your research, please cite the following:
 
 **Project title**: PRE2DUP-R: Create treatment periods from drug purchases data
 
-**Year**: 2025
+**First published**: 2025
 
-Please use the following citation format:
+## For more information, please see:
 
-Vattulainen, P., Tanskanen, A., & Taipale, H. (2025). PRE2DUP-R: Create treatment periods from drug purchases data. GitHub. https://github.com/piavat/PRE2DUP-R
-
-We recommend referencing the repository directly:  
-https://github.com/piavat/PRE2DUP-R
-
-## For more information, see introduction to method:
+Vattulainen, P., Tanskanen, A., & Taipale, H. (2026). PRE2DUP-R, advanced, open science method to estimate drug use periods for pharmacoepidemiology. International Journal of Medical Informatics, 212, 106344. <https://doi.org/10.1016/j.ijmedinf.2026.106344>
 
 Tanskanen, A., Taipale, H., Koponen, M., Tolppanen, A. M., Hartikainen, S., Ahonen, R., & Tiihonen, J. (2015). From prescription drug purchases to drug use periods – a second generation method (PRE2DUP). BMC medical informatics and decision making, 15, 21. https://doi.org/10.1186/s12911-015-0140-z
 

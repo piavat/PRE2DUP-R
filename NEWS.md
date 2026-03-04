@@ -1,3 +1,7 @@
+# PRE2DUPR 0.2.2
+* Add CITATION with paper reference.
+* README: updated citation instructions.
+
 # PRE2DUPR 0.2.1
 * Replaced internal `shift()` calls with `data.table::shift()` to ensure consistent behavior across environments.
 

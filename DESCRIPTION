@@ -1,7 +1,8 @@
 Package: PRE2DUPR
 Type: Package
 Title: Package for PRE2DUP-R method
-Version: 0.2.1
+Version: 0.2.2
+Date: 2026-03-04
 Authors@R: c(
     person(
       "Pia", "Vattulainen",
