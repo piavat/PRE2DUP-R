@@ -15,10 +15,10 @@ This vignette provides a brief introduction to the `PRE2DUPR` package, which is 
 
 To install the `PRE2DUPR` package, you can use the following command in R:
 ``` r
-install.packages("devtools")
-devtools::install_github("piavat/PRE2DUP-R")
+install.packages("pak")
+pak::pak("piavat/PRE2DUP-R")
 ```
-
+Note: As of devtools 2.5.0, devtools::install_github() has been deprecated. We recommend using pak for more reliable dependency resolution and faster installation.
 
 
 

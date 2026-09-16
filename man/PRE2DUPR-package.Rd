@@ -20,5 +20,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Pia Vattulainen \email{vattpia@gmail.com}
 
+Authors:
+\itemize{
+  \item Pia Vattulainen \email{vattpia@gmail.com}
+}
+
 }
 \keyword{internal}
