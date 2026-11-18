@@ -582,6 +582,8 @@ pre2dup <- function(pre_data,
   ### Count hospital days between purchases ----
   pre_data[, purc_end := date_pre + erfl]
   setorder(pre_data, pid_pre, atc_pre, date_pre)
+  # The rows were re-sorted above, so recompute the selection made before the sort.
+  idx <- pre_data$block_length > 2
   pre_data[, next_purchase := data.table::shift(date_pre, type = "lead"), by = list(pid_pre, atc_pre)]
 
   if (!is.null(hosp_data)) {
